@@ -65,11 +65,11 @@ public class clsAspirantesResponsables {
         reunion = false; 
         gestion = false; 
         PSocial = ""; 
-        PInfraestructura = ""; 
         //FechaReunion  =  ;
         Observaciones = "";
         
     }
+    
     
     @SuppressWarnings("empty-statement")
     public boolean Nuevo() throws ClassNotFoundException 
@@ -79,7 +79,10 @@ public class clsAspirantesResponsables {
                 con = DriverManager.getConnection("jdbc:mysql://localhost:3306/sistemamonitoreo","root", "1234");
                 stat = con.createStatement();
                 
-                String SQL = "INSERT INTO aspiranteresponsable VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+                String SQL = "INSERT INTO aspiranteresponsable (Nombre,Apellido,Calle,Numero,Colonia,Agencia,Seccion,SenasParticulares,"
+                           + "Telefono,Email,Barda,Lona,Banderin,Reunion,Gestion,PSocial,PInfraestructura,FechaReunion,Observaciones)"
+                           + " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+                
                 
                 PreparedStatement preparedStmt = con.prepareStatement(SQL);
                 preparedStmt.setString (1, Nombre);
@@ -102,6 +105,7 @@ public class clsAspirantesResponsables {
                 preparedStmt.setDate (18, FechaReunion);
                 preparedStmt.setString (19, Observaciones);
                 
+                int retorno = preparedStmt.executeUpdate();
                 
             }catch ( ClassNotFoundException | SQLException e ){
             System.out.println("Error: " + e.getMessage());
@@ -120,7 +124,9 @@ public class clsAspirantesResponsables {
                 con = DriverManager.getConnection("jdbc:mysql://localhost:3306/sistemamonitoreo","root", "1234");
                 stat = con.createStatement();
                 
-                String SQL = "UPDATE aspiranteresponsable SET (Nombre = ?,Apellido = ?,Calle = ?,Numero = ?,Colonia = ?,Agencia = ?,Seccion = ?,SenasParticulares = ?,Telefono = ?,Email = ?,Barda = ?,Lona = ?,Banderin = ?,Reunion = ?,Gestion = ?,PSocial = ?,PInfraestructura = ?,FechaReunion = ?,Observaciones = ?) WHERE idaspirante = ?";
+                String SQL = "UPDATE aspiranteresponsable SET Nombre = ?,Apellido = ?,Calle = ?,Numero = ?,Colonia = ?,Agencia = ?,Seccion = ?,"
+                           + "SenasParticulares = ?,Telefono = ?,Email = ?,Barda = ?,Lona = ?,Banderin = ?,Reunion = ?,Gestion = ?,PSocial = ?,"
+                           + "PInfraestructura = ?,FechaReunion = ?,Observaciones = ? WHERE idaspirante = ?";
                 
                 PreparedStatement preparedStmt = con.prepareStatement(SQL);
                 preparedStmt.setString (1, Nombre);
@@ -143,7 +149,7 @@ public class clsAspirantesResponsables {
                 preparedStmt.setDate (18, FechaReunion);
                 preparedStmt.setString (19, Observaciones);
                 preparedStmt.setInt(20,idaspirante);
-                
+                int retorno = preparedStmt.executeUpdate();
                 
             }catch ( ClassNotFoundException | SQLException e ){
             System.out.println("Error: " + e.getMessage());
@@ -166,8 +172,8 @@ public class clsAspirantesResponsables {
                 
                 PreparedStatement preparedStmt = con.prepareStatement(SQL);
                 preparedStmt.setInt (1, idaspirante);
-                
-                
+          
+                int retorno = preparedStmt.executeUpdate();
             }catch ( ClassNotFoundException | SQLException e ){
             System.out.println("Error: " + e.getMessage());
             return false;
