@@ -8,8 +8,10 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Types;
 
 /**
  *
@@ -71,12 +73,13 @@ public class clsAspirantesResponsables {
     }
     
     
-    @SuppressWarnings("empty-statement")
-    public boolean Nuevo() throws ClassNotFoundException 
+
+    public int Nuevo()  // Regresa -1 cuando ha sucedido un error, y si no, regresa el id del que acaba de insertar
     {
+        int Afected;
         try {
                 Class.forName("com.mysql.jdbc.Driver");
-                con = DriverManager.getConnection("jdbc:mysql://localhost:3306/sistemamonitoreo","root", "1234");
+                con = DriverManager.getConnection("jdbc:mysql://localhost:3306/sistemamonitoreo","root", "1234"); // OJO esta linea depende de tu base de datos, el 1234 es la contrasenia
                 stat = con.createStatement();
                 
                 String SQL = "INSERT INTO aspiranteresponsable (Nombre,Apellido,Calle,Numero,Colonia,Agencia,Seccion,SenasParticulares,"
@@ -84,7 +87,7 @@ public class clsAspirantesResponsables {
                            + " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
                 
                 
-                PreparedStatement preparedStmt = con.prepareStatement(SQL);
+                PreparedStatement preparedStmt = con.prepareStatement(SQL,new String[]{"isaspirante"});
                 preparedStmt.setString (1, Nombre);
                 preparedStmt.setString (2, Apellido);
                 preparedStmt.setString (3, Calle);
@@ -104,17 +107,27 @@ public class clsAspirantesResponsables {
                 preparedStmt.setString (17, Colonia);
                 preparedStmt.setDate (18, FechaReunion);
                 preparedStmt.setString (19, Observaciones);
+
+                preparedStmt.executeUpdate();
+                ResultSet rs = preparedStmt.getGeneratedKeys();
                 
-                int retorno = preparedStmt.executeUpdate();
+                if (rs.next()) {
+                    Afected = rs.getInt(1);
+                 } 
+                else 
+                {
+                    return -1;
+                }
+       
                 
             }catch ( ClassNotFoundException | SQLException e ){
             System.out.println("Error: " + e.getMessage());
-            return false;
+            return -1;
         } finally {
             
         }
         
-        return true;    
+        return Afected;    
     }
     
     public boolean Modifica()

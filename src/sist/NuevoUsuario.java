@@ -5,11 +5,15 @@
  */
 package sist;
 
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author xaovs
  */
 public class NuevoUsuario extends javax.swing.JFrame {
+    private final clsAspirantesResponsables Aspirante = new clsAspirantesResponsables(); // Esta clase se va a usar para todo
+    
     private String nombre;
     private String apellidos;
     private String calle;
@@ -31,6 +35,46 @@ public class NuevoUsuario extends javax.swing.JFrame {
         initComponents();
         setLocationRelativeTo(null);
         limpiar();
+        Aspirante.Limpia();
+    }
+    
+    public boolean validaDatos() // Aqui se validan (?
+    {
+        if ("".equals(jTextNombre.getText()))
+        {
+            JOptionPane.showMessageDialog(null, "El campo Nombre es un campo obligatorio.", "Cuidado.", JOptionPane.INFORMATION_MESSAGE);
+            jTextNombre.requestFocusInWindow(); 
+            return false;
+        }
+        if (jDateCalendario.getDate() == null)
+        {
+            JOptionPane.showMessageDialog(null, "Elija una fecha.", "Cuidado.", JOptionPane.INFORMATION_MESSAGE);
+            jDateCalendario.requestFocusInWindow(); 
+            return false;
+        }
+        return true;
+    }
+    
+    public void AsignaDatos() // Se le asignan los valores de los campos para una insercion o modificacion
+    {
+        Aspirante.Nombre = jTextNombre.getText();
+        Aspirante.Apellido = jTextApellido.getText();
+        Aspirante.Calle = jTextCalle.getText();
+        Aspirante.Colonia = jTextColonia.getText(); 
+        Aspirante.Agencia = jTextAgencia.getText();
+        Aspirante.Seccion = jTextSeccion.getText(); 
+        Aspirante.SenasParticulares = jTextSenias.getText(); 
+        Aspirante.Telefono = jTextTelefono.getText(); 
+        Aspirante.Email = jTextCorreo.getText();
+        Aspirante.barda = jCheckBarda.isSelected(); 
+        Aspirante.lona = jCheckLona.isSelected();
+        Aspirante.banderin = jCheckBanderin.isSelected(); 
+        Aspirante.reunion = jCheckReunion.isSelected();
+        Aspirante.gestion = jCheckGestion.isSelected(); 
+        Aspirante.PSocial = jTextPSocial.getText(); 
+        Aspirante.PInfraestructura = jTextPInfra.getText(); 
+        Aspirante.FechaReunion = new java.sql.Date(jDateCalendario.getDate().getTime());
+        Aspirante.Observaciones = jTextObs.getText();
     }
     
     public void limpiar(){
@@ -45,7 +89,7 @@ public class NuevoUsuario extends javax.swing.JFrame {
         jTextPInfra.setText("");
         jTextPSocial.setText("");
         jTextSeccion.setText("");
-        jTextSeñas.setText("");
+        jTextSenias.setText("");
         jTextTelefono.setText("");
         jCheckBanderin.setSelected(false);
         jCheckBarda.setSelected(false);
@@ -79,7 +123,7 @@ public class NuevoUsuario extends javax.swing.JFrame {
         jSeparator2 = new javax.swing.JSeparator();
         jLabel7 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextSeñas = new javax.swing.JTextArea();
+        jTextSenias = new javax.swing.JTextArea();
         jSeparator3 = new javax.swing.JSeparator();
         jLabel8 = new javax.swing.JLabel();
         jTextNombre = new javax.swing.JTextField();
@@ -131,10 +175,10 @@ public class NuevoUsuario extends javax.swing.JFrame {
 
         jLabel7.setText("Señas particulares:");
 
-        jTextSeñas.setColumns(20);
-        jTextSeñas.setLineWrap(true);
-        jTextSeñas.setRows(5);
-        jScrollPane1.setViewportView(jTextSeñas);
+        jTextSenias.setColumns(20);
+        jTextSenias.setLineWrap(true);
+        jTextSenias.setRows(5);
+        jScrollPane1.setViewportView(jTextSenias);
 
         jLabel8.setText("Nombres");
 
@@ -417,8 +461,38 @@ public class NuevoUsuario extends javax.swing.JFrame {
         limpiar();
     }//GEN-LAST:event_jButtonLimpiarActionPerformed
 
+    
     private void jButtonGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGuardarActionPerformed
-        // TODO add your handling code here:
+        if(validaDatos())  // Primero validamos los datos
+        {
+            AsignaDatos();
+            if(Aspirante.idaspirante == 0 ) // Si el id es 0, es una insercion
+            {
+                    int aux =Aspirante.Nuevo() ;
+                    if (aux == -1)
+                    {
+                        JOptionPane.showMessageDialog(null, "Ha ocurrido un error.", "Alerta.", JOptionPane.ERROR_MESSAGE);
+                    }
+                    else
+                    {
+                        JOptionPane.showMessageDialog(null, "Se ha agregado con exito.", "Exito.", JOptionPane.INFORMATION_MESSAGE);
+                        Aspirante.idaspirante = aux;
+                        //System.out.println( Aspirante.idaspirante);
+                        limpiar();
+                    }                
+            }
+            else // Si el id no es 0, significa que es despues de hacer una busqueda, y es una modificacion
+            {
+                if (Aspirante.Modifica())
+                {
+                     JOptionPane.showMessageDialog(null, "Se ha modificado con exito.", "Exito.", JOptionPane.INFORMATION_MESSAGE);
+                }
+                else
+                {
+                    JOptionPane.showMessageDialog(null, "Ha ocurrido un error.", "Alerta.", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        }
     }//GEN-LAST:event_jButtonGuardarActionPerformed
 
     /**
@@ -504,7 +578,7 @@ public class NuevoUsuario extends javax.swing.JFrame {
     private javax.swing.JTextArea jTextPInfra;
     private javax.swing.JTextArea jTextPSocial;
     private javax.swing.JTextField jTextSeccion;
-    private javax.swing.JTextArea jTextSeñas;
+    private javax.swing.JTextArea jTextSenias;
     private javax.swing.JTextField jTextTelefono;
     // End of variables declaration//GEN-END:variables
 }
