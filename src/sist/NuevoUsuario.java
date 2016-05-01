@@ -5,6 +5,8 @@
  */
 package sist;
 
+import javax.swing.JFrame;
+
 /**
  *
  * @author xaovs
@@ -203,6 +205,11 @@ public class NuevoUsuario extends javax.swing.JFrame {
         jLabel16.setText("Observaciones");
 
         jButtonBuscar.setText("Buscar");
+        jButtonBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonBuscarActionPerformed(evt);
+            }
+        });
 
         jButtonEliminar.setText("Eliminar");
 
@@ -309,7 +316,7 @@ public class NuevoUsuario extends javax.swing.JFrame {
                                 .addComponent(jButtonBuscar)
                                 .addGap(18, 18, 18)
                                 .addComponent(jButtonEliminar)))
-                        .addGap(0, 40, Short.MAX_VALUE)))
+                        .addGap(0, 45, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -420,6 +427,12 @@ public class NuevoUsuario extends javax.swing.JFrame {
     private void jButtonGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGuardarActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButtonGuardarActionPerformed
+
+    private void jButtonBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBuscarActionPerformed
+        JFrame vBusqueda = new VentanaBusqueda();
+        vBusqueda.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jButtonBuscarActionPerformed
 
     /**
      * @param args the command line arguments
