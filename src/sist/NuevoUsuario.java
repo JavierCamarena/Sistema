@@ -60,6 +60,7 @@ public class NuevoUsuario extends javax.swing.JFrame {
         Aspirante.Nombre = jTextNombre.getText();
         Aspirante.Apellido = jTextApellido.getText();
         Aspirante.Calle = jTextCalle.getText();
+        Aspirante.Numero = jTextNumero.getText();
         Aspirante.Colonia = jTextColonia.getText(); 
         Aspirante.Agencia = jTextAgencia.getText();
         Aspirante.Seccion = jTextSeccion.getText(); 
