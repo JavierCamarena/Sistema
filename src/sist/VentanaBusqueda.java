@@ -82,7 +82,8 @@ public class VentanaBusqueda extends javax.swing.JFrame {
             }
         });
 
-        jTable1.setColumnSelectionAllowed(true);
+        jTable1.setCellSelectionEnabled(false);
+        jTable1.setRowSelectionAllowed(true);
         jScrollPane2.setViewportView(jTable1);
         jTable1.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
 
@@ -105,8 +106,8 @@ public class VentanaBusqueda extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 650, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 59, Short.MAX_VALUE)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 650, Short.MAX_VALUE)
+                        .addGap(59, 59, 59)
                         .addComponent(jButton1)
                         .addGap(20, 20, 20))
                     .addGroup(layout.createSequentialGroup()
@@ -119,10 +120,10 @@ public class VentanaBusqueda extends javax.swing.JFrame {
                                 .addComponent(jLabelParam)
                                 .addGap(0, 0, Short.MAX_VALUE))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jTextBusqueda)
+                                .addComponent(jTextBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(jButtonBuscar)
-                                .addGap(177, 177, 177))))))
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -158,11 +159,11 @@ public class VentanaBusqueda extends javax.swing.JFrame {
         op = jComboBox1.getSelectedIndex();
         jTextBusqueda.setEnabled(true);
         switch (op) {
-            case col : jLabelParam.setText(jTextcolonia);sqlcode=" WHERE Colonia =";  break;
-            case agen: jLabelParam.setText(jTextagencia);sqlcode=" WHERE Agencia =";break;
-            case sec : jLabelParam.setText(jTextseccion);sqlcode=" WHERE Seccion =";break;
-            case nomb: jLabelParam.setText(jTextnombre);sqlcode=" WHERE Nombre =";break;
-            case ape : jLabelParam.setText(jTextapellido);sqlcode=" WHERE Apellido=";break;
+            case col : jLabelParam.setText(jTextcolonia);sqlcode=" WHERE Colonia LIKE";  break;
+            case agen: jLabelParam.setText(jTextagencia);sqlcode=" WHERE Agencia LIKE";break;
+            case sec : jLabelParam.setText(jTextseccion);sqlcode=" WHERE Seccion LIKE";break;
+            case nomb: jLabelParam.setText(jTextnombre);sqlcode=" WHERE Nombre LIKE";break;
+            case ape : jLabelParam.setText(jTextapellido);sqlcode=" WHERE Apellido LIKE";break;
             case todo: jTextBusqueda.setEnabled(false); jLabelParam.setText("Se muestran todos");sqlcode="";break;
             default: jLabelParam.setText("Parámetro:");sqlcode="";break;
         }
@@ -172,19 +173,20 @@ public class VentanaBusqueda extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Ingresa una opcion en la busqueda.", "", JOptionPane.INFORMATION_MESSAGE);
             return;
         }else {
-            sqlcode+="'"+ jTextBusqueda.getText()+"'";
+            if(op < 5)
+                sqlcode+="'%"+ jTextBusqueda.getText()+"%'";
         }
         System.out.println("Buscando y llenando tabla");
         try{    
             Class.forName("com.mysql.jdbc.Driver");
-            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/sistemamonitoreo","root", "1234"); // OJO esta linea depende de tu base de datos, el 1234 es la contrasenia
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/sistemamonitoreo","root", "xaovs"); // OJO esta linea depende de tu base de datos, el 1234 es la contrasenia
             stat = con.createStatement();
             System.out.println("preparando statement :"+sqlcode);
             ResultSet rs = stat.executeQuery("select * from aspiranteresponsable"+sqlcode);
             System.out.println("Datos obtenidos configurando tabla");
             //conversorTable.rellena(rs, modelo);
-            String [] titulos = {"Nombre", "Apellido", "Calle", "Numero"}; 
-            String [] registros = new String[4];
+            String [] titulos = {"Nombre", "Apellido", "Calle", "Numero", "Colonia", "Agencia", "Seccion"}; 
+            String [] registros = new String[7];
             
             modelo = new DefaultTableModel(null, titulos);
             while(rs.next())
@@ -193,6 +195,9 @@ public class VentanaBusqueda extends javax.swing.JFrame {
                     registros[1]= rs.getString("Apellido");
                     registros[2]= rs.getString("Calle");
                     registros[3]= rs.getString("Numero");
+                    registros[4]= rs.getString("Colonia");
+                    registros[5]= rs.getString("Agencia");
+                    registros[6]= rs.getString("Seccion");
                     modelo.addRow(registros);
                 }
             jTable1.setModel(modelo);
