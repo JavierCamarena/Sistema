@@ -43,7 +43,7 @@ public class VentanaBusqueda extends javax.swing.JFrame {
     public VentanaBusqueda() {
         initComponents();
         modelo = new DefaultTableModel();
-        jTable1 = new JTable(modelo);
+        //jTable1 = new JTable(modelo);
     }
 
     /**
@@ -175,13 +175,24 @@ public class VentanaBusqueda extends javax.swing.JFrame {
         System.out.println("Buscando y llenando tabla");
         try{    
             Class.forName("com.mysql.jdbc.Driver");
-            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/sistemamonitoreo","root", "xaovs"); // OJO esta linea depende de tu base de datos, el 1234 es la contrasenia
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/sistemamonitoreo","root", "1234"); // OJO esta linea depende de tu base de datos, el 1234 es la contrasenia
             stat = con.createStatement();
             System.out.println("preparando statement");
             ResultSet rs = stat.executeQuery("select * from aspiranteresponsable");
             System.out.println("Datos obtenidos configurando tabla");
-            conversorTable.rellena(rs, modelo);
-            jTable1 = new JTable();
+            //conversorTable.rellena(rs, modelo);
+            String [] titulos = {"Nombre", "Apellido", "Calle", "Numero"}; 
+            String [] registros = new String[4];
+            
+            modelo = new DefaultTableModel(null, titulos);
+            while(rs.next())
+                {
+                    registros[0]= rs.getString("Nombre");
+                    registros[1]= rs.getString("Apellido");
+                    registros[2]= rs.getString("Calle");
+                    registros[3]= rs.getString("Numero");
+                    modelo.addRow(registros);
+                }
             jTable1.setModel(modelo);
             
                 }catch ( ClassNotFoundException | SQLException e ){
