@@ -157,7 +157,6 @@ public class NuevoUsuario extends javax.swing.JFrame {
         jTextObs = new javax.swing.JTextArea();
         jLabel16 = new javax.swing.JLabel();
         jButtonBuscar = new javax.swing.JButton();
-        jButtonEliminar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -253,8 +252,6 @@ public class NuevoUsuario extends javax.swing.JFrame {
                 jButtonBuscarActionPerformed(evt);
             }
         });
-
-        jButtonEliminar.setText("Eliminar");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -356,9 +353,7 @@ public class NuevoUsuario extends javax.swing.JFrame {
                                 .addGap(18, 18, 18)
                                 .addComponent(jButtonLimpiar)
                                 .addGap(18, 18, 18)
-                                .addComponent(jButtonBuscar)
-                                .addGap(18, 18, 18)
-                                .addComponent(jButtonEliminar)))
+                                .addComponent(jButtonBuscar)))
                         .addGap(0, 45, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -448,8 +443,7 @@ public class NuevoUsuario extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonGuardar)
                     .addComponent(jButtonLimpiar)
-                    .addComponent(jButtonBuscar)
-                    .addComponent(jButtonEliminar))
+                    .addComponent(jButtonBuscar))
                 .addGap(42, 42, 42))
         );
 
@@ -465,6 +459,7 @@ public class NuevoUsuario extends javax.swing.JFrame {
     private void jButtonLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLimpiarActionPerformed
         // TODO add your handling code here:
         limpiar();
+        Aspirante.Limpia();
     }//GEN-LAST:event_jButtonLimpiarActionPerformed
 
     
@@ -544,7 +539,6 @@ public class NuevoUsuario extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonBuscar;
-    private javax.swing.JButton jButtonEliminar;
     private javax.swing.JButton jButtonGuardar;
     private javax.swing.JButton jButtonLimpiar;
     private javax.swing.JCheckBox jCheckBanderin;
