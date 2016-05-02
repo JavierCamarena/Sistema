@@ -36,6 +36,31 @@ public class NuevoUsuario extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         limpiar();
         Aspirante.Limpia();
+        jTextNombre.setDocument(new LimiteDeCaracteres(45));
+        jTextApellido.setDocument(new LimiteDeCaracteres(45));
+        jTextCalle.setDocument(new LimiteDeCaracteres(45));
+        jTextNumero.setDocument(new LimiteDeCaracteres(45));
+        jTextColonia.setDocument(new LimiteDeCaracteres(45));
+        jTextAgencia.setDocument(new LimiteDeCaracteres(45));
+        jTextSeccion.setDocument(new LimiteDeCaracteres(45));
+        jTextSenias.setDocument(new LimiteDeCaracteres(100));
+        jTextTelefono.setDocument(new LimiteDeCaracteres(45));
+        jTextCorreo.setDocument(new LimiteDeCaracteres(45));
+        jTextPSocial.setDocument(new LimiteDeCaracteres(100));
+        jTextPInfra.setDocument(new LimiteDeCaracteres(100));
+        jTextObs.setDocument(new LimiteDeCaracteres(50));
+    }
+    
+    public NuevoUsuario(int id)
+    {
+        System.out.println("Resultado de una busqueda " + id);
+        initComponents();
+        setLocationRelativeTo(null);
+        limpiar();
+        Aspirante.Limpia();
+        Aspirante.Busca(id);
+        PresentaDatos();
+        BtnElimina.setEnabled(true);
     }
     
     public boolean validaDatos() // Aqui se validan (?
@@ -53,6 +78,31 @@ public class NuevoUsuario extends javax.swing.JFrame {
             return false;
         }
         return true;
+    }
+    
+    public void PresentaDatos() 
+    {
+        jTextNombre.setText(Aspirante.Nombre);
+        jTextApellido.setText(Aspirante.Apellido);
+        jTextCalle.setText(Aspirante.Calle);
+        jTextNumero.setText(Aspirante.Numero);
+        jTextColonia.setText(Aspirante.Colonia);
+        jTextAgencia.setText(Aspirante.Agencia);
+        jTextSeccion.setText(Aspirante.Seccion);
+        jTextSenias.setText(Aspirante.SenasParticulares);
+        jTextTelefono.setText(Aspirante.Telefono);
+        jTextCorreo.setText(Aspirante.Email);   
+        jCheckBarda.setSelected(Aspirante.barda);
+        jCheckLona.setSelected(Aspirante.lona); 
+        jCheckBanderin.setSelected(Aspirante.banderin);
+        jCheckReunion.setSelected(Aspirante.reunion);
+        jCheckGestion.setSelected(Aspirante.gestion);
+        jTextPSocial.setText(Aspirante.PSocial);
+        jTextPInfra.setText(Aspirante.PInfraestructura); 
+        jDateCalendario.setDate(Aspirante.FechaReunion);
+        jTextObs.setText(Aspirante.Observaciones);
+        
+        System.out.println("Presentando datos");
     }
     
     public void AsignaDatos() // Se le asignan los valores de los campos para una insercion o modificacion
@@ -97,7 +147,8 @@ public class NuevoUsuario extends javax.swing.JFrame {
         jCheckGestion.setSelected(false);
         jCheckLona.setSelected(false);
         jCheckReunion.setSelected(false);
-                
+        
+        BtnElimina.setEnabled(false);        
     }
 
     /**
@@ -157,6 +208,7 @@ public class NuevoUsuario extends javax.swing.JFrame {
         jTextObs = new javax.swing.JTextArea();
         jLabel16 = new javax.swing.JLabel();
         jButtonBuscar = new javax.swing.JButton();
+        BtnElimina = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -181,6 +233,12 @@ public class NuevoUsuario extends javax.swing.JFrame {
         jScrollPane1.setViewportView(jTextSenias);
 
         jLabel8.setText("Nombres");
+
+        jTextNombre.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextNombreActionPerformed(evt);
+            }
+        });
 
         jLabel9.setText("Apellidos");
 
@@ -250,6 +308,13 @@ public class NuevoUsuario extends javax.swing.JFrame {
         jButtonBuscar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonBuscarActionPerformed(evt);
+            }
+        });
+
+        BtnElimina.setText("Elimina");
+        BtnElimina.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnEliminaActionPerformed(evt);
             }
         });
 
@@ -353,7 +418,9 @@ public class NuevoUsuario extends javax.swing.JFrame {
                                 .addGap(18, 18, 18)
                                 .addComponent(jButtonLimpiar)
                                 .addGap(18, 18, 18)
-                                .addComponent(jButtonBuscar)))
+                                .addComponent(jButtonBuscar)
+                                .addGap(18, 18, 18)
+                                .addComponent(BtnElimina)))
                         .addGap(0, 45, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -443,7 +510,8 @@ public class NuevoUsuario extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonGuardar)
                     .addComponent(jButtonLimpiar)
-                    .addComponent(jButtonBuscar))
+                    .addComponent(jButtonBuscar)
+                    .addComponent(BtnElimina))
                 .addGap(42, 42, 42))
         );
 
@@ -502,6 +570,36 @@ public class NuevoUsuario extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_jButtonBuscarActionPerformed
 
+    private void BtnEliminaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnEliminaActionPerformed
+        // TODO add your handling code here:
+        
+        int reply = JOptionPane.showConfirmDialog(null, "Seguro que deseas eliminar este elemento?", "Eliminar", JOptionPane.YES_NO_OPTION);
+        if (reply == JOptionPane.YES_OPTION) {
+          
+       
+        if (Aspirante.Elimina())
+        {
+            JOptionPane.showMessageDialog(null, "Se ha eliminado con exito.", "Exito.", JOptionPane.INFORMATION_MESSAGE);
+            limpiar();
+        }
+        else
+        {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un error.", "Alerta.", JOptionPane.ERROR_MESSAGE);
+        }    
+         }
+       
+    }//GEN-LAST:event_BtnEliminaActionPerformed
+
+    private void jTextNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextNombreActionPerformed
+        // TODO add your handling code here:
+        if (jTextNombre.getText().length()>3)
+        {
+            String str = new String();
+            str = str.substring(0, 3);
+            jTextNombre.setText(str);
+        }
+    }//GEN-LAST:event_jTextNombreActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -538,6 +636,7 @@ public class NuevoUsuario extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton BtnElimina;
     private javax.swing.JButton jButtonBuscar;
     private javax.swing.JButton jButtonGuardar;
     private javax.swing.JButton jButtonLimpiar;

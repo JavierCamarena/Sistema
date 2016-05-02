@@ -17,6 +17,9 @@ import java.sql.Statement;
 import java.sql.Types;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 /**
  *
@@ -44,9 +47,13 @@ public class VentanaBusqueda extends javax.swing.JFrame {
      */
     public VentanaBusqueda() {
         initComponents();
+        setLocationRelativeTo(null);
         modelo = new DefaultTableModel();
+        BtnAceptar.setEnabled(false);
         //jTable1 = new JTable(modelo);
+       
     }
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -57,7 +64,7 @@ public class VentanaBusqueda extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButton1 = new javax.swing.JButton();
+        BtnAceptar = new javax.swing.JButton();
         jComboBox1 = new javax.swing.JComboBox<>();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
@@ -65,13 +72,14 @@ public class VentanaBusqueda extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jTextBusqueda = new javax.swing.JTextField();
         jLabelParam = new javax.swing.JLabel();
+        BtnCancelar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jButton1.setText("Salir");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        BtnAceptar.setText("Aceptar");
+        BtnAceptar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                BtnAceptarActionPerformed(evt);
             }
         });
 
@@ -82,8 +90,6 @@ public class VentanaBusqueda extends javax.swing.JFrame {
             }
         });
 
-        jTable1.setCellSelectionEnabled(false);
-        jTable1.setRowSelectionAllowed(true);
         jScrollPane2.setViewportView(jTable1);
         jTable1.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
 
@@ -96,7 +102,20 @@ public class VentanaBusqueda extends javax.swing.JFrame {
 
         jLabel1.setText("Selecciona una opción:");
 
+        jTextBusqueda.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextBusquedaActionPerformed(evt);
+            }
+        });
+
         jLabelParam.setText("Parámetro:");
+
+        BtnCancelar.setText("Cancelar");
+        BtnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnCancelarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -106,9 +125,11 @@ public class VentanaBusqueda extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 650, Short.MAX_VALUE)
-                        .addGap(59, 59, 59)
-                        .addComponent(jButton1)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 657, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(BtnCancelar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(BtnAceptar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(20, 20, 20))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -123,7 +144,7 @@ public class VentanaBusqueda extends javax.swing.JFrame {
                                 .addComponent(jTextBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(jButtonBuscar)
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))))
+                                .addContainerGap(200, Short.MAX_VALUE))))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -140,7 +161,9 @@ public class VentanaBusqueda extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(124, 124, 124)
-                        .addComponent(jButton1)
+                        .addComponent(BtnAceptar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(BtnCancelar)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 50, Short.MAX_VALUE)
@@ -155,6 +178,8 @@ public class VentanaBusqueda extends javax.swing.JFrame {
         // TODO add your handling code here:
         asignaSql();
     }//GEN-LAST:event_jComboBox1ActionPerformed
+    
+    
     public void asignaSql(){
         op = jComboBox1.getSelectedIndex();
         jTextBusqueda.setEnabled(true);
@@ -168,36 +193,40 @@ public class VentanaBusqueda extends javax.swing.JFrame {
             default: jLabelParam.setText("Parámetro:");sqlcode="";break;
         }
     }
+    
+    
     public void busqueda(){
         if(op < 5 && jTextBusqueda.getText().equalsIgnoreCase("") ){
             JOptionPane.showMessageDialog(null, "Ingresa una opcion en la busqueda.", "", JOptionPane.INFORMATION_MESSAGE);
             return;
         }else {
-            if(op < 5)
+            if(op < 5) {
                 sqlcode+="'%"+ jTextBusqueda.getText()+"%'";
+            }
         }
         System.out.println("Buscando y llenando tabla");
         try{    
             Class.forName("com.mysql.jdbc.Driver");
-            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/sistemamonitoreo","root", "xaovs"); // OJO esta linea depende de tu base de datos, el 1234 es la contrasenia
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/sistemamonitoreo","root", "1234"); // OJO esta linea depende de tu base de datos, el 1234 es la contrasenia
             stat = con.createStatement();
             System.out.println("preparando statement :"+sqlcode);
             ResultSet rs = stat.executeQuery("select * from aspiranteresponsable"+sqlcode);
             System.out.println("Datos obtenidos configurando tabla");
             //conversorTable.rellena(rs, modelo);
-            String [] titulos = {"Nombre", "Apellido", "Calle", "Numero", "Colonia", "Agencia", "Seccion"}; 
-            String [] registros = new String[7];
+            String [] titulos = {"id","Nombre", "Apellido", "Calle", "Numero", "Colonia", "Agencia", "Seccion"}; 
+            String [] registros = new String[8];
             
             modelo = new DefaultTableModel(null, titulos);
             while(rs.next())
                 {
-                    registros[0]= rs.getString("Nombre");
-                    registros[1]= rs.getString("Apellido");
-                    registros[2]= rs.getString("Calle");
-                    registros[3]= rs.getString("Numero");
-                    registros[4]= rs.getString("Colonia");
-                    registros[5]= rs.getString("Agencia");
-                    registros[6]= rs.getString("Seccion");
+                    registros[0]= rs.getString("idaspirante");
+                    registros[1]= rs.getString("Nombre");
+                    registros[2]= rs.getString("Apellido");
+                    registros[3]= rs.getString("Calle");
+                    registros[4]= rs.getString("Numero");
+                    registros[5]= rs.getString("Colonia");
+                    registros[6]= rs.getString("Agencia");
+                    registros[7]= rs.getString("Seccion");
                     modelo.addRow(registros);
                 }
             jTable1.setModel(modelo);
@@ -208,19 +237,49 @@ public class VentanaBusqueda extends javax.swing.JFrame {
            
         } finally {
             
+            jTable1.getSelectionModel().addListSelectionListener( new ListSelectionListener() {
+                @Override
+                public void valueChanged(ListSelectionEvent e) {
+                   if (!e.getValueIsAdjusting())
+                        {
+                                boolean rowsAreSelected = jTable1.getSelectedRowCount() > 0;
+                                 BtnAceptar.setEnabled(rowsAreSelected);
+                        }
+                    
+                }
+            } );
+            jTable1.setDefaultEditor(Object.class, null);
+            
         }
     }
     
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        JFrame menu = new NuevoUsuario();
+ 
+    
+    private void BtnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnAceptarActionPerformed
+        
+        
+        int a = jTable1.getSelectedRow();
+        JFrame menu = new NuevoUsuario( Integer.parseInt(jTable1.getValueAt(a , 0).toString() ) );
         menu.setVisible(true);
         this.dispose();
-    }//GEN-LAST:event_jButton1ActionPerformed
+       //Boton Acepta  
+    }//GEN-LAST:event_BtnAceptarActionPerformed
 
     private void jButtonBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBuscarActionPerformed
         // TODO add your handling code here:
         busqueda();
     }//GEN-LAST:event_jButtonBuscarActionPerformed
+
+    private void BtnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCancelarActionPerformed
+        // TODO add your handling code here:
+        JFrame menu = new NuevoUsuario();
+        menu.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_BtnCancelarActionPerformed
+
+    private void jTextBusquedaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextBusquedaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextBusquedaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -258,7 +317,8 @@ public class VentanaBusqueda extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton BtnAceptar;
+    private javax.swing.JButton BtnCancelar;
     private javax.swing.JButton jButtonBuscar;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;

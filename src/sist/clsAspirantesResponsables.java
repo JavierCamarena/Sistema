@@ -196,4 +196,61 @@ public class clsAspirantesResponsables {
         
         return true;    
     }
+    
+    public boolean Busca(int id)
+    {
+        
+                try {
+                Class.forName("com.mysql.jdbc.Driver");
+                con = DriverManager.getConnection("jdbc:mysql://localhost:3306/sistemamonitoreo","root", "1234");
+                stat = con.createStatement();
+                
+                String SQL = "SELECT * FROM aspiranteresponsable WHERE idaspirante = ?";
+                
+                PreparedStatement preparedStmt = con.prepareStatement(SQL);
+                preparedStmt.setInt(1,id);
+                
+                ResultSet rs = preparedStmt.executeQuery();
+                
+                System.out.println("Buscando id = "+ id);
+                
+                if(rs.next())
+                {
+                    idaspirante = rs.getInt("idaspirante");
+                    Nombre = rs.getString("Nombre");
+                    Apellido = rs.getString("Apellido");
+                    Calle = rs.getString("Calle"); 
+                    Numero = rs.getString("Numero"); 
+                    Colonia = rs.getString("Colonia"); 
+                    Agencia = rs.getString("Agencia"); 
+                    Seccion = rs.getString("Seccion"); 
+                    SenasParticulares = rs.getString("SenasParticulares"); 
+                    Telefono = rs.getString("Telefono"); 
+                    Email= rs.getString("Email"); 
+                    barda = rs.getBoolean("Barda"); 
+                    lona = rs.getBoolean("Lona"); 
+                    banderin = rs.getBoolean("Banderin"); 
+                    reunion = rs.getBoolean("Reunion"); 
+                    gestion = rs.getBoolean("Gestion");
+                    PSocial = rs.getString("PSocial"); 
+                    PInfraestructura = rs.getString("PInfraestructura"); 
+                    FechaReunion = rs.getDate("FechaReunion"); 
+                    Observaciones = rs.getString("Observaciones");
+                    System.out.println("Khe");
+                }
+                else
+                {
+                    System.out.println("No encontro nada :c");
+                    return false ;
+                }
+                
+            }catch ( ClassNotFoundException | SQLException e ){
+            System.out.println("Error: " + e.getMessage());
+            return false;
+        } finally {
+            
+        }
+        
+        return true;    
+    }
 }
