@@ -15,6 +15,7 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Types;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 /**
@@ -33,10 +34,11 @@ public class VentanaBusqueda extends javax.swing.JFrame {
     private final int nomb = 3;
     private final int ape  = 4;
     private final int todo = 5;
-    private int op=-1;
+    private int op=0;
     public DefaultTableModel modelo;
     Connection con = null;
     Statement stat = null;
+    private String sqlcode=" WHERE Colonia =";
     /**
      * Creates new form VentanaBusqueda
      */
@@ -80,14 +82,6 @@ public class VentanaBusqueda extends javax.swing.JFrame {
             }
         });
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-
-            }
-        ));
         jTable1.setColumnSelectionAllowed(true);
         jScrollPane2.setViewportView(jTable1);
         jTable1.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
@@ -158,27 +152,35 @@ public class VentanaBusqueda extends javax.swing.JFrame {
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
         // TODO add your handling code here:
+        asignaSql();
+    }//GEN-LAST:event_jComboBox1ActionPerformed
+    public void asignaSql(){
         op = jComboBox1.getSelectedIndex();
         jTextBusqueda.setEnabled(true);
         switch (op) {
-            case col : jLabelParam.setText(jTextcolonia);break;
-            case agen: jLabelParam.setText(jTextagencia);break;
-            case sec : jLabelParam.setText(jTextseccion);break;
-            case nomb: jLabelParam.setText(jTextnombre);break;
-            case ape : jLabelParam.setText(jTextapellido);break;
-            case todo: jTextBusqueda.setEnabled(false); jLabelParam.setText("Se muestran todos");break;
-            default: jLabelParam.setText("Parámetro:");break;
+            case col : jLabelParam.setText(jTextcolonia);sqlcode=" WHERE Colonia =";  break;
+            case agen: jLabelParam.setText(jTextagencia);sqlcode=" WHERE Agencia =";break;
+            case sec : jLabelParam.setText(jTextseccion);sqlcode=" WHERE Seccion =";break;
+            case nomb: jLabelParam.setText(jTextnombre);sqlcode=" WHERE Nombre =";break;
+            case ape : jLabelParam.setText(jTextapellido);sqlcode=" WHERE Apellido=";break;
+            case todo: jTextBusqueda.setEnabled(false); jLabelParam.setText("Se muestran todos");sqlcode="";break;
+            default: jLabelParam.setText("Parámetro:");sqlcode="";break;
         }
-    }//GEN-LAST:event_jComboBox1ActionPerformed
-
+    }
     public void busqueda(){
+        if(op < 5 && jTextBusqueda.getText().equalsIgnoreCase("") ){
+            JOptionPane.showMessageDialog(null, "Ingresa una opcion en la busqueda.", "", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }else {
+            sqlcode+="'"+ jTextBusqueda.getText()+"'";
+        }
         System.out.println("Buscando y llenando tabla");
         try{    
             Class.forName("com.mysql.jdbc.Driver");
             con = DriverManager.getConnection("jdbc:mysql://localhost:3306/sistemamonitoreo","root", "1234"); // OJO esta linea depende de tu base de datos, el 1234 es la contrasenia
             stat = con.createStatement();
-            System.out.println("preparando statement");
-            ResultSet rs = stat.executeQuery("select * from aspiranteresponsable");
+            System.out.println("preparando statement :"+sqlcode);
+            ResultSet rs = stat.executeQuery("select * from aspiranteresponsable"+sqlcode);
             System.out.println("Datos obtenidos configurando tabla");
             //conversorTable.rellena(rs, modelo);
             String [] titulos = {"Nombre", "Apellido", "Calle", "Numero"}; 
@@ -194,7 +196,8 @@ public class VentanaBusqueda extends javax.swing.JFrame {
                     modelo.addRow(registros);
                 }
             jTable1.setModel(modelo);
-            
+            rs.close();
+            asignaSql();
                 }catch ( ClassNotFoundException | SQLException e ){
             System.out.println("Error: " + e.getMessage());
            
