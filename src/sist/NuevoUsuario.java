@@ -35,7 +35,6 @@ public class NuevoUsuario extends javax.swing.JFrame {
         initComponents();
         setLocationRelativeTo(null);
         limpiar();
-        Aspirante.Limpia();
         jTextNombre.setDocument(new LimiteDeCaracteres(45));
         jTextApellido.setDocument(new LimiteDeCaracteres(45));
         jTextCalle.setDocument(new LimiteDeCaracteres(45));
@@ -57,7 +56,6 @@ public class NuevoUsuario extends javax.swing.JFrame {
         initComponents();
         setLocationRelativeTo(null);
         limpiar();
-        Aspirante.Limpia();
         Aspirante.Busca(id);
         PresentaDatos();
         BtnElimina.setEnabled(true);
@@ -148,6 +146,7 @@ public class NuevoUsuario extends javax.swing.JFrame {
         jCheckLona.setSelected(false);
         jCheckReunion.setSelected(false);
         
+        Aspirante.Limpia();
         BtnElimina.setEnabled(false);        
     }
 
@@ -527,7 +526,6 @@ public class NuevoUsuario extends javax.swing.JFrame {
     private void jButtonLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLimpiarActionPerformed
         // TODO add your handling code here:
         limpiar();
-        Aspirante.Limpia();
     }//GEN-LAST:event_jButtonLimpiarActionPerformed
 
     
