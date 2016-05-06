@@ -4,7 +4,14 @@
  * and open the template in the editor.
  */
 package sist;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -33,14 +40,18 @@ public class NuevoUsuario extends javax.swing.JFrame {
     /**
      * Creates new form NuevoUsuario
      */
-    public NuevoUsuario() {
+    public NuevoUsuario() throws SQLException {
         initComponents();
         listaColonias = new ArrayList<>();
-        
-        
         setLocationRelativeTo(null);
-        limpiar();
-        jTextNombre.setDocument(new LimiteDeCaracteres(45));
+        limpiar(); 
+        AjustaTamanios();    // Se ajustan los tamanios de los textbox
+        cargaColonias();     // Se cargan las colonias en el combobox
+    }
+    
+    private void AjustaTamanios()
+    {
+           jTextNombre.setDocument(new LimiteDeCaracteres(45));
         jTextApellido.setDocument(new LimiteDeCaracteres(45));
         jTextCalle.setDocument(new LimiteDeCaracteres(45));
         jTextNumero.setDocument(new LimiteDeCaracteres(45));
@@ -53,21 +64,18 @@ public class NuevoUsuario extends javax.swing.JFrame {
         jTextPSocial.setDocument(new LimiteDeCaracteres(100));
         jTextPInfra.setDocument(new LimiteDeCaracteres(100));
         jTextObs.setDocument(new LimiteDeCaracteres(50));
-        
-        //aqui se debe cargar todos los elementos de la tabla colonia y cargar listaColonias con cada una de ellas
-        
-        //ciclo para recorrer la respuesda del server
-            
-           // listaColonias.add(new Colonia(DB_nombre,DB_tipo,DB_clave));
-           listaColonias.add(new Colonia("nom","",""));
-           listaColonias.add(new Colonia("nombr","",""));
-           listaColonias.add(new Colonia("nombreC","",""));
-           listaColonias.add(new Colonia("nombreColo","",""));
-           listaColonias.add(new Colonia("nuevo","",""));
-           listaColonias.add(new Colonia("Colonia","",""));
-           listaColonias.add(new Colonia("diferente","",""));
-        //fin de ciclo
-        
+    }
+    
+    private void cargaColonias() throws SQLException 
+    {
+        Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/sistemamonitoreo","root", "1234"); // OJO esta linea depende de tu base de datos, el 1234 es la contrasenia
+        Statement stat = con.createStatement();    
+        String SQL = "SELECT  * FROM Colonias";
+        ResultSet rs = stat.executeQuery(SQL);
+        while(rs.next())
+        {
+            listaColonias.add(new Colonia(rs.getString("Nombre"),rs.getString("Tipo"),rs.getString("Clave")));
+        }
     }
     
     public NuevoUsuario(int id)
@@ -245,6 +253,11 @@ public class NuevoUsuario extends javax.swing.JFrame {
 
         jLabel3.setText("Número");
 
+        jTextColonia.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextColoniaActionPerformed(evt);
+            }
+        });
         jTextColonia.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 jTextColoniaKeyTyped(evt);
@@ -669,6 +682,10 @@ public class NuevoUsuario extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jComboResulColoniasActionPerformed
 
+    private void jTextColoniaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextColoniaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextColoniaActionPerformed
+
     public void buscaColonia(String text){
         Colonia c = new Colonia("", "", "");
         jComboResulColonias.removeAllItems();
@@ -714,7 +731,11 @@ public class NuevoUsuario extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new NuevoUsuario().setVisible(true);
+                try {
+                    new NuevoUsuario().setVisible(true);
+                } catch (SQLException ex) {
+                    Logger.getLogger(NuevoUsuario.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }

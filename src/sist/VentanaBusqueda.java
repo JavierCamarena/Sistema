@@ -15,6 +15,8 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Types;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
@@ -272,9 +274,15 @@ public class VentanaBusqueda extends javax.swing.JFrame {
 
     private void BtnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCancelarActionPerformed
         // TODO add your handling code here:
-        JFrame menu = new NuevoUsuario();
-        menu.setVisible(true);
+        JFrame menu;
+        try {
+            menu = new NuevoUsuario();
+             menu.setVisible(true);
         this.dispose();
+        } catch (SQLException ex) {
+            Logger.getLogger(VentanaBusqueda.class.getName()).log(Level.SEVERE, null, ex);
+        }
+       
     }//GEN-LAST:event_BtnCancelarActionPerformed
 
     private void jTextBusquedaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextBusquedaActionPerformed
