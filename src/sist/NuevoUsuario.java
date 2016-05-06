@@ -68,13 +68,13 @@ public class NuevoUsuario extends javax.swing.JFrame {
     
     private void cargaColonias() throws SQLException 
     {
-        Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/sistemamonitoreo","root", "1234"); // OJO esta linea depende de tu base de datos, el 1234 es la contrasenia
+        Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/sistemamonitoreo","root", "xaovs"); // OJO esta linea depende de tu base de datos, el 1234 es la contrasenia
         Statement stat = con.createStatement();    
-        String SQL = "SELECT  * FROM Colonias";
+        String SQL = "SELECT  * FROM colonias";
         ResultSet rs = stat.executeQuery(SQL);
         while(rs.next())
         {
-            listaColonias.add(new Colonia(rs.getString("Nombre"),rs.getString("Tipo"),rs.getString("Clave")));
+            listaColonias.add(new Colonia(rs.getString("Nombre"),rs.getString("Tipo"),rs.getString("ClaveCp")));
         }
     }
     
@@ -176,6 +176,8 @@ public class NuevoUsuario extends javax.swing.JFrame {
         jCheckLona.setSelected(false);
         jCheckReunion.setSelected(false);
         listaTipoColonia.setEnabled(false);
+        listaTipoColonia.removeAllItems();
+        jComboResulColonias.removeAllItems();
         jComboResulColonias.setEnabled(false);
         Aspirante.Limpia();
         BtnElimina.setEnabled(false);        
@@ -669,7 +671,7 @@ public class NuevoUsuario extends javax.swing.JFrame {
 
     private void jTextColoniaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextColoniaKeyTyped
         // busqueda interactiva del texto actual
-        buscaColonia(jTextColonia.getText());
+        buscaColonia(jTextColonia.getText().toUpperCase());
         
     }//GEN-LAST:event_jTextColoniaKeyTyped
 
@@ -677,7 +679,8 @@ public class NuevoUsuario extends javax.swing.JFrame {
         // TODO add your handling code here:
         
         if(jComboResulColonias.getSelectedItem()!=null){
-            System.out.println("seleccionado: "+jComboResulColonias.getSelectedItem());
+            String op=jComboResulColonias.getSelectedItem().toString();
+            System.out.println("seleccionado: "+op);
             listaTipoColonia.setEnabled(true);
         }
     }//GEN-LAST:event_jComboResulColoniasActionPerformed
