@@ -37,6 +37,7 @@ public class NuevoUsuario extends javax.swing.JFrame {
     private String pSocial,pInfra;
     private String fechaReunion;
     private String observaciones;
+    private String claveCp;
     /**
      * Creates new form NuevoUsuario
      */
@@ -91,6 +92,12 @@ public class NuevoUsuario extends javax.swing.JFrame {
     
     public boolean validaDatos() // Aqui se validan (?
     {
+        if(colonia.equals("")){
+            JOptionPane.showMessageDialog(null, "Colonia es un campo obligatorio.", "Cuidado.", JOptionPane.INFORMATION_MESSAGE);
+            jTextColonia.requestFocusInWindow(); 
+            return false;
+        }
+        
         if ("".equals(jTextNombre.getText()))
         {
             JOptionPane.showMessageDialog(null, "El campo Nombre es un campo obligatorio.", "Cuidado.", JOptionPane.INFORMATION_MESSAGE);
@@ -139,7 +146,7 @@ public class NuevoUsuario extends javax.swing.JFrame {
         Aspirante.Apellido = jTextApellido.getText();
         Aspirante.Calle = jTextCalle.getText();
         Aspirante.Numero = jTextNumero.getText();
-        Aspirante.Colonia = jTextColonia.getText(); 
+        Aspirante.Colonia = colonia; 
         Aspirante.Agencia = jTextAgencia.getText();
         Aspirante.Seccion = jTextSeccion.getText(); 
         Aspirante.SenasParticulares = jTextSenias.getText(); 
@@ -154,6 +161,7 @@ public class NuevoUsuario extends javax.swing.JFrame {
         Aspirante.PInfraestructura = jTextPInfra.getText(); 
         Aspirante.FechaReunion = new java.sql.Date(jDateCalendario.getDate().getTime());
         Aspirante.Observaciones = jTextObs.getText();
+        Aspirante.Clave = claveCp;
     }
     
     public void limpiar(){
@@ -175,8 +183,8 @@ public class NuevoUsuario extends javax.swing.JFrame {
         jCheckGestion.setSelected(false);
         jCheckLona.setSelected(false);
         jCheckReunion.setSelected(false);
-        listaTipoColonia.setEnabled(false);
-        listaTipoColonia.removeAllItems();
+        claveCp = "";
+        colonia = "";
         jComboResulColonias.removeAllItems();
         jComboResulColonias.setEnabled(false);
         Aspirante.Limpia();
@@ -241,8 +249,6 @@ public class NuevoUsuario extends javax.swing.JFrame {
         jLabel16 = new javax.swing.JLabel();
         jButtonBuscar = new javax.swing.JButton();
         BtnElimina = new javax.swing.JButton();
-        listaTipoColonia = new javax.swing.JComboBox<>();
-        jLabel17 = new javax.swing.JLabel();
         jComboResulColonias = new javax.swing.JComboBox<>();
         jLabel18 = new javax.swing.JLabel();
 
@@ -365,8 +371,6 @@ public class NuevoUsuario extends javax.swing.JFrame {
             }
         });
 
-        jLabel17.setText("Tipo");
-
         jComboResulColonias.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboResulColoniasActionPerformed(evt);
@@ -480,11 +484,7 @@ public class NuevoUsuario extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jComboResulColonias, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel18))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(listaTipoColonia, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel17))
-                        .addGap(55, 55, 55)))
+                        .addGap(197, 197, 197)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -499,14 +499,11 @@ public class NuevoUsuario extends javax.swing.JFrame {
                         .addComponent(jLabel2)
                         .addComponent(jLabel3)
                         .addComponent(jLabel4))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel17)
-                        .addComponent(jLabel18)))
+                    .addComponent(jLabel18))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextCalle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jTextNumero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(listaTipoColonia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jComboResulColonias, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jTextColonia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -679,9 +676,12 @@ public class NuevoUsuario extends javax.swing.JFrame {
         // TODO add your handling code here:
         
         if(jComboResulColonias.getSelectedItem()!=null){
-            String op=jComboResulColonias.getSelectedItem().toString();
-            System.out.println("seleccionado: "+op);
-            listaTipoColonia.setEnabled(true);
+            colonia=jComboResulColonias.getSelectedItem().toString();
+            System.out.println("seleccionado: "+colonia);
+            
+            int id =jComboResulColonias.getSelectedIndex();
+            claveCp = listaTemColonias.get(id).getClave();
+            System.out.println("ClaveCp:"+claveCp);
         }
     }//GEN-LAST:event_jComboResulColoniasActionPerformed
 
@@ -763,7 +763,6 @@ public class NuevoUsuario extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
-    private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -796,6 +795,5 @@ public class NuevoUsuario extends javax.swing.JFrame {
     private javax.swing.JTextField jTextSeccion;
     private javax.swing.JTextArea jTextSenias;
     private javax.swing.JTextField jTextTelefono;
-    private javax.swing.JComboBox<String> listaTipoColonia;
     // End of variables declaration//GEN-END:variables
 }

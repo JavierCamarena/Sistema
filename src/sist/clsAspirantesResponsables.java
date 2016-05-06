@@ -21,7 +21,12 @@ public class clsAspirantesResponsables {
     
     Connection con = null;
     Statement stat = null;
-    
+    //---------------DataBase Conf------------------
+    String dbName  = "com.mysql.jdbc.Driver";   
+    String dbPath  = "jdbc:mysql://localhost:3306/sistemamonitoreo";
+    String dbUsr     = "root";
+    String dbPw    = "xaovs";//"1234";
+    //---------------DataBase Conf------------------
     public int idaspirante;
     public String Nombre;
     public String Apellido; 
@@ -42,6 +47,7 @@ public class clsAspirantesResponsables {
     public String PInfraestructura; 
     public Date FechaReunion;
     public String Observaciones; 
+    public String Clave;
     
     public void clsAspirantesResponsables() 
     {
@@ -69,6 +75,7 @@ public class clsAspirantesResponsables {
         PSocial = ""; 
         //FechaReunion  =  ;
         Observaciones = "";
+        Clave = "";
         
     }
     
@@ -78,13 +85,13 @@ public class clsAspirantesResponsables {
     {
         int Afected;
         try {
-                Class.forName("com.mysql.jdbc.Driver");
-                con = DriverManager.getConnection("jdbc:mysql://localhost:3306/sistemamonitoreo","root", "1234"); // OJO esta linea depende de tu base de datos, el 1234 es la contrasenia
+                Class.forName(dbName);
+                con = DriverManager.getConnection(dbPath,dbUsr, dbPw); // OJO esta linea depende de tu base de datos, el 1234 es la contrasenia
                 stat = con.createStatement();
                 
                 String SQL = "INSERT INTO aspiranteresponsable (Nombre,Apellido,Calle,Numero,Colonia,Agencia,Seccion,SenasParticulares,"
-                           + "Telefono,Email,Barda,Lona,Banderin,Reunion,Gestion,PSocial,PInfraestructura,FechaReunion,Observaciones)"
-                           + " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+                           + "Telefono,Email,Barda,Lona,Banderin,Reunion,Gestion,PSocial,PInfraestructura,FechaReunion,Observaciones,Clave)"
+                           + " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
                 
                 
                 PreparedStatement preparedStmt = con.prepareStatement(SQL,new String[]{"isaspirante"});
@@ -103,10 +110,11 @@ public class clsAspirantesResponsables {
                 preparedStmt.setBoolean(13, banderin);
                 preparedStmt.setBoolean(14, reunion);
                 preparedStmt.setBoolean(15, gestion);
-                preparedStmt.setString (16, Numero);
-                preparedStmt.setString (17, Colonia);
+                preparedStmt.setString (16, PSocial);
+                preparedStmt.setString (17, PInfraestructura);
                 preparedStmt.setDate (18, FechaReunion);
                 preparedStmt.setString (19, Observaciones);
+                preparedStmt.setString(20, Clave);
 
                 preparedStmt.executeUpdate();
                 ResultSet rs = preparedStmt.getGeneratedKeys();
@@ -133,13 +141,13 @@ public class clsAspirantesResponsables {
     public boolean Modifica()
     {
          try {
-                Class.forName("com.mysql.jdbc.Driver");
-                con = DriverManager.getConnection("jdbc:mysql://localhost:3306/sistemamonitoreo","root", "1234");
+                Class.forName(dbName);
+                con = DriverManager.getConnection(dbPath,dbUsr, dbPw);
                 stat = con.createStatement();
                 
                 String SQL = "UPDATE aspiranteresponsable SET Nombre = ?,Apellido = ?,Calle = ?,Numero = ?,Colonia = ?,Agencia = ?,Seccion = ?,"
                            + "SenasParticulares = ?,Telefono = ?,Email = ?,Barda = ?,Lona = ?,Banderin = ?,Reunion = ?,Gestion = ?,PSocial = ?,"
-                           + "PInfraestructura = ?,FechaReunion = ?,Observaciones = ? WHERE idaspirante = ?";
+                           + "PInfraestructura = ?,FechaReunion = ?,Observaciones = ?,Clave = ? WHERE idaspirante = ?";
                 
                 PreparedStatement preparedStmt = con.prepareStatement(SQL);
                 preparedStmt.setString (1, Nombre);
@@ -161,7 +169,8 @@ public class clsAspirantesResponsables {
                 preparedStmt.setString (17, Colonia);
                 preparedStmt.setDate (18, FechaReunion);
                 preparedStmt.setString (19, Observaciones);
-                preparedStmt.setInt(20,idaspirante);
+                preparedStmt.setString(20, Clave);
+                preparedStmt.setInt(21,idaspirante);
                 int retorno = preparedStmt.executeUpdate();
                 
             }catch ( ClassNotFoundException | SQLException e ){
@@ -177,8 +186,8 @@ public class clsAspirantesResponsables {
     public boolean Elimina() 
     {
          try {
-                Class.forName("com.mysql.jdbc.Driver");
-                con = DriverManager.getConnection("jdbc:mysql://localhost:3306/sistemamonitoreo","root", "1234");
+                Class.forName(dbName);
+                con = DriverManager.getConnection(dbPath,dbUsr, dbPw);
                 stat = con.createStatement();
                 
                 String SQL = "DELETE FROM aspiranteresponsable WHERE idaspirante = ?";
@@ -199,10 +208,10 @@ public class clsAspirantesResponsables {
     
     public boolean Busca(int id)
     {
-        
+     
                 try {
-                Class.forName("com.mysql.jdbc.Driver");
-                con = DriverManager.getConnection("jdbc:mysql://localhost:3306/sistemamonitoreo","root", "1234");
+                Class.forName(dbName);
+                con = DriverManager.getConnection(dbPath,dbUsr, dbPw);
                 stat = con.createStatement();
                 
                 String SQL = "SELECT * FROM aspiranteresponsable WHERE idaspirante = ?";
