@@ -207,7 +207,7 @@ public class VentanaBusqueda extends javax.swing.JFrame {
         System.out.println("Buscando y llenando tabla");
         try{    
             Class.forName("com.mysql.jdbc.Driver");
-            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/sistemamonitoreo","root", "1234"); // OJO esta linea depende de tu base de datos, el 1234 es la contrasenia
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/sistemamonitoreo","root", "xaovs"); // OJO esta linea depende de tu base de datos, el 1234 es la contrasenia
             stat = con.createStatement();
             System.out.println("preparando statement :"+sqlcode);
             ResultSet rs = stat.executeQuery("select * from aspiranteresponsable"+sqlcode);
