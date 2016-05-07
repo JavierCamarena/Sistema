@@ -47,6 +47,7 @@ public class Colonia {
     public ArrayList<Colonia> buscaColonias(ArrayList<Colonia> listaColonias, String nombre){
         ArrayList<Colonia> lista = new ArrayList<>();
         //si hay errores cambiar esto a un foreach normal;
+        if(listaColonias==null)return lista;
         System.out.println("Buscando:"+nombre+" en la lista");
         listaColonias.stream().filter((c) -> (c.getNombre().contains(nombre))).forEach((c) -> {
             lista.add(c);

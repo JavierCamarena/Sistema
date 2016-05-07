@@ -209,7 +209,7 @@ public class VentanaBusqueda extends javax.swing.JFrame {
         System.out.println("Buscando y llenando tabla");
         try{    
             Class.forName("com.mysql.jdbc.Driver");
-            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/sistemamonitoreo","root", "xaovs"); // OJO esta linea depende de tu base de datos, el 1234 es la contrasenia
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/sistemamonitoreo","root", "1234"); // OJO esta linea depende de tu base de datos, el 1234 es la contrasenia
             stat = con.createStatement();
             System.out.println("preparando statement :"+sqlcode);
             ResultSet rs = stat.executeQuery("select * from aspiranteresponsable"+sqlcode);
@@ -260,11 +260,15 @@ public class VentanaBusqueda extends javax.swing.JFrame {
     private void BtnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnAceptarActionPerformed
         
         
-        int a = jTable1.getSelectedRow();
-        JFrame menu = new NuevoUsuario( Integer.parseInt(jTable1.getValueAt(a , 0).toString() ) );
-        menu.setVisible(true);
-        this.dispose();
-       //Boton Acepta  
+        try {
+            int a = jTable1.getSelectedRow();
+            JFrame menu = new NuevoUsuario( Integer.parseInt(jTable1.getValueAt(a , 0).toString() ) );
+            menu.setVisible(true);
+            this.dispose();
+            //Boton Acepta  
+        } catch (SQLException ex) {
+            Logger.getLogger(VentanaBusqueda.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_BtnAceptarActionPerformed
 
     private void jButtonBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBuscarActionPerformed

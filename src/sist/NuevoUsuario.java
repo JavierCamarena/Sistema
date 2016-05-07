@@ -69,7 +69,7 @@ public class NuevoUsuario extends javax.swing.JFrame {
     
     private void cargaColonias() throws SQLException 
     {
-        Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/sistemamonitoreo","root", "xaovs"); // OJO esta linea depende de tu base de datos, el 1234 es la contrasenia
+        Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/sistemamonitoreo","root", "1234"); // OJO esta linea depende de tu base de datos, el 1234 es la contrasenia
         Statement stat = con.createStatement();    
         String SQL = "SELECT  * FROM colonias";
         ResultSet rs = stat.executeQuery(SQL);
@@ -79,13 +79,16 @@ public class NuevoUsuario extends javax.swing.JFrame {
         }
     }
     
-    public NuevoUsuario(int id)
+    public NuevoUsuario(int id) throws SQLException
     {
         System.out.println("Resultado de una busqueda " + id);
         initComponents();
+        listaColonias = new ArrayList<>();
         setLocationRelativeTo(null);
         limpiar();
         Aspirante.Busca(id);
+        AjustaTamanios();    // Se ajustan los tamanios de los textbox
+        cargaColonias();     // Se cargan las colonias en el combobox
         PresentaDatos();
         BtnElimina.setEnabled(true);
     }
@@ -122,6 +125,7 @@ public class NuevoUsuario extends javax.swing.JFrame {
         jTextCalle.setText(Aspirante.Calle);
         jTextNumero.setText(Aspirante.Numero);
         jTextColonia.setText(Aspirante.Colonia);
+        colonia=Aspirante.Colonia;
         jTextAgencia.setText(Aspirante.Agencia);
         jTextSeccion.setText(Aspirante.Seccion);
         jTextSenias.setText(Aspirante.SenasParticulares);
