@@ -75,7 +75,15 @@ public class NuevoUsuario extends javax.swing.JFrame {
         ResultSet rs = stat.executeQuery(SQL);
         while(rs.next())
         {
-            listaColonias.add(new Colonia(rs.getString("Nombre")+" - " + rs.getString("Tipo"),rs.getString("Tipo"),rs.getString("ClaveCp")));
+            if(rs.getString("tipo").equals(""))
+            {
+              listaColonias.add(new Colonia(rs.getString("Nombre"),rs.getString("Tipo"),rs.getString("ClaveCp")));
+            }
+            else
+            {
+              listaColonias.add(new Colonia(rs.getString("Tipo")+" - " + rs.getString("Nombre"),rs.getString("Tipo"),rs.getString("ClaveCp")));
+            }
+            
         }
     }
     
