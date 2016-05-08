@@ -75,7 +75,7 @@ public class NuevoUsuario extends javax.swing.JFrame {
         ResultSet rs = stat.executeQuery(SQL);
         while(rs.next())
         {
-            listaColonias.add(new Colonia(rs.getString("Nombre"),rs.getString("Tipo"),rs.getString("ClaveCp")));
+            listaColonias.add(new Colonia(rs.getString("Nombre")+" - " + rs.getString("Tipo"),rs.getString("Tipo"),rs.getString("ClaveCp")));
         }
     }
     
@@ -271,6 +271,9 @@ public class NuevoUsuario extends javax.swing.JFrame {
             }
         });
         jTextColonia.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTextColoniaKeyReleased(evt);
+            }
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 jTextColoniaKeyTyped(evt);
             }
@@ -486,9 +489,9 @@ public class NuevoUsuario extends javax.swing.JFrame {
                             .addComponent(jLabel4))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jComboResulColonias, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel18))
-                        .addGap(197, 197, 197)))
+                            .addComponent(jLabel18)
+                            .addComponent(jComboResulColonias, javax.swing.GroupLayout.PREFERRED_SIZE, 404, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(43, 43, 43)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -662,20 +665,14 @@ public class NuevoUsuario extends javax.swing.JFrame {
 
     private void jTextNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextNombreActionPerformed
         // TODO add your handling code here:
-        if (jTextNombre.getText().length()>3)
-        {
-            String str = new String();
-            str = str.substring(0, 3);
-            jTextNombre.setText(str);
-        }
     }//GEN-LAST:event_jTextNombreActionPerformed
 
     private void jTextColoniaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextColoniaKeyTyped
-        // busqueda interactiva del texto actual
-        buscaColonia(jTextColonia.getText().toUpperCase());
+       
         
     }//GEN-LAST:event_jTextColoniaKeyTyped
 
+    
     private void jComboResulColoniasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboResulColoniasActionPerformed
         // TODO add your handling code here:
         
@@ -693,6 +690,12 @@ public class NuevoUsuario extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextColoniaActionPerformed
 
+    private void jTextColoniaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextColoniaKeyReleased
+        // TODO add your handling code here:
+         // busqueda interactiva del texto actual
+        buscaColonia(jTextColonia.getText().toUpperCase());
+    }//GEN-LAST:event_jTextColoniaKeyReleased
+
     public void buscaColonia(String text){
         Colonia c = new Colonia("", "", "");
         jComboResulColonias.removeAllItems();
@@ -701,7 +704,7 @@ public class NuevoUsuario extends javax.swing.JFrame {
         if(listaTemColonias != null){
             for(Colonia col : listaTemColonias){
                 jComboResulColonias.addItem(col.getNombre());
-                System.out.println(col.getNombre());
+                System.out.println(col.getNombre() + "-" + text);
             }
             
             

@@ -165,8 +165,8 @@ public class clsAspirantesResponsables {
                 preparedStmt.setBoolean(13, banderin);
                 preparedStmt.setBoolean(14, reunion);
                 preparedStmt.setBoolean(15, gestion);
-                preparedStmt.setString (16, Numero);
-                preparedStmt.setString (17, Colonia);
+                preparedStmt.setString (16, PSocial);
+                preparedStmt.setString (17, PInfraestructura);
                 preparedStmt.setDate (18, FechaReunion);
                 preparedStmt.setString (19, Observaciones);
                 preparedStmt.setString(20, Clave);
