@@ -25,7 +25,7 @@ public class clsAspirantesResponsables {
     String dbName  = "com.mysql.jdbc.Driver";   
     String dbPath  = "jdbc:mysql://localhost:3306/sistemamonitoreo";
     String dbUsr     = "root";
-    String dbPw    = "1234";//"1234";
+    String dbPw    = "xaovs";//"1234";
     //---------------DataBase Conf------------------
     public int idaspirante;
     public String Nombre;

@@ -9,9 +9,13 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -43,6 +47,11 @@ public class NuevoUsuario extends javax.swing.JFrame {
      */
     public NuevoUsuario() throws SQLException {
         initComponents();
+        NumberFormat numberFormat = NumberFormat.getNumberInstance(Locale.getDefault());
+        DecimalFormat decimalFormat = (DecimalFormat) numberFormat;
+        decimalFormat.setGroupingUsed(false);
+        jTextSeccion = new JFormattedTextField(decimalFormat);
+        jTextSeccion.setColumns(3);
         listaColonias = new ArrayList<>();
         setLocationRelativeTo(null);
         limpiar(); 
@@ -103,6 +112,20 @@ public class NuevoUsuario extends javax.swing.JFrame {
     
     public boolean validaDatos() // Aqui se validan (?
     {
+        
+        if("".equals(jTextSeccion.getText())){
+            JOptionPane.showMessageDialog(null, "Seccion es un campo obligatorio.", "Cuidado.", JOptionPane.INFORMATION_MESSAGE);
+            jTextSeccion.requestFocusInWindow(); 
+            return false;
+        }
+        
+        if( Integer.parseInt(jTextSeccion.getText())<470 || Integer.parseInt(jTextSeccion.getText()) > 616 ){
+            JOptionPane.showMessageDialog(null, "Seccion debe estar entre [470-616].", "Cuidado.", JOptionPane.INFORMATION_MESSAGE);
+            jTextSeccion.requestFocusInWindow(); 
+            return false;
+        }
+        
+        
         if(colonia.equals("")){
             JOptionPane.showMessageDialog(null, "Colonia es un campo obligatorio.", "Cuidado.", JOptionPane.INFORMATION_MESSAGE);
             jTextColonia.requestFocusInWindow(); 
