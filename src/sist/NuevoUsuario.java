@@ -109,6 +109,28 @@ public class NuevoUsuario extends javax.swing.JFrame {
     public boolean validaDatos() // Aqui se validan (?
     {
         
+        if("".equals(jTextTelefono.getText())){
+            JOptionPane.showMessageDialog(null, "Teléfono es un campo obligatorio.", "Cuidado.", JOptionPane.INFORMATION_MESSAGE);
+            jTextTelefono.requestFocusInWindow(); 
+            return false;
+        }
+        
+        try {
+                if(Long.parseLong(jTextTelefono.getText()) < 0 ){
+                    JOptionPane.showMessageDialog(null, "Sólo se admiten números positivos","Cuidado",JOptionPane.INFORMATION_MESSAGE);
+                    jTextTelefono.requestFocus();
+                    return false;
+                }else if(jTextTelefono.getText().length()>10 || jTextTelefono.getText().length()<10){
+                    JOptionPane.showMessageDialog(null, "Télefono debe ser de 10 dígitos","Cuidado",JOptionPane.INFORMATION_MESSAGE);
+                    jTextTelefono.requestFocus();
+                    return false;
+                }
+            } catch (NumberFormatException nfe) {
+                JOptionPane.showMessageDialog(null, "Sólo se admiten números","Cuidado",JOptionPane.INFORMATION_MESSAGE);
+                jTextTelefono.requestFocus();
+                return false;
+        }
+        
         if("".equals(jTextSeccion.getText())){
             JOptionPane.showMessageDialog(null, "Seccion es un campo obligatorio.", "Cuidado.", JOptionPane.INFORMATION_MESSAGE);
             jTextSeccion.requestFocusInWindow(); 
