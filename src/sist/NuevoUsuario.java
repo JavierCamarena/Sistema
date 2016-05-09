@@ -47,11 +47,6 @@ public class NuevoUsuario extends javax.swing.JFrame {
      */
     public NuevoUsuario() throws SQLException {
         initComponents();
-        NumberFormat numberFormat = NumberFormat.getNumberInstance(Locale.getDefault());
-        DecimalFormat decimalFormat = (DecimalFormat) numberFormat;
-        decimalFormat.setGroupingUsed(false);
-        jTextSeccion = new JFormattedTextField(decimalFormat);
-        jTextSeccion.setColumns(3);
         listaColonias = new ArrayList<>();
         setLocationRelativeTo(null);
         limpiar(); 
@@ -101,6 +96,7 @@ public class NuevoUsuario extends javax.swing.JFrame {
         System.out.println("Resultado de una busqueda " + id);
         initComponents();
         listaColonias = new ArrayList<>();
+        listaColonias = new ArrayList<>();
         setLocationRelativeTo(null);
         limpiar();
         Aspirante.Busca(id);
@@ -118,13 +114,17 @@ public class NuevoUsuario extends javax.swing.JFrame {
             jTextSeccion.requestFocusInWindow(); 
             return false;
         }
-        
-        if( Integer.parseInt(jTextSeccion.getText())<470 || Integer.parseInt(jTextSeccion.getText()) > 616 ){
-            JOptionPane.showMessageDialog(null, "Seccion debe estar entre [470-616].", "Cuidado.", JOptionPane.INFORMATION_MESSAGE);
-            jTextSeccion.requestFocusInWindow(); 
+
+        try{
+            if( Integer.parseInt(jTextSeccion.getText())<470 || Integer.parseInt(jTextSeccion.getText()) > 616 ){
+                JOptionPane.showMessageDialog(null, "Seccion debe estar entre [470-616].", "Cuidado.", JOptionPane.INFORMATION_MESSAGE);
+                jTextSeccion.requestFocusInWindow(); 
+                return false;
+            }
+        }catch(NumberFormatException nfe){
+            JOptionPane.showMessageDialog(null, "Sólo se admiten números","Cuidado",JOptionPane.INFORMATION_MESSAGE);
             return false;
         }
-        
         
         if(colonia.equals("")){
             JOptionPane.showMessageDialog(null, "Colonia es un campo obligatorio.", "Cuidado.", JOptionPane.INFORMATION_MESSAGE);
