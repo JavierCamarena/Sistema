@@ -126,7 +126,7 @@ public class NuevoUsuario extends javax.swing.JFrame {
                     return false;
                 }
             } catch (NumberFormatException nfe) {
-                JOptionPane.showMessageDialog(null, "Sólo se admiten números","Cuidado",JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Sólo se admiten números en el campo Telefono","Cuidado",JOptionPane.INFORMATION_MESSAGE);
                 jTextTelefono.requestFocus();
                 return false;
         }
@@ -144,7 +144,7 @@ public class NuevoUsuario extends javax.swing.JFrame {
                 return false;
             }
         }catch(NumberFormatException nfe){
-            JOptionPane.showMessageDialog(null, "Sólo se admiten números","Cuidado",JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Sólo se admiten números en el campo Seccion","Cuidado",JOptionPane.INFORMATION_MESSAGE);
             return false;
         }
         
