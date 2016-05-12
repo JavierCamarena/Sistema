@@ -11,7 +11,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Types;
 
 /**
  *
@@ -22,10 +21,11 @@ public class clsAspirantesResponsables {
     Connection con = null;
     Statement stat = null;
     //---------------DataBase Conf------------------
-    String dbName  = "com.mysql.jdbc.Driver";   
-    String dbPath  = "jdbc:mysql://localhost:3306/sistemamonitoreo";
-    String dbUsr     = "root";
-    String dbPw    = "1234";//"1234";
+    
+    String dbName;   
+    String dbPath;
+    String dbUsr;
+    String dbPw;//"1234";
     //---------------DataBase Conf------------------
     public int idaspirante;
     public String Nombre;
@@ -48,10 +48,23 @@ public class clsAspirantesResponsables {
     public Date FechaReunion;
     public String Observaciones; 
     public String Clave;
+
+
+
     
-    public void clsAspirantesResponsables() 
+   
+    
+    clsAspirantesResponsables(String[] conf) 
     {
+        dbName = conf[0];
+        dbPath = conf[1];
+        dbUsr = conf[2];
+        dbPw = conf[3];
         
+        System.out.println("-" + dbName);
+        System.out.println("-" + dbPath);
+        System.out.println("-" + dbUsr);
+        System.out.println("-" + dbPw); 
     }
     
     public void Limpia()

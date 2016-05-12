@@ -7,19 +7,13 @@ package sist;
 
 import javax.swing.JFrame;
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Types;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import javax.swing.JTable;
-import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
@@ -44,10 +38,12 @@ public class VentanaBusqueda extends javax.swing.JFrame {
     Connection con = null;
     Statement stat = null;
     private String sqlcode=" WHERE Colonia =";
+    private String configuracion[];
     /**
      * Creates new form VentanaBusqueda
      */
-    public VentanaBusqueda() {
+    public VentanaBusqueda( String Conf[]) {
+        configuracion = Conf;
         initComponents();
         setLocationRelativeTo(null);
         modelo = new DefaultTableModel();
@@ -56,6 +52,9 @@ public class VentanaBusqueda extends javax.swing.JFrame {
        
     }
 
+    private VentanaBusqueda() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -208,8 +207,8 @@ public class VentanaBusqueda extends javax.swing.JFrame {
         }
         System.out.println("Buscando y llenando tabla");
         try{    
-            Class.forName("com.mysql.jdbc.Driver");
-            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/sistemamonitoreo","root", "1234"); // OJO esta linea depende de tu base de datos, el 1234 es la contrasenia
+            Class.forName(configuracion[0]);
+            con = DriverManager.getConnection(configuracion[1],configuracion[2],configuracion[3]); // OJO esta linea depende de tu base de datos, el 1234 es la contrasenia
             stat = con.createStatement();
             System.out.println("preparando statement :"+sqlcode);
             ResultSet rs = stat.executeQuery("select * from aspiranteresponsable"+sqlcode);
@@ -262,7 +261,7 @@ public class VentanaBusqueda extends javax.swing.JFrame {
         
         try {
             int a = jTable1.getSelectedRow();
-            JFrame menu = new NuevoUsuario( Integer.parseInt(jTable1.getValueAt(a , 0).toString() ) );
+            JFrame menu = new NuevoUsuario( configuracion ,Integer.parseInt(jTable1.getValueAt(a , 0).toString() ) );
             menu.setVisible(true);
             this.dispose();
             //Boton Acepta  
@@ -280,7 +279,7 @@ public class VentanaBusqueda extends javax.swing.JFrame {
         // TODO add your handling code here:
         JFrame menu;
         try {
-            menu = new NuevoUsuario();
+            menu = new NuevoUsuario(configuracion);
              menu.setVisible(true);
         this.dispose();
         } catch (SQLException ex) {

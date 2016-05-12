@@ -5,6 +5,7 @@
  */
 package principal;
 
+
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -17,11 +18,17 @@ import unoDiez.RegistroUD;
  */
 public class VentanaPrincipal extends javax.swing.JFrame {
 
+    
+    String Configuracion[] = new String[4];
+    
+    public NuevoUsuario ventanauno;
     /**
      * Creates new form VentanaPrincipal
      */
-    public VentanaPrincipal() {
+    public VentanaPrincipal()  {
         initComponents();
+        setLocationRelativeTo(null);
+        cargaConfiguracion();
     }
 
     /**
@@ -82,11 +89,27 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void cargaConfiguracion() 
+    {
+        Configuracion[0]= "com.mysql.jdbc.Driver";
+        Configuracion[1]= "jdbc:mysql://localhost:3306/sistemamonitoreo";
+        Configuracion[2]= "root";
+        Configuracion[3]= "1234";
+    }
+    
+    
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
       
                 try {
                     // TODO add your handling code here:
-                    new NuevoUsuario().setVisible(true);
+                    
+                    System.out.println("-" + Configuracion[0]);
+                    System.out.println("-" + Configuracion[1]);   
+                    System.out.println("-" + Configuracion[2]);
+                    System.out.println("-" + Configuracion[3]);
+                    
+                    ventanauno = new NuevoUsuario(Configuracion);
+                    ventanauno.setVisible(true);                  
                     
                 } catch (SQLException ex) {
                     Logger.getLogger(VentanaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
@@ -98,7 +121,9 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        new RegistroUD().setVisible(true);
+       
+        
+        new RegistroUD(Configuracion).setVisible(true);
     }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
@@ -131,7 +156,9 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new VentanaPrincipal().setVisible(true);
+      
+                    new VentanaPrincipal().setVisible(true);
+               
             }
         });
     }

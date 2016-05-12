@@ -9,13 +9,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.Locale;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -24,28 +18,25 @@ import javax.swing.JOptionPane;
  * @author xaovs
  */
 public class NuevoUsuario extends javax.swing.JFrame {
-    private final clsAspirantesResponsables Aspirante = new clsAspirantesResponsables(); // Esta clase se va a usar para todo
+    private clsAspirantesResponsables Aspirante; // Esta clase se va a usar para todo
     private ArrayList<Colonia> listaColonias;
     private ArrayList<Colonia> listaTemColonias;
-    private String nombre;
-    private String apellidos;
-    private String calle;
-    private String numero;
     private String colonia;
-    private String agencia;
-    private String seccion;
-    private String senias;
-    private String telefono;
-    private String email;
-    private boolean barda, lona, banderin, reunion, gestion;
-    private String pSocial,pInfra;
-    private String fechaReunion;
-    private String observaciones;
     private String claveCp;
+    private String Configuracion[];
     /**
      * Creates new form NuevoUsuario
+     * @param conf
      */
-    public NuevoUsuario() throws SQLException {
+    public NuevoUsuario(String conf[]) throws SQLException {
+        Configuracion = conf;
+        
+        System.out.println("+" + Configuracion[0]);
+        System.out.println("+" + Configuracion[1]);   
+        System.out.println("+" + Configuracion[2]);
+        System.out.println("+" + Configuracion[3]);
+        
+        Aspirante = new clsAspirantesResponsables(Configuracion);
         initComponents();
         listaColonias = new ArrayList<>();
         setLocationRelativeTo(null);
@@ -54,9 +45,26 @@ public class NuevoUsuario extends javax.swing.JFrame {
         cargaColonias();     // Se cargan las colonias en el combobox
     }
     
+        public NuevoUsuario(String conf[],int id) throws SQLException
+    {
+        
+        Configuracion = conf;
+        Aspirante = new clsAspirantesResponsables(Configuracion);
+        System.out.println("Resultado de una busqueda " + id);
+        initComponents();
+        listaColonias = new ArrayList<>();
+        setLocationRelativeTo(null);
+        limpiar();
+        Aspirante.Busca(id);
+        AjustaTamanios();    // Se ajustan los tamanios de los textbox
+        cargaColonias();     // Se cargan las colonias en el combobox
+        PresentaDatos();
+        BtnElimina.setEnabled(true);
+    }
+    
     private void AjustaTamanios()
     {
-           jTextNombre.setDocument(new LimiteDeCaracteres(45));
+        jTextNombre.setDocument(new LimiteDeCaracteres(45));
         jTextApellido.setDocument(new LimiteDeCaracteres(45));
         jTextCalle.setDocument(new LimiteDeCaracteres(45));
         jTextNumero.setDocument(new LimiteDeCaracteres(45));
@@ -73,7 +81,7 @@ public class NuevoUsuario extends javax.swing.JFrame {
     
     private void cargaColonias() throws SQLException 
     {
-        Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/sistemamonitoreo","root", "1234"); // OJO esta linea depende de tu base de datos, el 1234 es la contrasenia
+        Connection con = DriverManager.getConnection(Configuracion[1],Configuracion[2],Configuracion[3]); // OJO esta linea depende de tu base de datos, el 1234 es la contrasenia
         Statement stat = con.createStatement();    
         String SQL = "SELECT  * FROM colonias";
         ResultSet rs = stat.executeQuery(SQL);
@@ -91,19 +99,7 @@ public class NuevoUsuario extends javax.swing.JFrame {
         }
     }
     
-    public NuevoUsuario(int id) throws SQLException
-    {
-        System.out.println("Resultado de una busqueda " + id);
-        initComponents();
-        listaColonias = new ArrayList<>();
-        setLocationRelativeTo(null);
-        limpiar();
-        Aspirante.Busca(id);
-        AjustaTamanios();    // Se ajustan los tamanios de los textbox
-        cargaColonias();     // Se cargan las colonias en el combobox
-        PresentaDatos();
-        BtnElimina.setEnabled(true);
-    }
+
     
     public boolean validaDatos() // Aqui se validan (?
     {
@@ -690,7 +686,7 @@ public class NuevoUsuario extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonGuardarActionPerformed
 
     private void jButtonBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBuscarActionPerformed
-        JFrame vBusqueda = new VentanaBusqueda();
+        JFrame vBusqueda = new VentanaBusqueda(Configuracion);
         vBusqueda.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButtonBuscarActionPerformed
