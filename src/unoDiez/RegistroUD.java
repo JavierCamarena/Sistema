@@ -11,6 +11,8 @@ package unoDiez;
  */
 public class RegistroUD extends javax.swing.JFrame {
 
+    private ClsResponsables Responsable;
+    
     String Configuracion[];
     /**
      * Creates new form RegistroUD
@@ -18,6 +20,7 @@ public class RegistroUD extends javax.swing.JFrame {
     public RegistroUD(String[] conf) {
        Configuracion = conf;
         initComponents();
+        Responsable = new ClsResponsables(Configuracion);
         LimpiaCampos();
         setLocationRelativeTo(null);
     }
@@ -34,7 +37,20 @@ public class RegistroUD extends javax.swing.JFrame {
         jTextINE.setText("");
         jTextCorreo.setText("");
         jTextZonaGrupo.setText("");
-        
+        jTextCargo.setText("");
+        ///////////////////////////////////////Quedan pendientes 3 campos que no se si el responsable tambien los llevara
+        Responsable.Limpia();
+    }
+    
+    public void AsignaDatos()
+    {
+        Responsable.Nombre = jTextNombre.getText();
+        Responsable.Apellido = jTextApellidos.getText(); 
+        Responsable.NumTelefono = jTextTelefono.getText();
+        Responsable.ClaveElectorIfe = jTextINE.getText();
+        Responsable.Email = jTextCorreo.getText();
+        Responsable.ZonaGrupo = jTextZonaGrupo.getText();
+        Responsable.Cargo = jTextCargo.getText();
     }
 
     
@@ -70,6 +86,7 @@ public class RegistroUD extends javax.swing.JFrame {
         BtnEliminar = new javax.swing.JButton();
         BtnGuardar = new javax.swing.JButton();
         BtnSalir = new javax.swing.JButton();
+        btnLimpiar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -124,6 +141,13 @@ public class RegistroUD extends javax.swing.JFrame {
 
         BtnSalir.setText("Salir");
 
+        btnLimpiar.setText("Limpiar");
+        btnLimpiar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLimpiarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -170,7 +194,8 @@ public class RegistroUD extends javax.swing.JFrame {
                             .addComponent(BtnSalir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(BtnEliminar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(BtnEditar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnAniadir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(btnAniadir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnLimpiar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(26, 26, 26))))
         );
         layout.setVerticalGroup(
@@ -199,23 +224,30 @@ public class RegistroUD extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(btnLimpiar)
+                        .addGap(18, 18, 18)
                         .addComponent(btnAniadir)
-                        .addGap(47, 47, 47)
+                        .addGap(18, 18, 18)
                         .addComponent(BtnEditar)
-                        .addGap(51, 51, 51)
+                        .addGap(18, 18, 18)
                         .addComponent(BtnEliminar)
-                        .addGap(46, 46, 46)
+                        .addGap(18, 18, 18)
                         .addComponent(BtnGuardar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(18, 18, 18)
                         .addComponent(BtnSalir)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
+        // TODO add your handling code here:
+        LimpiaCampos();
+    }//GEN-LAST:event_btnLimpiarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -258,6 +290,7 @@ public class RegistroUD extends javax.swing.JFrame {
     private javax.swing.JButton BtnGuardar;
     private javax.swing.JButton BtnSalir;
     private javax.swing.JButton btnAniadir;
+    private javax.swing.JButton btnLimpiar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

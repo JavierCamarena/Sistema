@@ -9,7 +9,7 @@ package unoDiez;
  *
  * @author keko
  */
-public class Responsables {
+public class ClsResponsables {
     public int idResponsable; 
     public String Nombre; 
     public String Apellido; 
@@ -23,11 +23,28 @@ public class Responsables {
     public String FolioPadron;
     
     public String Configuracion[];
+
     
-    public void Responsables(String[] conf) 
+    ClsResponsables(String[] conf) 
     {
         conf = Configuracion;
                 
+    }
+    
+    public void Limpia() 
+    {
+        idResponsable = 0 ; 
+        Nombre = ""; 
+        Apellido = ""; 
+        ClaveElectorIfe = "";
+        NumTelefono = ""; 
+        ZonaGrupo = ""; 
+        Cargo = ""; 
+        Email = ""; 
+        Seccion = ""; 
+        Voto = false; 
+        FolioPadron = "";
+        
     }
     
     public boolean Nuevo()
