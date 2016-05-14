@@ -5,6 +5,9 @@
  */
 package unoDiez;
 
+import javax.swing.JOptionPane;
+import sist.LimiteDeCaracteres;
+
 /**
  *
  * @author xaovs
@@ -27,6 +30,17 @@ public class RegistroUD extends javax.swing.JFrame {
 
     private RegistroUD() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    private void AsignaTamanios()
+    {
+        jTextNombre.setDocument(new LimiteDeCaracteres(45));
+        jTextApellidos.setDocument(new LimiteDeCaracteres(45)); 
+        jTextINE.setDocument(new LimiteDeCaracteres(45));
+        jTextCorreo.setDocument(new LimiteDeCaracteres(45));
+        jTextTelefono.setDocument(new LimiteDeCaracteres(45));
+        jTextZonaGrupo.setDocument(new LimiteDeCaracteres(45));
+        jTextCargo.setDocument(new LimiteDeCaracteres(45));
     }
     
     public void LimpiaCampos()
@@ -53,7 +67,22 @@ public class RegistroUD extends javax.swing.JFrame {
         Responsable.Cargo = jTextCargo.getText();
     }
 
-    
+    public boolean ValidaDatos() 
+    {
+        if(jTextNombre.getText().equals(""))
+        {
+            JOptionPane.showMessageDialog(null, "Nombre es un campo obligatorio.", "Cuidado.", JOptionPane.INFORMATION_MESSAGE);
+            jTextNombre.requestFocusInWindow(); 
+            return false;
+        }
+         if(jTextApellidos.getText().equals(""))
+        {
+            JOptionPane.showMessageDialog(null, "Apellidos es un campo obligatorio.", "Cuidado.", JOptionPane.INFORMATION_MESSAGE);
+            jTextApellidos.requestFocusInWindow(); 
+            return false;
+        }
+        return true; 
+    }
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -136,10 +165,25 @@ public class RegistroUD extends javax.swing.JFrame {
         BtnEditar.setText("Editar");
 
         BtnEliminar.setText("Eliminar");
+        BtnEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnEliminarActionPerformed(evt);
+            }
+        });
 
         BtnGuardar.setText("Guardar");
+        BtnGuardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnGuardarActionPerformed(evt);
+            }
+        });
 
         BtnSalir.setText("Salir");
+        BtnSalir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnSalirActionPerformed(evt);
+            }
+        });
 
         btnLimpiar.setText("Limpiar");
         btnLimpiar.addActionListener(new java.awt.event.ActionListener() {
@@ -225,8 +269,7 @@ public class RegistroUD extends javax.swing.JFrame {
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                    .addGroup(layout.createSequentialGroup()
                         .addComponent(btnLimpiar)
                         .addGap(18, 18, 18)
                         .addComponent(btnAniadir)
@@ -235,9 +278,10 @@ public class RegistroUD extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(BtnEliminar)
                         .addGap(18, 18, 18)
-                        .addComponent(BtnGuardar)
-                        .addGap(18, 18, 18)
-                        .addComponent(BtnSalir)))
+                        .addComponent(BtnGuardar))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(BtnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -248,6 +292,52 @@ public class RegistroUD extends javax.swing.JFrame {
         // TODO add your handling code here:
         LimpiaCampos();
     }//GEN-LAST:event_btnLimpiarActionPerformed
+
+    private void BtnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSalirActionPerformed
+        this.setVisible(false);
+    }//GEN-LAST:event_BtnSalirActionPerformed
+
+    private void BtnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnGuardarActionPerformed
+        if (ValidaDatos())
+        {
+            if(Responsable.idResponsable == 0 )
+            {
+                if (Responsable.Nuevo())
+                {
+                    JOptionPane.showMessageDialog(null, "Se ha agregado con exito.", "Cuidado.", JOptionPane.INFORMATION_MESSAGE);
+                }
+                else
+                {
+                    JOptionPane.showMessageDialog(null, "Ha ocurrido un error.", "Cuidado.", JOptionPane.INFORMATION_MESSAGE); 
+                }
+            }
+            else
+            {
+                if( Responsable.Actualiza()) 
+                {
+                     JOptionPane.showMessageDialog(null, "Se ha actualizado con exito.", "Cuidado.", JOptionPane.INFORMATION_MESSAGE);
+                }
+                else
+                {
+                     JOptionPane.showMessageDialog(null, "Se ha eliminado con exito.", "Cuidado.", JOptionPane.INFORMATION_MESSAGE);
+                }
+            }
+        }
+    }//GEN-LAST:event_BtnGuardarActionPerformed
+
+    private void BtnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnEliminarActionPerformed
+        if(Responsable.idResponsable != 0)
+        {
+            int reply = JOptionPane.showConfirmDialog(null, "Seguro que deseas eliminar este elemento?", "Eliminar", JOptionPane.YES_NO_OPTION);
+            if (reply == JOptionPane.YES_OPTION) 
+            {
+                if (Responsable.Elimina())
+                {
+                    JOptionPane.showMessageDialog(null, "Se ha eliminado con exito.", "Cuidado.", JOptionPane.INFORMATION_MESSAGE);
+                }
+            }
+        }
+    }//GEN-LAST:event_BtnEliminarActionPerformed
 
     /**
      * @param args the command line arguments

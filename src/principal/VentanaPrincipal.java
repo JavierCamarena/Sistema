@@ -22,6 +22,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     String Configuracion[] = new String[4];
     
     public NuevoUsuario ventanauno;
+    public RegistroUD Registro = null;
     /**
      * Creates new form VentanaPrincipal
      */
@@ -122,8 +123,17 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
        
+        if (Registro == null)
+        {
+            Registro  = new RegistroUD(Configuracion);
+            Registro.setVisible(true);
+        }
+        else
+        {
+            Registro.LimpiaCampos();
+            Registro.setVisible(true);
+        }
         
-        new RegistroUD(Configuracion).setVisible(true);
     }//GEN-LAST:event_jButton2ActionPerformed
 
     /**

@@ -52,4 +52,13 @@ public class ClsResponsables {
         return true;
     }
     
+    public boolean Actualiza() 
+    {
+        return true;
+    }
+    
+    public boolean Elimina() 
+    {
+        return true;
+    }
 }
