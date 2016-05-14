@@ -61,7 +61,7 @@ public class RegistroUD extends javax.swing.JFrame {
         Responsable.Nombre = jTextNombre.getText();
         Responsable.Apellido = jTextApellidos.getText(); 
         Responsable.NumTelefono = jTextTelefono.getText();
-        Responsable.ClaveElectorIfe = jTextINE.getText();
+        Responsable.ClaveElectorIne = jTextINE.getText();
         Responsable.Email = jTextCorreo.getText();
         Responsable.ZonaGrupo = jTextZonaGrupo.getText();
         Responsable.Cargo = jTextCargo.getText();

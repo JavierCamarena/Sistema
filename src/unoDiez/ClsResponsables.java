@@ -5,6 +5,8 @@
  */
 package unoDiez;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author keko
@@ -13,15 +15,12 @@ public class ClsResponsables {
     public int idResponsable; 
     public String Nombre; 
     public String Apellido; 
-    public String ClaveElectorIfe; 
+    public String ClaveElectorIne; 
     public String NumTelefono; 
     public String ZonaGrupo; 
     public String Cargo; 
     public String Email;
-    public String Seccion; 
-    public boolean Voto;
-    public String FolioPadron;
-    
+    public ArrayList<ClsCiudadano>votantes;
     public String Configuracion[];
 
     
@@ -36,14 +35,11 @@ public class ClsResponsables {
         idResponsable = 0 ; 
         Nombre = ""; 
         Apellido = ""; 
-        ClaveElectorIfe = "";
+        ClaveElectorIne = "";
         NumTelefono = ""; 
         ZonaGrupo = ""; 
         Cargo = ""; 
-        Email = ""; 
-        Seccion = ""; 
-        Voto = false; 
-        FolioPadron = "";
+        Email = "";  
         
     }
     
