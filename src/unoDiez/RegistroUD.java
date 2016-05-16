@@ -54,6 +54,21 @@ public class RegistroUD extends javax.swing.JFrame {
         jTextCargo.setText("");
         ///////////////////////////////////////Quedan pendientes 3 campos que no se si el responsable tambien los llevara
         Responsable.Limpia();
+        BtnEditar.setEnabled(false);
+        btnRemover.setEnabled(false);
+        btnAniadir.setEnabled(false);
+        jTableCiudadano.setEnabled(false);
+    }
+    
+    public void PresentaDatos() 
+    {
+        jTextNombre.setText(Responsable.Nombre);
+        jTextApellidos.setText(Responsable.Apellido);
+        jTextTelefono.setText(Responsable.NumTelefono);
+        jTextINE.setText(Responsable.ClaveElectorIne);
+        jTextCorreo.setText(Responsable.Email);
+        jTextZonaGrupo.setText(Responsable.ZonaGrupo);
+        jTextCargo.setText(Responsable.Cargo);
     }
     
     public void AsignaDatos()
@@ -93,6 +108,17 @@ public class RegistroUD extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jDialogBusca = new javax.swing.JDialog();
+        jButtonBuscar = new javax.swing.JButton();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        jTextBusqueda = new javax.swing.JTextField();
+        jLabelParam = new javax.swing.JLabel();
+        BtnCancelar = new javax.swing.JButton();
+        BtnAceptar = new javax.swing.JButton();
+        jComboBox1 = new javax.swing.JComboBox<>();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -117,6 +143,109 @@ public class RegistroUD extends javax.swing.JFrame {
         BtnSalir = new javax.swing.JButton();
         btnLimpiar = new javax.swing.JButton();
         btnBuscar = new javax.swing.JButton();
+        btnRemover = new javax.swing.JButton();
+
+        jDialogBusca.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+
+        jButtonBuscar.setText("Buscar");
+        jButtonBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonBuscarActionPerformed(evt);
+            }
+        });
+
+        jLabel8.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        jLabel8.setText("Buscar Responsable");
+
+        jLabel9.setText("Selecciona una opción:");
+
+        jTextBusqueda.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextBusquedaActionPerformed(evt);
+            }
+        });
+
+        jLabelParam.setText("Parámetro:");
+
+        BtnCancelar.setText("Cancelar");
+        BtnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnCancelarActionPerformed(evt);
+            }
+        });
+
+        BtnAceptar.setText("Editar");
+        BtnAceptar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnAceptarActionPerformed(evt);
+            }
+        });
+
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Nombre", "Apellido", "Todos" }));
+        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox1ActionPerformed(evt);
+            }
+        });
+
+        jScrollPane2.setViewportView(jTable1);
+
+        javax.swing.GroupLayout jDialogBuscaLayout = new javax.swing.GroupLayout(jDialogBusca.getContentPane());
+        jDialogBusca.getContentPane().setLayout(jDialogBuscaLayout);
+        jDialogBuscaLayout.setHorizontalGroup(
+            jDialogBuscaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jDialogBuscaLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jDialogBuscaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jDialogBuscaLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 657, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jDialogBuscaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(BtnCancelar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(BtnAceptar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(20, 20, 20))
+                    .addGroup(jDialogBuscaLayout.createSequentialGroup()
+                        .addGroup(jDialogBuscaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jDialogBuscaLayout.createSequentialGroup()
+                                .addGroup(jDialogBuscaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel9))
+                                .addGap(85, 85, 85)
+                                .addGroup(jDialogBuscaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabelParam)
+                                    .addGroup(jDialogBuscaLayout.createSequentialGroup()
+                                        .addComponent(jTextBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jButtonBuscar))))
+                            .addComponent(jLabel8))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+        );
+        jDialogBuscaLayout.setVerticalGroup(
+            jDialogBuscaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jDialogBuscaLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel8)
+                .addGap(18, 18, 18)
+                .addGroup(jDialogBuscaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel9)
+                    .addComponent(jLabelParam))
+                .addGap(18, 18, 18)
+                .addGroup(jDialogBuscaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButtonBuscar)
+                    .addComponent(jTextBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jDialogBuscaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jDialogBuscaLayout.createSequentialGroup()
+                        .addGap(124, 124, 124)
+                        .addComponent(BtnAceptar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(BtnCancelar))
+                    .addGroup(jDialogBuscaLayout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -200,6 +329,8 @@ public class RegistroUD extends javax.swing.JFrame {
             }
         });
 
+        btnRemover.setText("Remover");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -240,7 +371,7 @@ public class RegistroUD extends javax.swing.JFrame {
                         .addGap(167, 167, 167))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 820, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 70, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 66, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                 .addComponent(BtnGuardar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -248,7 +379,8 @@ public class RegistroUD extends javax.swing.JFrame {
                                 .addComponent(BtnEliminar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(BtnEditar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(btnAniadir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(btnBuscar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addComponent(btnBuscar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnRemover, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addComponent(btnLimpiar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(26, 26, 26))))
         );
@@ -292,7 +424,9 @@ public class RegistroUD extends javax.swing.JFrame {
                         .addComponent(BtnEditar)
                         .addGap(18, 18, 18)
                         .addComponent(btnAniadir)
-                        .addGap(135, 135, 135)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnRemover)
+                        .addGap(94, 94, 94)
                         .addComponent(BtnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(14, Short.MAX_VALUE))
         );
@@ -357,8 +491,34 @@ public class RegistroUD extends javax.swing.JFrame {
     }//GEN-LAST:event_BtnEliminarActionPerformed
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+      
+        jDialogBusca.setVisible(true);
+        
         // TODO add your handling code here:
     }//GEN-LAST:event_btnBuscarActionPerformed
+
+    private void jButtonBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBuscarActionPerformed
+        // TODO add your handling code here:
+        //busqueda();
+    }//GEN-LAST:event_jButtonBuscarActionPerformed
+
+    private void jTextBusquedaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextBusquedaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextBusquedaActionPerformed
+
+    private void BtnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCancelarActionPerformed
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_BtnCancelarActionPerformed
+
+    private void BtnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnAceptarActionPerformed
+
+    }//GEN-LAST:event_BtnAceptarActionPerformed
+
+    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+        // TODO add your handling code here:
+        //AsignaSQL();
+    }//GEN-LAST:event_jComboBox1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -396,6 +556,8 @@ public class RegistroUD extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton BtnAceptar;
+    private javax.swing.JButton BtnCancelar;
     private javax.swing.JButton BtnEditar;
     private javax.swing.JButton BtnEliminar;
     private javax.swing.JButton BtnGuardar;
@@ -403,6 +565,10 @@ public class RegistroUD extends javax.swing.JFrame {
     private javax.swing.JButton btnAniadir;
     private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnLimpiar;
+    private javax.swing.JButton btnRemover;
+    private javax.swing.JButton jButtonBuscar;
+    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JDialog jDialogBusca;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -410,10 +576,16 @@ public class RegistroUD extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
+    private javax.swing.JLabel jLabelParam;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JTable jTable1;
     private javax.swing.JTable jTableCiudadano;
     private javax.swing.JTextField jTextApellidos;
+    private javax.swing.JTextField jTextBusqueda;
     private javax.swing.JTextField jTextCargo;
     private javax.swing.JTextField jTextCorreo;
     private javax.swing.JTextField jTextINE;
