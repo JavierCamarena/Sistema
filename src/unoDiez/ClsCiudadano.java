@@ -20,4 +20,21 @@ public class ClsCiudadano {
     public String seccion;
     public boolean voto;
     public String folioPadron;
+    
+    public ClsCiudadano(){
+        voto = false;
+    }
+    
+    public void limpia(){
+        idCiudadano     = 0;
+        idResponsable   = 0;
+        nombres         = "";
+        apellidos       = "";
+        claveIne        = "";
+        mail            = "";
+        telefono        = "";
+        seccion         = "";
+        voto            = false;
+        folioPadron     = "";
+    }
 }
