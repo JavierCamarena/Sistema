@@ -102,7 +102,7 @@ public class ClsCiudadano {
         } finally {
             
         }
-        
+        idCiudadano = Afected;
         return Afected;    
     }
     
