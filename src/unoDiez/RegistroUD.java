@@ -73,7 +73,7 @@ public class RegistroUD extends javax.swing.JFrame {
         BtnEditar.setEnabled(false);
         btnRemover.setEnabled(false);
         btnAniadir.setEnabled(false);
-        jTableCiudadano.setEnabled(false);
+ //       jTableCiudadano.setEnabled(false);
     }
     
     public void PresentaDatos() 
