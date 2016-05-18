@@ -23,6 +23,23 @@ public class RegistroCiudadano extends javax.swing.JFrame {
         LimpiaCampos();
         setVisible(true);
     }
+    
+    public RegistroCiudadano(String[] conf,int idResponsable,int id){
+        ciudadano = new ClsCiudadano(conf);
+        initComponents();
+        
+        if(ciudadano.Busca(id)){
+            System.out.println("Datos obtenidos");
+            presentaDatos();
+            setVisible(true);
+        }else 
+        {
+            System.out.println("Error al encontrar al usuario");
+        
+        }
+        
+        
+    }
 
     public void LimpiaCampos(){
         apellidoField.setText("");
@@ -43,6 +60,16 @@ public class RegistroCiudadano extends javax.swing.JFrame {
         ciudadano.Seccion     = seccionField.getText();
         ciudadano.Telefono    = telField.getText();
         
+    }
+    
+    public void presentaDatos(){
+        apellidoField.setText(ciudadano.Apellidos);
+        claveIneField.setText(ciudadano.ClaveIne);
+        folioField.setText(ciudadano.FolioPadron);
+        correoField.setText(ciudadano.Mail);
+        nombreField.setText(ciudadano.Nombres);
+        seccionField.setText(ciudadano.Seccion);
+        telField.setText(ciudadano.Telefono);
     }
     
     public boolean ValidaDatos() 
