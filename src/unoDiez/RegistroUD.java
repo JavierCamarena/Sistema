@@ -5,8 +5,16 @@
  */
 package unoDiez;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableModel;
 import sist.LimiteDeCaracteres;
 
 /**
@@ -18,6 +26,9 @@ public class RegistroUD extends javax.swing.JFrame {
     private ClsResponsables Responsable;
     
     String Configuracion[];
+    Connection con = null;
+    Statement stat = null;
+    public DefaultTableModel modelo;
     /**
      * Creates new form RegistroUD
      */
@@ -500,10 +511,58 @@ public class RegistroUD extends javax.swing.JFrame {
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
       
         jDialogBusca.setVisible(true);
+        rellenaTabla();
         
         // TODO add your handling code here:
     }//GEN-LAST:event_btnBuscarActionPerformed
 
+    
+    public void rellenaTabla(){
+        try{    
+            Class.forName(Configuracion[0]);
+            con = DriverManager.getConnection(Configuracion[1],Configuracion[2],Configuracion[3]); // OJO esta linea depende de tu base de datos, el 1234 es la contrasenia
+            stat = con.createStatement();
+            ResultSet rs = stat.executeQuery("select * from ciudadanos where idResponsable="+Responsable.idResponsable);
+            System.out.println("Datos obtenidos configurando tabla");
+            //conversorTable.rellena(rs, modelo);
+            String [] titulos = {"id","Nombre", "Apellidos", "Clave INE", "Correo", "Telefono", "Folio Padron"}; 
+            String [] registros = new String[7];
+            
+            modelo = new DefaultTableModel(null, titulos);
+            while(rs.next())
+                {
+                    registros[0]= rs.getString("idciudadanos");
+                    registros[1]= rs.getString("Nombres");
+                    registros[2]= rs.getString("Apellidos");
+                    registros[3]= rs.getString("ClaveIne");
+                    registros[4]= rs.getString("Email");
+                    registros[5]= rs.getString("Telefono");
+                    registros[6]= rs.getString("FolioPadron");
+                    modelo.addRow(registros);
+                }
+            jTableCiudadano.setModel(modelo);
+            rs.close();
+                }catch ( ClassNotFoundException | SQLException e ){
+            System.out.println("Error: " + e.getMessage());
+           
+        } finally {
+            
+            jTableCiudadano.getSelectionModel().addListSelectionListener( new ListSelectionListener() {
+                @Override
+                public void valueChanged(ListSelectionEvent e) {
+                   if (!e.getValueIsAdjusting())
+                        {
+                                boolean rowsAreSelected = jTableCiudadano.getSelectedRowCount() > 0;
+                                 BtnAceptar.setEnabled(rowsAreSelected);
+                        }
+                    
+                }
+            } );
+            jTableCiudadano.setDefaultEditor(Object.class, null);
+            
+        }
+    }
+    
     private void jButtonBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBuscarActionPerformed
         // TODO add your handling code here:
         //busqueda();
