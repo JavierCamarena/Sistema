@@ -82,7 +82,7 @@ public class RegistroUD extends javax.swing.JFrame {
         BtnEditar.setEnabled(false);
         btnRemover.setEnabled(false);
         btnAniadir.setEnabled(false);
- //       jTableCiudadano.setEnabled(false);
+        
     }
     
     public void PresentaDatos() 
@@ -328,6 +328,11 @@ public class RegistroUD extends javax.swing.JFrame {
         });
 
         BtnEditar.setText("Editar");
+        BtnEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnEditarActionPerformed(evt);
+            }
+        });
 
         BtnEliminar.setText("Eliminar");
         BtnEliminar.addActionListener(new java.awt.event.ActionListener() {
@@ -588,6 +593,7 @@ public class RegistroUD extends javax.swing.JFrame {
                         {
                                 boolean rowsAreSelected = jTableCiudadano.getSelectedRowCount() > 0;
                                  btnRemover.setEnabled(rowsAreSelected);
+                                 BtnEditar.setEnabled(rowsAreSelected);
                         }
                     
                 }
@@ -704,14 +710,22 @@ public class RegistroUD extends javax.swing.JFrame {
 
     private void btnRemoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoverActionPerformed
         
-            int a = jTable1.getSelectedRow();
+            int a = jTableCiudadano.getSelectedRow();
             
             ClsCiudadano temp = new ClsCiudadano(Configuracion);
-            temp.idCiudadano = Integer.parseInt(jTable1.getValueAt(a , 0).toString() );
+            temp.idCiudadano = Integer.parseInt(jTableCiudadano.getValueAt(a , 0).toString() );
             temp.Elimina();
-            jTable1.removeRowSelectionInterval(a,a);
+            rellenaTabla();
         
     }//GEN-LAST:event_btnRemoverActionPerformed
+
+    private void BtnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnEditarActionPerformed
+        // TODO add your handling code here:
+        int sel = jTableCiudadano.getSelectedRow();
+        
+        RegistroCiudadano rc = new RegistroCiudadano(Configuracion,Responsable.idResponsable, Integer.parseInt(jTableCiudadano.getValueAt(sel,0).toString()));
+        
+    }//GEN-LAST:event_BtnEditarActionPerformed
 
     /**
      * @param args the command line arguments
