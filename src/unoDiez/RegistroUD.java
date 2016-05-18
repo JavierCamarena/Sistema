@@ -727,6 +727,14 @@ public class RegistroUD extends javax.swing.JFrame {
         
     }//GEN-LAST:event_BtnEditarActionPerformed
 
+    private void BtnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnEditarActionPerformed
+        // TODO add your handling code here:
+        int sel = jTableCiudadano.getSelectedRow();
+        
+        RegistroCiudadano rc = new RegistroCiudadano(Configuracion,Responsable.idResponsable, Integer.parseInt(jTableCiudadano.getValueAt(sel,0).toString()));
+        
+    }//GEN-LAST:event_BtnEditarActionPerformed
+
     /**
      * @param args the command line arguments
      */
