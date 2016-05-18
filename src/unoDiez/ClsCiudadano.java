@@ -44,12 +44,13 @@ public class ClsCiudadano {
         dbPath = conf[1];
         dbUsr = conf[2];
         dbPw = conf[3]; 
+        Voto = false;
     }
     
     public void Limpia() 
     {
         idCiudadano = 0 ; 
-        idResponsable = 0 ; 
+        //idResponsable = 0 ; 
         Nombres = ""; 
         Apellidos = ""; 
         ClaveIne = ""; 
@@ -68,7 +69,7 @@ public class ClsCiudadano {
                 con = DriverManager.getConnection(dbPath,dbUsr, dbPw); // OJO esta linea depende de tu base de datos, el 1234 es la contrasenia
                 stat = con.createStatement();
                 
-                String SQL = "INSERT INTO responsables (Nombre,Apellido,ClaveIne,Email,Telefono,Voto,FolioPadron,Seccion,idResponsable)"
+                String SQL = "INSERT INTO ciudadanos (Nombres,Apellidos,ClaveIne,Email,Telefono,Voto,FolioPadron,Seccion,idResponsable)"
                            + " VALUES (?,?,?,?,?,?,?,?,?)";
                 
                 
@@ -108,11 +109,56 @@ public class ClsCiudadano {
     
     public boolean Actualiza() 
     {
-        return true;
+          try {
+                Class.forName(dbName);
+                con = DriverManager.getConnection(dbPath,dbUsr, dbPw);
+                stat = con.createStatement();
+                
+                String SQL = "UPDATE ciudadanos SET Nombres = ?,Apellidos = ?,ClaveIne = ?,Email = ?, Telefono = ?,FolioPadron = ?"
+                           + ",Seccion = ? WHERE idciudadanos = ?";
+                
+                PreparedStatement preparedStmt = con.prepareStatement(SQL);
+                preparedStmt.setString (1, Nombres);
+                preparedStmt.setString (2, Apellidos);
+                preparedStmt.setString (3, ClaveIne);
+                preparedStmt.setString (4, Mail);
+                preparedStmt.setString (5, Telefono);
+                preparedStmt.setString (6, FolioPadron);                
+                preparedStmt.setString (7, Seccion);
+                preparedStmt.setInt(8, idCiudadano);
+                
+                int retorno = preparedStmt.executeUpdate();
+                
+            }catch ( ClassNotFoundException | SQLException e ){
+            System.out.println("Error: " + e.getMessage());
+            return false;
+        } finally {
+            
+        }
+        
+        return true;    
     }
     
     public boolean Elimina() 
     {
-        return true;
+         try {
+                Class.forName(dbName);
+                con = DriverManager.getConnection(dbPath,dbUsr, dbPw);
+                stat = con.createStatement();
+                
+                String SQL = "DELETE FROM ciudadanos WHERE idciudadanos = ?";
+                
+                PreparedStatement preparedStmt = con.prepareStatement(SQL);
+                preparedStmt.setInt (1, idCiudadano);
+          
+                int retorno = preparedStmt.executeUpdate();
+            }catch ( ClassNotFoundException | SQLException e ){
+            System.out.println("Error: " + e.getMessage());
+            return false;
+        } finally {
+            
+        }
+        
+        return true;    
     }
 }

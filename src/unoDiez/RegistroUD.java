@@ -529,7 +529,7 @@ public class RegistroUD extends javax.swing.JFrame {
 
     private void btnAniadirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAniadirActionPerformed
         // TODO add your handling code here:
-        RegistroCiudadano rc = new RegistroCiudadano(Configuracion);
+        RegistroCiudadano rc = new RegistroCiudadano(Configuracion,Responsable.idResponsable);
         rc.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         rc.setLocationRelativeTo(null);
     }//GEN-LAST:event_btnAniadirActionPerformed

@@ -5,6 +5,8 @@
  */
 package unoDiez;
 
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author EsGis02
@@ -14,8 +16,9 @@ public class RegistroCiudadano extends javax.swing.JFrame {
     /**
      * Creates new form RegistroCiudadano
      */
-    public RegistroCiudadano(String[] conf) { //Aqui tiene que entrar un conect
+    public RegistroCiudadano(String[] conf,int idResponsable) { //Aqui tiene que entrar un conect
         ciudadano = new ClsCiudadano(conf);
+        ciudadano.idResponsable = idResponsable;
         initComponents();
         LimpiaCampos();
         setVisible(true);
@@ -41,6 +44,24 @@ public class RegistroCiudadano extends javax.swing.JFrame {
         ciudadano.Telefono    = telField.getText();
         
     }
+    
+    public boolean ValidaDatos() 
+    {
+        if(nombreField.getText().equals(""))
+        {
+            JOptionPane.showMessageDialog(null, "Nombre es un campo obligatorio.", "Cuidado.", JOptionPane.INFORMATION_MESSAGE);
+            nombreField.requestFocusInWindow(); 
+            return false;
+        }
+         if(apellidoField.getText().equals(""))
+        {
+            JOptionPane.showMessageDialog(null, "Apellidos es un campo obligatorio.", "Cuidado.", JOptionPane.INFORMATION_MESSAGE);
+            apellidoField.requestFocusInWindow(); 
+            return false;
+        }
+        return true; 
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -66,7 +87,6 @@ public class RegistroCiudadano extends javax.swing.JFrame {
         folioField = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -100,6 +120,11 @@ public class RegistroCiudadano extends javax.swing.JFrame {
         folioField.setText("jTextField7");
 
         jButton1.setText("Guardar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Limpiar");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -107,8 +132,6 @@ public class RegistroCiudadano extends javax.swing.JFrame {
                 jButton2ActionPerformed(evt);
             }
         });
-
-        jButton3.setText("Eliminar");
 
         jButton4.setText("Salir");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
@@ -158,9 +181,7 @@ public class RegistroCiudadano extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jButton1)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton2)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButton3)))
+                        .addComponent(jButton2)))
                 .addContainerGap(52, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -195,7 +216,6 @@ public class RegistroCiudadano extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
                     .addComponent(jButton2)
-                    .addComponent(jButton3)
                     .addComponent(jButton4))
                 .addContainerGap())
         );
@@ -212,6 +232,42 @@ public class RegistroCiudadano extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_jButton4ActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        if (ValidaDatos())
+        {
+            asignaDatos();
+            int aux;
+            if(ciudadano.idCiudadano == 0 )
+            {
+                aux =ciudadano.Nuevo() ;
+                if (aux!= -1)
+                {
+                    JOptionPane.showMessageDialog(null, "Se ha agregado con exito.", "Cuidado.", JOptionPane.INFORMATION_MESSAGE);
+                    ciudadano.idCiudadano = aux;
+                    LimpiaCampos();
+                    ciudadano.Limpia();
+                    //ya que se guarda actualizar la tabla y limpiar
+                }
+                else
+                {
+                    JOptionPane.showMessageDialog(null, "Ha ocurrido un error.", "Cuidado.", JOptionPane.INFORMATION_MESSAGE); 
+                }
+            }
+            else
+            {
+                if( ciudadano.Actualiza()) 
+                {
+                     JOptionPane.showMessageDialog(null, "Se ha actualizado con exito.", "Cuidado.", JOptionPane.INFORMATION_MESSAGE);
+                    
+                }
+                else
+                {
+                     JOptionPane.showMessageDialog(null, "Ha ocurrido un error.", "Cuidado.", JOptionPane.INFORMATION_MESSAGE);
+                }
+            }
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -224,7 +280,6 @@ public class RegistroCiudadano extends javax.swing.JFrame {
     private javax.swing.JTextField folioField;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
