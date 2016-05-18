@@ -330,7 +330,7 @@ public class RegistroUD extends javax.swing.JFrame {
         BtnEditar.setText("Editar");
         BtnEditar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BtnEditarActionPerformed(evt);
+                BtnEditarActionPerformed1(evt);
             }
         });
 
@@ -719,21 +719,19 @@ public class RegistroUD extends javax.swing.JFrame {
         
     }//GEN-LAST:event_btnRemoverActionPerformed
 
-    private void BtnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnEditarActionPerformed
-        // TODO add your handling code here:
-        int sel = jTableCiudadano.getSelectedRow();
+    private void BtnEditarActionPerformed1(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnEditarActionPerformed1
+       int sel = jTableCiudadano.getSelectedRow();
         
         RegistroCiudadano rc = new RegistroCiudadano(Configuracion,Responsable.idResponsable, Integer.parseInt(jTableCiudadano.getValueAt(sel,0).toString()));
-        
-    }//GEN-LAST:event_BtnEditarActionPerformed
+    }//GEN-LAST:event_BtnEditarActionPerformed1
 
-    private void BtnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnEditarActionPerformed
+    private void BtnEditarActionPerformed(java.awt.event.ActionEvent evt) {                                          
         // TODO add your handling code here:
         int sel = jTableCiudadano.getSelectedRow();
         
         RegistroCiudadano rc = new RegistroCiudadano(Configuracion,Responsable.idResponsable, Integer.parseInt(jTableCiudadano.getValueAt(sel,0).toString()));
         
-    }//GEN-LAST:event_BtnEditarActionPerformed
+    }                                         
 
     /**
      * @param args the command line arguments
