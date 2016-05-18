@@ -5,6 +5,7 @@
  */
 package unoDiez;
 
+import java.awt.Window;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -14,6 +15,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.WindowConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
@@ -29,6 +31,13 @@ public class RegistroUD extends javax.swing.JFrame {
 
     private ClsResponsables Responsable;
     
+    private String jTextnombre= "Ingresa el nombre:";
+    private String jTextapellido= "Ingresa el apellido:";
+    private final int nomb = 0;
+    private final int ape  = 1;
+    private final int todo = 2;
+    private String sqlcode=" WHERE Colonia =";
+    private int op = 0 ; 
     String Configuracion[];
     Connection con = null;
     Statement stat = null;
@@ -87,6 +96,11 @@ public class RegistroUD extends javax.swing.JFrame {
         jTextCargo.setText(Responsable.Cargo);
     }
     
+    public void CargaDatos()
+    {
+        Responsable.Busca();
+    }
+    
     public void AsignaDatos()
     {
         Responsable.Nombre = jTextNombre.getText();
@@ -128,7 +142,7 @@ public class RegistroUD extends javax.swing.JFrame {
         jButtonBuscar = new javax.swing.JButton();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
-        jTextBusqueda = new javax.swing.JTextField();
+        jTextBusquedaDialog = new javax.swing.JTextField();
         jLabelParam = new javax.swing.JLabel();
         BtnCancelar = new javax.swing.JButton();
         BtnAceptar = new javax.swing.JButton();
@@ -175,9 +189,9 @@ public class RegistroUD extends javax.swing.JFrame {
 
         jLabel9.setText("Selecciona una opción:");
 
-        jTextBusqueda.addActionListener(new java.awt.event.ActionListener() {
+        jTextBusquedaDialog.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextBusquedaActionPerformed(evt);
+                jTextBusquedaDialogActionPerformed(evt);
             }
         });
 
@@ -231,7 +245,7 @@ public class RegistroUD extends javax.swing.JFrame {
                                 .addGroup(jDialogBuscaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabelParam)
                                     .addGroup(jDialogBuscaLayout.createSequentialGroup()
-                                        .addComponent(jTextBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jTextBusquedaDialog, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(18, 18, 18)
                                         .addComponent(jButtonBuscar))))
                             .addComponent(jLabel8))
@@ -250,7 +264,7 @@ public class RegistroUD extends javax.swing.JFrame {
                 .addGroup(jDialogBuscaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButtonBuscar)
-                    .addComponent(jTextBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextBusquedaDialog, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(jDialogBuscaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jDialogBuscaLayout.createSequentialGroup()
                         .addGap(124, 124, 124)
@@ -516,10 +530,22 @@ public class RegistroUD extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_BtnEliminarActionPerformed
 
+    private void LimpiaDialog() 
+    {
+        jTextBusquedaDialog.setText("");
+        //BtnAceptar.setEnabled(false);
+        
+    }
+    
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
       
-        //jDialogBusca.setVisible(true);
-        rellenaTabla();
+        jDialogBusca.setVisible(true);
+        jDialogBusca.pack();
+        jDialogBusca.setLocationRelativeTo(this);
+        jDialogBusca.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        LimpiaDialog();
+        //jDialogBusca.size(200,200);
+        //rellenaTabla();
         
         // TODO add your handling code here:
     }//GEN-LAST:event_btnBuscarActionPerformed
@@ -573,25 +599,100 @@ public class RegistroUD extends javax.swing.JFrame {
     
     private void jButtonBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBuscarActionPerformed
         // TODO add your handling code here:
-        //busqueda();
+        busqueda();
     }//GEN-LAST:event_jButtonBuscarActionPerformed
 
-    private void jTextBusquedaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextBusquedaActionPerformed
+        public void asignaSql(){
+        op = jComboBox1.getSelectedIndex();
+        jTextBusquedaDialog.setEnabled(true);
+        switch (op) {
+            case nomb : jLabelParam.setText(jTextnombre);sqlcode=" WHERE Nombre LIKE";  break;
+            case ape: jLabelParam.setText(jTextapellido);sqlcode=" WHERE Apellido LIKE";break;
+            case todo: jTextBusquedaDialog.setEnabled(false); jLabelParam.setText("Se muestran todos");sqlcode="";break;
+            default: jLabelParam.setText("Parámetro:");sqlcode="";break;
+        }
+    }
+    
+     public void busqueda(){
+         asignaSql();
+        if(op < 2 && jTextBusquedaDialog.getText().equalsIgnoreCase("") ){
+            JOptionPane.showMessageDialog(null, "Ingresa una opcion en la busqueda.", "", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }else {
+            if(op < 2) {
+                sqlcode+="'%"+ jTextBusquedaDialog.getText()+"%'";
+            }
+        }
+        System.out.println("Buscando y llenando tabla");
+        try{    
+            Class.forName(Configuracion[0]);
+            con = DriverManager.getConnection(Configuracion[1],Configuracion[2],Configuracion[3]); // OJO esta linea depende de tu base de datos, el 1234 es la contrasenia
+            stat = con.createStatement();
+            System.out.println("preparando statement :"+sqlcode);
+            ResultSet rs = stat.executeQuery("select * from responsables "+sqlcode);
+            System.out.println("Datos obtenidos configurando tabla");
+          
+            String [] titulos = {"id","Nombre", "Apellido", "Clave Ine", "Numero", "Zona", "Cargo", "Email"}; 
+            String [] registros = new String[8];
+            
+            modelo = new DefaultTableModel(null, titulos);
+            while(rs.next())
+                {
+                    registros[0]= rs.getString("idResponsables");
+                    registros[1]= rs.getString("Nombre");
+                    registros[2]= rs.getString("Apellido");
+                    registros[3]= rs.getString("ClaveElectorIne");
+                    registros[4]= rs.getString("NumTelefono");
+                    registros[5]= rs.getString("ZonaGrupo");
+                    registros[6]= rs.getString("Cargo");
+                    registros[7]= rs.getString("Email");
+                    modelo.addRow(registros);
+                }
+            jTable1.setModel(modelo);
+            rs.close();
+            //asignaSql();
+                }catch ( ClassNotFoundException | SQLException e ){
+            System.out.println("Error: " + e.getMessage());
+           
+        } finally {
+            
+            jTable1.getSelectionModel().addListSelectionListener( new ListSelectionListener() {
+                @Override
+                public void valueChanged(ListSelectionEvent e) {
+                   if (!e.getValueIsAdjusting())
+                        {
+                                boolean rowsAreSelected = jTable1.getSelectedRowCount() > 0;
+                                 BtnAceptar.setEnabled(rowsAreSelected);
+                        }
+                    
+                }
+            } );
+            jTable1.setDefaultEditor(Object.class, null);
+            
+        }
+    }
+    
+    private void jTextBusquedaDialogActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextBusquedaDialogActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextBusquedaActionPerformed
+    }//GEN-LAST:event_jTextBusquedaDialogActionPerformed
 
     private void BtnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCancelarActionPerformed
-        // TODO add your handling code here:
-
+        jDialogBusca.dispose();
     }//GEN-LAST:event_BtnCancelarActionPerformed
 
     private void BtnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnAceptarActionPerformed
-
+         int a = jTable1.getSelectedRow();
+        Responsable.idResponsable = Integer.parseInt(jTable1.getValueAt(a , 0).toString() );
+        jDialogBusca.dispose();
+        CargaDatos();
+        PresentaDatos();
+        rellenaTabla();
+        btnAniadir.setEnabled(true);
     }//GEN-LAST:event_BtnAceptarActionPerformed
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
         // TODO add your handling code here:
-        //AsignaSQL();
+        asignaSql();
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
     private void btnAniadirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAniadirActionPerformed
@@ -677,7 +778,7 @@ public class RegistroUD extends javax.swing.JFrame {
     private javax.swing.JTable jTable1;
     private javax.swing.JTable jTableCiudadano;
     private javax.swing.JTextField jTextApellidos;
-    private javax.swing.JTextField jTextBusqueda;
+    private javax.swing.JTextField jTextBusquedaDialog;
     private javax.swing.JTextField jTextCargo;
     private javax.swing.JTextField jTextCorreo;
     private javax.swing.JTextField jTextINE;

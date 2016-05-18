@@ -159,4 +159,48 @@ public class ClsResponsables {
         
         return true;    
     }
+    
+    public boolean Busca() 
+    {
+        
+         try {
+                Class.forName(dbName);
+                con = DriverManager.getConnection(dbPath,dbUsr, dbPw);
+                stat = con.createStatement();
+                
+                String SQL = "SELECT * FROM responsables WHERE idResponsables = ?";
+                
+                PreparedStatement preparedStmt = con.prepareStatement(SQL);
+                preparedStmt.setInt(1,idResponsable);
+                
+                ResultSet rs = preparedStmt.executeQuery();
+                
+                System.out.println("Buscando id = "+ idResponsable);
+                
+                if(rs.next())
+                {
+                    idResponsable = rs.getInt("idResponsables");
+                    Nombre = rs.getString("Nombre");
+                    Apellido = rs.getString("Apellido");
+                    ClaveElectorIne = rs.getString("ClaveElectorIne");
+                    NumTelefono = rs.getString("NumTelefono"); 
+                    ZonaGrupo = rs.getString("ZonaGrupo"); 
+                    Cargo = rs.getString("Cargo"); 
+                    Email = rs.getString("Email");
+                }
+                else
+                {
+                    System.out.println("No encontro nada :c");
+                    return false ;
+                }
+                
+            }catch ( ClassNotFoundException | SQLException e ){
+            System.out.println("Error: " + e.getMessage());
+            return false;
+        } finally {
+            
+        }
+        
+        return true;    
+    }
 }

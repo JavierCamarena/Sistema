@@ -73,7 +73,7 @@ public class ClsCiudadano {
                            + " VALUES (?,?,?,?,?,?,?,?,?)";
                 
                 
-                PreparedStatement preparedStmt = con.prepareStatement(SQL,new String[]{"idResponsable"});
+                PreparedStatement preparedStmt = con.prepareStatement(SQL,new String[]{"idCiudadano"});
                 preparedStmt.setString (1, Nombres);
                 preparedStmt.setString (2, Apellidos);
                 preparedStmt.setString (3, ClaveIne);
