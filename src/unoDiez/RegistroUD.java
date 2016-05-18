@@ -10,12 +10,16 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import sist.LimiteDeCaracteres;
+import sist.NuevoUsuario;
+import sist.VentanaBusqueda;
 
 /**
  *
@@ -291,13 +295,13 @@ public class RegistroUD extends javax.swing.JFrame {
 
         jTableCiudadano.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {},
+                {},
+                {},
+                {}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+
             }
         ));
         jScrollPane1.setViewportView(jTableCiudadano);
@@ -347,6 +351,11 @@ public class RegistroUD extends javax.swing.JFrame {
         });
 
         btnRemover.setText("Remover");
+        btnRemover.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRemoverActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -359,18 +368,17 @@ public class RegistroUD extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel3)
+                                .addComponent(jLabel4)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextINE))
+                                .addComponent(jTextZonaGrupo, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel1)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE))
+                                .addComponent(jTextNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel4)
+                                .addComponent(jLabel3)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextZonaGrupo)))
+                                .addComponent(jTextINE, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel2)
@@ -387,8 +395,8 @@ public class RegistroUD extends javax.swing.JFrame {
                         .addComponent(jTextTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(167, 167, 167))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 820, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 66, Short.MAX_VALUE)
+                        .addComponent(jScrollPane1)
+                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(BtnGuardar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(BtnSalir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -510,7 +518,7 @@ public class RegistroUD extends javax.swing.JFrame {
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
       
-        jDialogBusca.setVisible(true);
+        //jDialogBusca.setVisible(true);
         rellenaTabla();
         
         // TODO add your handling code here:
@@ -553,7 +561,7 @@ public class RegistroUD extends javax.swing.JFrame {
                    if (!e.getValueIsAdjusting())
                         {
                                 boolean rowsAreSelected = jTableCiudadano.getSelectedRowCount() > 0;
-                                 BtnAceptar.setEnabled(rowsAreSelected);
+                                 btnRemover.setEnabled(rowsAreSelected);
                         }
                     
                 }
@@ -592,6 +600,17 @@ public class RegistroUD extends javax.swing.JFrame {
         rc.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         rc.setLocationRelativeTo(null);
     }//GEN-LAST:event_btnAniadirActionPerformed
+
+    private void btnRemoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoverActionPerformed
+        
+            int a = jTable1.getSelectedRow();
+            
+            ClsCiudadano temp = new ClsCiudadano(Configuracion);
+            temp.idCiudadano = Integer.parseInt(jTable1.getValueAt(a , 0).toString() );
+            temp.Elimina();
+            jTable1.removeRowSelectionInterval(a,a);
+        
+    }//GEN-LAST:event_btnRemoverActionPerformed
 
     /**
      * @param args the command line arguments
