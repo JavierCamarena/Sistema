@@ -47,6 +47,54 @@ public class ClsCiudadano {
         Voto = false;
     }
     
+    public boolean Busca(int id)
+    {
+     
+                try {
+                Class.forName(dbName);
+                con = DriverManager.getConnection(dbPath,dbUsr, dbPw);
+                stat = con.createStatement();
+                
+                String SQL = "SELECT * FROM ciudadanos WHERE idciudadanos = ?";
+                
+                PreparedStatement preparedStmt = con.prepareStatement(SQL);
+                preparedStmt.setInt(1,id);
+                
+                ResultSet rs = preparedStmt.executeQuery();
+                
+                System.out.println("Buscando id = "+ id);
+                
+                if(rs.next())
+                {
+                    idCiudadano = rs.getInt("idciudadanos");
+                    Nombres = rs.getString("Nombres");
+                    Apellidos = rs.getString("Apellidos");
+                    ClaveIne = rs.getString("ClaveIne"); 
+                    Mail = rs.getString("Email"); 
+                    Telefono = rs.getString("Telefono"); 
+                    Voto = Boolean.parseBoolean(rs.getString("Voto")); 
+                    FolioPadron   = rs.getString("FolioPadron"); 
+                    Seccion       = rs.getString("Seccion"); 
+                    idResponsable = Integer.parseInt(rs.getString("idResponsable")); 
+                     
+                   
+                }
+                else
+                {
+                    System.out.println("No encontro nada :c");
+                    return false ;
+                }
+                
+            }catch ( ClassNotFoundException | SQLException e ){
+            System.out.println("Error: " + e.getMessage());
+            return false;
+        } finally {
+            
+        }
+        
+        return true;    
+    }
+    
     public void Limpia() 
     {
         idCiudadano = 0 ; 
