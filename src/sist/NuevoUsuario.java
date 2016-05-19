@@ -304,7 +304,7 @@ public class NuevoUsuario extends javax.swing.JFrame {
         jComboResulColonias = new javax.swing.JComboBox<>();
         jLabel18 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("CEDULA DE REGISTRO");
