@@ -74,9 +74,9 @@ public class NuevoUsuario extends javax.swing.JFrame {
         jTextSenias.setDocument(new LimiteDeCaracteres(100));
         jTextTelefono.setDocument(new LimiteDeCaracteres(45));
         jTextCorreo.setDocument(new LimiteDeCaracteres(45));
-        jTextPSocial.setDocument(new LimiteDeCaracteres(100));
-        jTextPInfra.setDocument(new LimiteDeCaracteres(100));
-        jTextObs.setDocument(new LimiteDeCaracteres(50));
+        jTextPSocial.setDocument(new LimiteDeCaracteres(500));
+        jTextPInfra.setDocument(new LimiteDeCaracteres(500));
+        jTextObs.setDocument(new LimiteDeCaracteres(500));
     }
     
     private void cargaColonias() throws SQLException 
