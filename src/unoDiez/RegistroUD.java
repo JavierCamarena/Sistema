@@ -42,6 +42,12 @@ public class RegistroUD extends javax.swing.JFrame {
     Connection con = null;
     Statement stat = null;
     public DefaultTableModel modelo;
+    public final int OTRO  = 0;
+    public final int LIDER = 1;
+    public final int MOVILIZADOR = 2;
+    public final int ENLACE =3;
+
+    
     /**
      * Creates new form RegistroUD
      */
@@ -65,7 +71,7 @@ public class RegistroUD extends javax.swing.JFrame {
         jTextCorreo.setDocument(new LimiteDeCaracteres(45));
         jTextTelefono.setDocument(new LimiteDeCaracteres(45));
         jTextZonaGrupo.setDocument(new LimiteDeCaracteres(45));
-        jTextCargo.setDocument(new LimiteDeCaracteres(45));
+       
     }
     
     public void LimpiaCampos()
@@ -76,7 +82,7 @@ public class RegistroUD extends javax.swing.JFrame {
         jTextINE.setText("");
         jTextCorreo.setText("");
         jTextZonaGrupo.setText("");
-        jTextCargo.setText("");
+        cargoMenu.setSelectedIndex(0);
         ///////////////////////////////////////Quedan pendientes 3 campos que no se si el responsable tambien los llevara
         Responsable.Limpia();
         BtnEditar.setEnabled(false);
@@ -93,7 +99,8 @@ public class RegistroUD extends javax.swing.JFrame {
         jTextINE.setText(Responsable.ClaveElectorIne);
         jTextCorreo.setText(Responsable.Email);
         jTextZonaGrupo.setText(Responsable.ZonaGrupo);
-        jTextCargo.setText(Responsable.Cargo);
+        //jTextCargo.setText(Responsable.Cargo);
+        cargoMenu.setSelectedItem(Responsable.Cargo);
     }
     
     public void CargaDatos()
@@ -109,7 +116,7 @@ public class RegistroUD extends javax.swing.JFrame {
         Responsable.ClaveElectorIne = jTextINE.getText();
         Responsable.Email = jTextCorreo.getText();
         Responsable.ZonaGrupo = jTextZonaGrupo.getText();
-        Responsable.Cargo = jTextCargo.getText();
+        Responsable.Cargo = cargoMenu.getSelectedItem().toString();
     }
 
     public boolean ValidaDatos() 
@@ -162,7 +169,6 @@ public class RegistroUD extends javax.swing.JFrame {
         jTextTelefono = new javax.swing.JTextField();
         jTextCorreo = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
-        jTextCargo = new javax.swing.JTextField();
         jSeparator1 = new javax.swing.JSeparator();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTableCiudadano = new javax.swing.JTable();
@@ -174,6 +180,7 @@ public class RegistroUD extends javax.swing.JFrame {
         btnLimpiar = new javax.swing.JButton();
         btnBuscar = new javax.swing.JButton();
         btnRemover = new javax.swing.JButton();
+        cargoMenu = new javax.swing.JComboBox<>();
 
         jDialogBusca.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
@@ -277,7 +284,7 @@ public class RegistroUD extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel1.setText("Nombres:");
 
@@ -304,8 +311,6 @@ public class RegistroUD extends javax.swing.JFrame {
         jTextCorreo.setText("jTextField6");
 
         jLabel7.setText("Cargo:");
-
-        jTextCargo.setText("jTextField7");
 
         jTableCiudadano.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -376,6 +381,8 @@ public class RegistroUD extends javax.swing.JFrame {
             }
         });
 
+        cargoMenu.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "OTRO", "LIDER", "MOVILIZADOR", "ENLACE" }));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -407,7 +414,7 @@ public class RegistroUD extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jTextApellidos, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
                             .addComponent(jTextCorreo)
-                            .addComponent(jTextCargo))
+                            .addComponent(cargoMenu, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(18, 18, 18)
                         .addComponent(jLabel5)
                         .addGap(18, 18, 18)
@@ -447,9 +454,9 @@ public class RegistroUD extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
-                    .addComponent(jTextCargo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4)
-                    .addComponent(jTextZonaGrupo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextZonaGrupo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cargoMenu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -779,6 +786,7 @@ public class RegistroUD extends javax.swing.JFrame {
     private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnLimpiar;
     private javax.swing.JButton btnRemover;
+    private javax.swing.JComboBox<String> cargoMenu;
     private javax.swing.JButton jButtonBuscar;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JDialog jDialogBusca;
@@ -799,7 +807,6 @@ public class RegistroUD extends javax.swing.JFrame {
     private javax.swing.JTable jTableCiudadano;
     private javax.swing.JTextField jTextApellidos;
     private javax.swing.JTextField jTextBusquedaDialog;
-    private javax.swing.JTextField jTextCargo;
     private javax.swing.JTextField jTextCorreo;
     private javax.swing.JTextField jTextINE;
     private javax.swing.JTextField jTextNombre;

@@ -139,10 +139,12 @@ public class ClsResponsables {
     
     public boolean Elimina() 
     {
+        eliminaCiudadanos();
          try {
                 Class.forName(dbName);
                 con = DriverManager.getConnection(dbPath,dbUsr, dbPw);
                 stat = con.createStatement();
+                
                 
                 String SQL = "DELETE FROM responsables WHERE idResponsables = ?";
                 
@@ -158,6 +160,29 @@ public class ClsResponsables {
         }
         
         return true;    
+    }
+    
+    public boolean eliminaCiudadanos(){
+                 try {
+                Class.forName(dbName);
+                con = DriverManager.getConnection(dbPath,dbUsr, dbPw);
+                stat = con.createStatement();
+                
+                
+                String SQL = "DELETE FROM ciudadanos WHERE idResponsable = ?";
+                
+                PreparedStatement preparedStmt = con.prepareStatement(SQL);
+                preparedStmt.setInt (1, idResponsable);
+          
+                int retorno = preparedStmt.executeUpdate();
+            }catch ( ClassNotFoundException | SQLException e ){
+            System.out.println("Error: " + e.getMessage());
+            return false;
+        } finally {
+            
+        }
+        
+        return true;
     }
     
     public boolean Busca() 

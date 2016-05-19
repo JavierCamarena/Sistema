@@ -75,7 +75,7 @@ public class VentanaBusqueda extends javax.swing.JFrame {
         jLabelParam = new javax.swing.JLabel();
         BtnCancelar = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         BtnAceptar.setText("Editar");
         BtnAceptar.addActionListener(new java.awt.event.ActionListener() {
