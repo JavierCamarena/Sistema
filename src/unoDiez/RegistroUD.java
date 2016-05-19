@@ -94,14 +94,14 @@ public class RegistroUD extends javax.swing.JFrame {
     
     public void PresentaDatos() 
     {
-        jTextNombre   .setText(Responsable.         Nombre);
-        jTextApellidos.setText(Responsable.       Apellido);
-        jTextTelefono .setText(Responsable.    NumTelefono);
-        jTextINE      .setText(Responsable.ClaveElectorIne);
-        jTextCorreo   .setText(Responsable.          Email);
-        jTextZonaGrupo.setText(Responsable.      ZonaGrupo);
+        jTextNombre.setText(Responsable.Nombre);
+        jTextApellidos.setText(Responsable.Apellido);
+        jTextTelefono.setText(Responsable.NumTelefono);
+        jTextINE.setText(Responsable.ClaveElectorIne);
+        jTextCorreo.setText(Responsable.Email);
+        jTextZonaGrupo.setText(Responsable.ZonaGrupo);
         //jTextCargo.setText(Responsable.Cargo);
-        cargoMenu       .setSelectedItem(Responsable.Cargo);
+        cargoMenu.setSelectedItem(Responsable.Cargo);
     }
     
     public void CargaDatos()
@@ -134,6 +134,12 @@ public class RegistroUD extends javax.swing.JFrame {
             jTextApellidos.requestFocusInWindow(); 
             return false;
         }
+        if(jTextINE.getText().equals(""))
+        {
+            JOptionPane.showMessageDialog(null, "Clave es un campo obligatorio.", "Cuidado.", JOptionPane.INFORMATION_MESSAGE);
+            jTextINE.requestFocusInWindow(); 
+            return false;
+        } 
         return true; 
     }
     
@@ -687,6 +693,7 @@ public class RegistroUD extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(null, "Se ha eliminado con exito.", "Cuidado.", JOptionPane.INFORMATION_MESSAGE);
                     LimpiaCampos();
                     rellenaTabla();
+                    
                 }
             }
         }
@@ -700,7 +707,7 @@ public class RegistroUD extends javax.swing.JFrame {
     }
     
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-      
+        BtnAceptar.setEnabled(false);
         jDialogBusca.setVisible(true);
         jDialogBusca.pack();
         jDialogBusca.setLocationRelativeTo(this);
@@ -710,6 +717,7 @@ public class RegistroUD extends javax.swing.JFrame {
         //rellenaTabla();
         
         // TODO add your handling code here:
+        busqueda();
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     
@@ -813,6 +821,7 @@ public class RegistroUD extends javax.swing.JFrame {
                 }
             jTable1.setModel(modelo);
             rs.close();
+            
             //asignaSql();
                 }catch ( ClassNotFoundException | SQLException e ){
             System.out.println("Error: " + e.getMessage());
@@ -850,6 +859,7 @@ public class RegistroUD extends javax.swing.JFrame {
         CargaDatos();
         PresentaDatos();
         rellenaTabla();
+        BtnAceptar.setEnabled(false);
         btnAniadir.setEnabled(true);
     }//GEN-LAST:event_BtnAceptarActionPerformed
 
@@ -954,6 +964,29 @@ public class RegistroUD extends javax.swing.JFrame {
             apellidoField.requestFocusInWindow(); 
             return false;
         }
+         if(claveIneField.getText().equals(""))
+        {
+            JOptionPane.showMessageDialog(null, "Clave es un campo obligatorio.", "Cuidado.", JOptionPane.INFORMATION_MESSAGE);
+            claveIneField.requestFocusInWindow(); 
+            return false;
+        }
+        if(folioField.getText().equals("")){
+            JOptionPane.showMessageDialog(null, "Folio es un campo obligatorio.", "Cuidado.", JOptionPane.INFORMATION_MESSAGE);
+            folioField.requestFocusInWindow(); 
+            return false; 
+        }
+        try {
+            if(Long.parseLong(folioField.getText())<0){
+                JOptionPane.showMessageDialog(null, "Folio debe ser número","Cuidado",JOptionPane.INFORMATION_MESSAGE);
+                    folioField.requestFocus();
+                    return false;
+            }
+            
+        } catch (NumberFormatException nfe) {
+            JOptionPane.showMessageDialog(null, "Folio debe ser número","Cuidado",JOptionPane.INFORMATION_MESSAGE);
+            return false;
+        }
+        
         return true; 
     }
     
