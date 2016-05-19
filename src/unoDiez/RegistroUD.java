@@ -181,6 +181,7 @@ public class RegistroUD extends javax.swing.JFrame {
         jLabel16 = new javax.swing.JLabel();
         nombreField = new javax.swing.JTextField();
         apellidoField = new javax.swing.JTextField();
+        jLabel18 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -206,6 +207,7 @@ public class RegistroUD extends javax.swing.JFrame {
         btnBuscar = new javax.swing.JButton();
         btnRemover = new javax.swing.JButton();
         cargoMenu = new javax.swing.JComboBox<>();
+        jLabel17 = new javax.swing.JLabel();
 
         jDialogBusca.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
@@ -358,6 +360,9 @@ public class RegistroUD extends javax.swing.JFrame {
 
         apellidoField.setText("jTextField2");
 
+        jLabel18.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jLabel18.setText("Registro de Ciudadano");
+
         javax.swing.GroupLayout jDialogCiudadanoLayout = new javax.swing.GroupLayout(jDialogCiudadano.getContentPane());
         jDialogCiudadano.getContentPane().setLayout(jDialogCiudadanoLayout);
         jDialogCiudadanoLayout.setHorizontalGroup(
@@ -366,19 +371,26 @@ public class RegistroUD extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jDialogCiudadanoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jDialogCiudadanoLayout.createSequentialGroup()
+                        .addGap(336, 336, 336)
+                        .addComponent(jButton4))
+                    .addGroup(jDialogCiudadanoLayout.createSequentialGroup()
+                        .addComponent(jButton1)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton2))
+                    .addGroup(jDialogCiudadanoLayout.createSequentialGroup()
                         .addGroup(jDialogCiudadanoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabel13)
-                            .addComponent(nombreField, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
+                            .addComponent(nombreField)
                             .addComponent(jLabel10)
-                            .addComponent(correoField))
+                            .addComponent(correoField, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(jDialogCiudadanoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel14)
                             .addGroup(jDialogCiudadanoLayout.createSequentialGroup()
                                 .addGroup(jDialogCiudadanoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jDialogCiudadanoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(apellidoField, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
-                                        .addComponent(telField))
+                                        .addComponent(apellidoField)
+                                        .addComponent(telField, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addComponent(jLabel11))
                                 .addGap(18, 18, 18)
                                 .addGroup(jDialogCiudadanoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -394,18 +406,16 @@ public class RegistroUD extends javax.swing.JFrame {
                                                 .addComponent(jLabel16))
                                             .addGroup(jDialogCiudadanoLayout.createSequentialGroup()
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                .addComponent(folioField))))
-                                    .addComponent(jButton4)))))
-                    .addGroup(jDialogCiudadanoLayout.createSequentialGroup()
-                        .addComponent(jButton1)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButton2)))
+                                                .addComponent(folioField, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE))))))))
+                    .addComponent(jLabel18))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jDialogCiudadanoLayout.setVerticalGroup(
             jDialogCiudadanoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jDialogCiudadanoLayout.createSequentialGroup()
-                .addContainerGap()
+                .addContainerGap(19, Short.MAX_VALUE)
+                .addComponent(jLabel18)
+                .addGap(26, 26, 26)
                 .addGroup(jDialogCiudadanoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel10)
                     .addComponent(jLabel11)
@@ -430,7 +440,7 @@ public class RegistroUD extends javax.swing.JFrame {
                     .addGroup(jDialogCiudadanoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(seccionField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(folioField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 164, Short.MAX_VALUE)
+                .addGap(28, 28, 28)
                 .addGroup(jDialogCiudadanoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
                     .addComponent(jButton2)
@@ -479,28 +489,28 @@ public class RegistroUD extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(jTableCiudadano);
 
-        btnAniadir.setText("Añadir");
+        btnAniadir.setText("Añadir Ciudadano");
         btnAniadir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAniadirActionPerformed(evt);
             }
         });
 
-        BtnEditar.setText("Editar");
+        BtnEditar.setText("Editar Ciudadano");
         BtnEditar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 BtnEditarActionPerformed1(evt);
             }
         });
 
-        BtnEliminar.setText("Eliminar");
+        BtnEliminar.setText("Eliminar Responsable");
         BtnEliminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 BtnEliminarActionPerformed(evt);
             }
         });
 
-        BtnGuardar.setText("Guardar");
+        BtnGuardar.setText("Guardar Responsable");
         BtnGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 BtnGuardarActionPerformed(evt);
@@ -514,21 +524,21 @@ public class RegistroUD extends javax.swing.JFrame {
             }
         });
 
-        btnLimpiar.setText("Limpiar");
+        btnLimpiar.setText("Limpiar Responsable");
         btnLimpiar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnLimpiarActionPerformed(evt);
             }
         });
 
-        btnBuscar.setText("Buscar");
+        btnBuscar.setText("Buscar Responsable");
         btnBuscar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnBuscarActionPerformed(evt);
             }
         });
 
-        btnRemover.setText("Remover");
+        btnRemover.setText("Remover Ciudadano");
         btnRemover.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnRemoverActionPerformed(evt);
@@ -537,6 +547,9 @@ public class RegistroUD extends javax.swing.JFrame {
 
         cargoMenu.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "OTRO", "LIDER", "MOVILIZADOR", "ENLACE" }));
 
+        jLabel17.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jLabel17.setText("Registro de Responsables");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -544,22 +557,22 @@ public class RegistroUD extends javax.swing.JFrame {
             .addComponent(jSeparator1)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel4)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jTextZonaGrupo, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel3)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextINE, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(18, 18, 18)
+                                .addComponent(jTextINE, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jTextNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(43, 43, 43)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel2)
                             .addComponent(jLabel7)
@@ -574,7 +587,7 @@ public class RegistroUD extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(jTextTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(167, 167, 167))
-                    .addGroup(layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jScrollPane1)
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -586,12 +599,17 @@ public class RegistroUD extends javax.swing.JFrame {
                             .addComponent(btnBuscar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(btnRemover, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(btnLimpiar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(26, 26, 26))))
+                        .addGap(26, 26, 26))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel17)
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(27, 27, 27)
+                .addComponent(jLabel17)
+                .addGap(28, 28, 28)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(jTextNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -614,25 +632,25 @@ public class RegistroUD extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(BtnGuardar)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(BtnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(btnLimpiar)
                         .addGap(18, 18, 18)
                         .addComponent(btnBuscar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(18, 18, 18)
                         .addComponent(BtnEliminar)
-                        .addGap(59, 59, 59)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(BtnEditar)
                         .addGap(18, 18, 18)
                         .addComponent(btnAniadir)
                         .addGap(18, 18, 18)
                         .addComponent(btnRemover)
-                        .addGap(94, 94, 94)
+                        .addGap(39, 39, 39)
                         .addComponent(BtnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(14, Short.MAX_VALUE))
+                .addContainerGap(29, Short.MAX_VALUE))
         );
 
         pack();
@@ -702,8 +720,9 @@ public class RegistroUD extends javax.swing.JFrame {
     private void LimpiaDialog() 
     {
         jTextBusquedaDialog.setText("");
+        modelo = new DefaultTableModel();
         //BtnAceptar.setEnabled(false);
-        
+        jComboBox1.setSelectedIndex(2);
     }
     
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
@@ -853,7 +872,7 @@ public class RegistroUD extends javax.swing.JFrame {
     }//GEN-LAST:event_BtnCancelarActionPerformed
 
     private void BtnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnAceptarActionPerformed
-         int a = jTable1.getSelectedRow();
+        int a = jTable1.getSelectedRow();
         Responsable.idResponsable = Integer.parseInt(jTable1.getValueAt(a , 0).toString() );
         jDialogBusca.dispose();
         CargaDatos();
@@ -1105,6 +1124,8 @@ public class RegistroUD extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
