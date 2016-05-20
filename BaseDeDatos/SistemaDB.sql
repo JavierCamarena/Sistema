@@ -67,6 +67,7 @@ CREATE TABLE `ciudadanos` (
   `Voto` binary(1) DEFAULT NULL,
   `FolioPadron` varchar(45) DEFAULT NULL,
   `Seccion` varchar(45) DEFAULT NULL,
+  `Colonia` varchar(45) DEFAULT NULL,
   `idResponsable` int(11) DEFAULT NULL,
   PRIMARY KEY (`idciudadanos`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -102,7 +103,8 @@ CREATE TABLE `responsables` (
   `Apellido` varchar(45) DEFAULT NULL,
   `ClaveElectorIne` varchar(45) DEFAULT NULL,
   `NumTelefono` varchar(45) DEFAULT NULL,
-  `ZonaGrupo` varchar(45) DEFAULT NULL,
+  `Seccion` varchar(45) DEFAULT NULL,
+  `Colonia` varchar(45) DEFAULT NULL,
   `Cargo` varchar(45) DEFAULT NULL,
   `Email` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`idResponsables`)

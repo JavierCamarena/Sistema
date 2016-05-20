@@ -10,11 +10,13 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
+import sist.Colonia;
 import sist.LimiteDeCaracteres;
 
 /**
@@ -24,7 +26,10 @@ import sist.LimiteDeCaracteres;
 public class RegistroUD extends javax.swing.JFrame {
 
     private ClsResponsables Responsable;
-    
+    private ArrayList<Colonia> listaColonias;
+    private ArrayList<Colonia> listaTemColonias;
+    private String colonia;
+    private String coloniaCiu;
     private String jTextnombre= "Ingresa el nombre:";
     private String jTextapellido= "Ingresa el apellido:";
     private final int nomb = 0;
@@ -45,17 +50,39 @@ public class RegistroUD extends javax.swing.JFrame {
     /**
      * Creates new form RegistroUD
      */
-    public RegistroUD(String[] conf) {
+    public RegistroUD(String[] conf) throws SQLException{
        Configuracion = conf;
         initComponents();
         AsignaTamanios();
         Responsable = new ClsResponsables(Configuracion);
         LimpiaCampos();
         setLocationRelativeTo(null);
+        listaColonias = new ArrayList<>();
+        cargaColonias(); 
     }
 
     private RegistroUD() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+     private void cargaColonias() throws SQLException 
+    {
+        Connection con = DriverManager.getConnection(Configuracion[1],Configuracion[2],Configuracion[3]); // OJO esta linea depende de tu base de datos, el 1234 es la contrasenia
+        Statement stat = con.createStatement();    
+        String SQL = "SELECT  * FROM colonias";
+        ResultSet rs = stat.executeQuery(SQL);
+        while(rs.next())
+        {
+            if(rs.getString("tipo").equals(""))
+            {
+              listaColonias.add(new Colonia(rs.getString("Nombre"),rs.getString("Tipo"),rs.getString("ClaveCp")));
+            }
+            else
+            {
+              listaColonias.add(new Colonia(rs.getString("Tipo")+" - " + rs.getString("Nombre"),rs.getString("Tipo"),rs.getString("ClaveCp")));
+            }
+            
+        }
     }
     
     private void AsignaTamanios()
@@ -65,7 +92,7 @@ public class RegistroUD extends javax.swing.JFrame {
         jTextINE      .setDocument(new LimiteDeCaracteres(45));
         jTextCorreo   .setDocument(new LimiteDeCaracteres(45));
         jTextTelefono .setDocument(new LimiteDeCaracteres(45));
-        jTextZonaGrupo.setDocument(new LimiteDeCaracteres(45));
+        jTextSeccion.setDocument(new LimiteDeCaracteres(45));
         nombreField   .setDocument(new LimiteDeCaracteres(45));
         apellidoField .setDocument(new LimiteDeCaracteres(45));
         claveIneField .setDocument(new LimiteDeCaracteres(45));
@@ -75,6 +102,7 @@ public class RegistroUD extends javax.swing.JFrame {
         folioField    .setDocument(new LimiteDeCaracteres(45));
     }
     
+    
     public void LimpiaCampos()
     {
         jTextNombre   .setText("");
@@ -82,7 +110,10 @@ public class RegistroUD extends javax.swing.JFrame {
         jTextTelefono .setText("");
         jTextINE      .setText("");
         jTextCorreo   .setText("");
-        jTextZonaGrupo.setText("");
+        jTextSeccion.setText("");
+        colonia = "";
+        jTextColonia.setText("");
+        jComboResulColonias.removeAllItems();
         cargoMenu     .setSelectedIndex(0);
         ///////////////////////////////////////Quedan pendientes 3 campos que no se si el responsable tambien los llevara
         Responsable.Limpia();
@@ -99,9 +130,11 @@ public class RegistroUD extends javax.swing.JFrame {
         jTextTelefono.setText(Responsable.NumTelefono);
         jTextINE.setText(Responsable.ClaveElectorIne);
         jTextCorreo.setText(Responsable.Email);
-        jTextZonaGrupo.setText(Responsable.ZonaGrupo);
+        jTextSeccion.setText(Responsable.Seccion);
         //jTextCargo.setText(Responsable.Cargo);
         cargoMenu.setSelectedItem(Responsable.Cargo);
+        colonia = Responsable.Colonia;
+        jTextColonia.setText(colonia);
     }
     
     public void CargaDatos()
@@ -116,8 +149,9 @@ public class RegistroUD extends javax.swing.JFrame {
         Responsable.NumTelefono     = jTextTelefono.getText();
         Responsable.ClaveElectorIne = jTextINE.getText();
         Responsable.Email           = jTextCorreo.getText();
-        Responsable.ZonaGrupo       = jTextZonaGrupo.getText();
+        Responsable.Seccion       = jTextSeccion.getText();
         Responsable.Cargo           = cargoMenu.getSelectedItem().toString();
+        Responsable.Colonia         = colonia;
     }
 
     public boolean ValidaDatos() 
@@ -140,6 +174,24 @@ public class RegistroUD extends javax.swing.JFrame {
             jTextINE.requestFocusInWindow(); 
             return false;
         } 
+        
+        if("".equals(jTextSeccion.getText())){
+            JOptionPane.showMessageDialog(null, "Seccion es un campo obligatorio.", "Cuidado.", JOptionPane.INFORMATION_MESSAGE);
+            jTextSeccion.requestFocusInWindow(); 
+            return false;
+        }
+
+        try{
+            if( Integer.parseInt(jTextSeccion.getText())<470 || Integer.parseInt(jTextSeccion.getText()) > 616 ){
+                JOptionPane.showMessageDialog(null, "Seccion debe estar entre [470-616].", "Cuidado.", JOptionPane.INFORMATION_MESSAGE);
+                jTextSeccion.requestFocusInWindow(); 
+                return false;
+            }
+        }catch(NumberFormatException nfe){
+            JOptionPane.showMessageDialog(null, "Sólo se admiten números en el campo Seccion","Cuidado",JOptionPane.INFORMATION_MESSAGE);
+            return false;
+        }
+        
         return true; 
     }
     
@@ -182,6 +234,10 @@ public class RegistroUD extends javax.swing.JFrame {
         nombreField = new javax.swing.JTextField();
         apellidoField = new javax.swing.JTextField();
         jLabel18 = new javax.swing.JLabel();
+        jLabel21 = new javax.swing.JLabel();
+        jTextColonia1 = new javax.swing.JTextField();
+        jComboResulColonias1 = new javax.swing.JComboBox<>();
+        jLabel22 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -191,7 +247,7 @@ public class RegistroUD extends javax.swing.JFrame {
         jTextNombre = new javax.swing.JTextField();
         jTextApellidos = new javax.swing.JTextField();
         jTextINE = new javax.swing.JTextField();
-        jTextZonaGrupo = new javax.swing.JTextField();
+        jTextSeccion = new javax.swing.JTextField();
         jTextTelefono = new javax.swing.JTextField();
         jTextCorreo = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
@@ -208,6 +264,10 @@ public class RegistroUD extends javax.swing.JFrame {
         btnRemover = new javax.swing.JButton();
         cargoMenu = new javax.swing.JComboBox<>();
         jLabel17 = new javax.swing.JLabel();
+        jTextColonia = new javax.swing.JTextField();
+        jComboResulColonias = new javax.swing.JComboBox<>();
+        jLabel19 = new javax.swing.JLabel();
+        jLabel20 = new javax.swing.JLabel();
 
         jDialogBusca.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
@@ -363,6 +423,30 @@ public class RegistroUD extends javax.swing.JFrame {
         jLabel18.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel18.setText("Registro de Ciudadano");
 
+        jLabel21.setText("Busca Colonia:");
+
+        jTextColonia1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextColonia1ActionPerformed(evt);
+            }
+        });
+        jTextColonia1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextColonia1KeyTyped(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTextColonia1KeyReleased(evt);
+            }
+        });
+
+        jComboResulColonias1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboResulColonias1ActionPerformed(evt);
+            }
+        });
+
+        jLabel22.setText("Selecciona colonia:");
+
         javax.swing.GroupLayout jDialogCiudadanoLayout = new javax.swing.GroupLayout(jDialogCiudadano.getContentPane());
         jDialogCiudadano.getContentPane().setLayout(jDialogCiudadanoLayout);
         jDialogCiudadanoLayout.setHorizontalGroup(
@@ -409,13 +493,23 @@ public class RegistroUD extends javax.swing.JFrame {
                                                 .addComponent(folioField, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE))))))))
                     .addComponent(jLabel18))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jDialogCiudadanoLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jDialogCiudadanoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jTextColonia1, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel21))
+                .addGap(18, 18, 18)
+                .addGroup(jDialogCiudadanoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel22)
+                    .addComponent(jComboResulColonias1, javax.swing.GroupLayout.PREFERRED_SIZE, 404, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
         jDialogCiudadanoLayout.setVerticalGroup(
             jDialogCiudadanoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jDialogCiudadanoLayout.createSequentialGroup()
-                .addContainerGap(19, Short.MAX_VALUE)
+                .addContainerGap()
                 .addComponent(jLabel18)
-                .addGap(26, 26, 26)
+                .addGap(18, 18, 18)
                 .addGroup(jDialogCiudadanoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel10)
                     .addComponent(jLabel11)
@@ -440,7 +534,15 @@ public class RegistroUD extends javax.swing.JFrame {
                     .addGroup(jDialogCiudadanoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(seccionField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(folioField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(28, 28, 28)
+                .addGap(18, 18, 18)
+                .addGroup(jDialogCiudadanoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel21)
+                    .addComponent(jLabel22))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jDialogCiudadanoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jComboResulColonias1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextColonia1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 64, Short.MAX_VALUE)
                 .addGroup(jDialogCiudadanoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
                     .addComponent(jButton2)
@@ -456,7 +558,7 @@ public class RegistroUD extends javax.swing.JFrame {
 
         jLabel3.setText("Clave INE:");
 
-        jLabel4.setText("Zona/Grupo:");
+        jLabel4.setText("Sección:");
 
         jLabel5.setText("Teléfono:");
 
@@ -468,7 +570,7 @@ public class RegistroUD extends javax.swing.JFrame {
 
         jTextINE.setText("jTextField3");
 
-        jTextZonaGrupo.setText("jTextField4");
+        jTextSeccion.setText("jTextField4");
 
         jTextTelefono.setText("jTextField5");
 
@@ -550,6 +652,30 @@ public class RegistroUD extends javax.swing.JFrame {
         jLabel17.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel17.setText("Registro de Responsables");
 
+        jTextColonia.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextColoniaActionPerformed(evt);
+            }
+        });
+        jTextColonia.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextColoniaKeyTyped(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTextColoniaKeyReleased(evt);
+            }
+        });
+
+        jComboResulColonias.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboResulColoniasActionPerformed(evt);
+            }
+        });
+
+        jLabel19.setText("Selecciona colonia:");
+
+        jLabel20.setText("Busca Colonia:");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -558,35 +684,50 @@ public class RegistroUD extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel17)
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel4)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextZonaGrupo, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel3)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextINE, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel1)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(jTextNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel3)
+                                    .addComponent(jLabel4))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jTextSeccion, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jTextINE, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addGap(43, 43, 43)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel7)
-                            .addComponent(jLabel6))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jTextApellidos, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
-                            .addComponent(jTextCorreo)
-                            .addComponent(cargoMenu, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel5)
-                        .addGap(18, 18, 18)
-                        .addComponent(jTextTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(167, 167, 167))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel2)
+                                    .addComponent(jLabel6))
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jTextApellidos, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
+                                    .addComponent(jTextCorreo))
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel5)
+                                    .addComponent(jLabel7))
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jTextTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(cargoMenu, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jTextColonia, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel20))
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel19)
+                                    .addComponent(jComboResulColonias, javax.swing.GroupLayout.PREFERRED_SIZE, 404, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(24, 24, 24))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jScrollPane1)
                         .addGap(18, 18, 18)
@@ -599,10 +740,7 @@ public class RegistroUD extends javax.swing.JFrame {
                             .addComponent(btnBuscar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(btnRemover, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(btnLimpiar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(26, 26, 26))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel17)
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                        .addGap(26, 26, 26))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -622,35 +760,41 @@ public class RegistroUD extends javax.swing.JFrame {
                     .addComponent(jLabel3)
                     .addComponent(jTextINE, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jTextCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel6))
+                    .addComponent(jLabel6)
+                    .addComponent(cargoMenu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel7))
                 .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel20)
+                    .addComponent(jLabel19))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel7)
+                    .addComponent(jComboResulColonias, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextColonia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4)
-                    .addComponent(jTextZonaGrupo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cargoMenu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                    .addComponent(jTextSeccion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(BtnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnLimpiar)
                         .addGap(18, 18, 18)
                         .addComponent(btnBuscar)
                         .addGap(18, 18, 18)
                         .addComponent(BtnEliminar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(45, 45, 45)
                         .addComponent(BtnEditar)
                         .addGap(18, 18, 18)
                         .addComponent(btnAniadir)
                         .addGap(18, 18, 18)
                         .addComponent(btnRemover)
-                        .addGap(39, 39, 39)
-                        .addComponent(BtnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(29, Short.MAX_VALUE))
+                        .addGap(43, 43, 43)
+                        .addComponent(BtnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
 
         pack();
@@ -723,6 +867,10 @@ public class RegistroUD extends javax.swing.JFrame {
         modelo = new DefaultTableModel();
         //BtnAceptar.setEnabled(false);
         jComboBox1.setSelectedIndex(2);
+        jComboResulColonias1.removeAllItems();
+        jComboResulColonias1.setEnabled(false);
+        jTextColonia1.setText("");
+        coloniaCiu = "";
     }
     
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
@@ -748,8 +896,8 @@ public class RegistroUD extends javax.swing.JFrame {
             ResultSet rs = stat.executeQuery("select * from ciudadanos where idResponsable="+Responsable.idResponsable);
             System.out.println("Datos obtenidos configurando tabla");
             //conversorTable.rellena(rs, modelo);
-            String [] titulos = {"id","Nombre", "Apellidos", "Clave INE", "Correo", "Telefono", "Folio Padron"}; 
-            String [] registros = new String[7];
+            String [] titulos = {"id","Nombre", "Apellidos", "Clave INE", "Correo", "Telefono", "Folio Padron","Seccion","Colonia"}; 
+            String [] registros = new String[9];
             
             modelo = new DefaultTableModel(null, titulos);
             while(rs.next())
@@ -761,6 +909,8 @@ public class RegistroUD extends javax.swing.JFrame {
                     registros[4]= rs.getString("Email");
                     registros[5]= rs.getString("Telefono");
                     registros[6]= rs.getString("FolioPadron");
+                    registros[7]= rs.getString("Seccion");
+                    registros[8]= rs.getString("Colonia");
                     modelo.addRow(registros);
                 }
             jTableCiudadano.setModel(modelo);
@@ -822,8 +972,8 @@ public class RegistroUD extends javax.swing.JFrame {
             ResultSet rs = stat.executeQuery("select * from responsables "+sqlcode);
             System.out.println("Datos obtenidos configurando tabla");
           
-            String [] titulos = {"id","Nombre", "Apellido", "Clave Ine", "Numero", "Zona", "Cargo", "Email"}; 
-            String [] registros = new String[8];
+            String [] titulos = {"id","Nombre", "Apellido", "Clave Ine", "Numero", "Seccion", "Cargo", "Email","Colonia"}; 
+            String [] registros = new String[9];
             
             modelo = new DefaultTableModel(null, titulos);
             while(rs.next())
@@ -833,9 +983,10 @@ public class RegistroUD extends javax.swing.JFrame {
                     registros[2]= rs.getString("Apellido");
                     registros[3]= rs.getString("ClaveElectorIne");
                     registros[4]= rs.getString("NumTelefono");
-                    registros[5]= rs.getString("ZonaGrupo");
+                    registros[5]= rs.getString("Seccion");
                     registros[6]= rs.getString("Cargo");
                     registros[7]= rs.getString("Email");
+                    registros[8]= rs.getString("Colonia");
                     modelo.addRow(registros);
                 }
             jTable1.setModel(modelo);
@@ -944,6 +1095,7 @@ public class RegistroUD extends javax.swing.JFrame {
         ciudadano.Telefono    =       telField.getText();
         ciudadano.Seccion     =   seccionField.getText(); 
         ciudadano.FolioPadron =     folioField.getText();
+        ciudadano.Colonia     =    coloniaCiu;
     }
     
     private void PresentaDatosCiudadano() 
@@ -956,6 +1108,8 @@ public class RegistroUD extends javax.swing.JFrame {
         nombreField.  setText(ciudadano.Nombres);
         seccionField. setText(ciudadano.Seccion);
         telField.     setText(ciudadano.Telefono);
+        jTextColonia1.setText(ciudadano.Colonia);
+        coloniaCiu = ciudadano.Colonia;
     }
     
     private void LimpiaCamposCiudadano() 
@@ -967,6 +1121,9 @@ public class RegistroUD extends javax.swing.JFrame {
         seccionField. setText("");
         telField.     setText("");
         folioField.   setText("");
+        jTextColonia1.setText("");
+        jComboResulColonias1.removeAllItems();
+        coloniaCiu = "";
     }
     
     private boolean ValidaDatosCiudadano()
@@ -989,11 +1146,29 @@ public class RegistroUD extends javax.swing.JFrame {
             claveIneField.requestFocusInWindow(); 
             return false;
         }
+        if("".equals(seccionField.getText())){
+            JOptionPane.showMessageDialog(null, "Seccion es un campo obligatorio.", "Cuidado.", JOptionPane.INFORMATION_MESSAGE);
+            seccionField.requestFocusInWindow(); 
+            return false;
+        }
+
+        try{
+            if( Integer.parseInt(seccionField.getText())<470 || Integer.parseInt(seccionField.getText()) > 616 ){
+                JOptionPane.showMessageDialog(null, "Seccion debe estar entre [470-616].", "Cuidado.", JOptionPane.INFORMATION_MESSAGE);
+                seccionField.requestFocusInWindow(); 
+                return false;
+            }
+        }catch(NumberFormatException nfe){
+            JOptionPane.showMessageDialog(null, "Sólo se admiten números en el campo Seccion","Cuidado",JOptionPane.INFORMATION_MESSAGE);
+            return false;
+        }
+         /*
         if(folioField.getText().equals("")){
             JOptionPane.showMessageDialog(null, "Folio es un campo obligatorio.", "Cuidado.", JOptionPane.INFORMATION_MESSAGE);
             folioField.requestFocusInWindow(); 
             return false; 
-        }
+        } */
+         
         try {
             if(Long.parseLong(folioField.getText())<0){
                 JOptionPane.showMessageDialog(null, "Folio debe ser número","Cuidado",JOptionPane.INFORMATION_MESSAGE);
@@ -1054,9 +1229,92 @@ public class RegistroUD extends javax.swing.JFrame {
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         jDialogCiudadano.dispose();
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jTextColoniaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextColoniaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextColoniaActionPerformed
+
+    private void jTextColoniaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextColoniaKeyTyped
+
+    }//GEN-LAST:event_jTextColoniaKeyTyped
+
+    private void jTextColoniaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextColoniaKeyReleased
+        // TODO add your handling code here:
+        // busqueda interactiva del texto actual
+        buscaColonia(jTextColonia.getText().toUpperCase());
+    }//GEN-LAST:event_jTextColoniaKeyReleased
+
+    private void jComboResulColoniasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboResulColoniasActionPerformed
+        // TODO add your handling code here:
+
+        if(jComboResulColonias.getSelectedItem()!=null){
+            colonia=jComboResulColonias.getSelectedItem().toString();
+            System.out.println("seleccionado: "+colonia);
+
+            int id =jComboResulColonias.getSelectedIndex();
+            
+        }
+    }//GEN-LAST:event_jComboResulColoniasActionPerformed
+
+    private void jTextColonia1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextColonia1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextColonia1ActionPerformed
+
+    private void jTextColonia1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextColonia1KeyTyped
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextColonia1KeyTyped
+
+    private void jTextColonia1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextColonia1KeyReleased
+        // TODO add your handling code here:
+        buscaColoniaCiu(jTextColonia1.getText().toUpperCase());
+    }//GEN-LAST:event_jTextColonia1KeyReleased
+
+    private void jComboResulColonias1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboResulColonias1ActionPerformed
+        // TODO add your handling code here:
+        if(jComboResulColonias1.getSelectedItem()!=null){
+            coloniaCiu=jComboResulColonias1.getSelectedItem().toString();
+            System.out.println("seleccionado: "+coloniaCiu);
+
+            int id =jComboResulColonias1.getSelectedIndex();
+            
+        }
+    }//GEN-LAST:event_jComboResulColonias1ActionPerformed
+    
+     public void buscaColonia(String text){
+        Colonia c = new Colonia("", "", "");
+        jComboResulColonias.removeAllItems();
+        jComboResulColonias.setEnabled(true);
+        listaTemColonias = c.buscaColonias(listaColonias, text);
+        if(listaTemColonias != null){
+            for(Colonia col : listaTemColonias){
+                jComboResulColonias.addItem(col.getNombre());
+                System.out.println(col.getNombre() + "-" + text);
+            }
+            
+            
+        }
+        
+    }
+     public void buscaColoniaCiu(String text){
+        Colonia c = new Colonia("", "", "");
+        jComboResulColonias1.removeAllItems();
+        jComboResulColonias1.setEnabled(true);
+        listaTemColonias = c.buscaColonias(listaColonias, text);
+        if(listaTemColonias != null){
+            for(Colonia col : listaTemColonias){
+                jComboResulColonias1.addItem(col.getNombre());
+                System.out.println(col.getNombre() + "-" + text);
+            }
+            
+            
+        }
+        
+    }
+    
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                                     
+          
+    
 
     /**
      * @param args the command line arguments
@@ -1114,6 +1372,8 @@ public class RegistroUD extends javax.swing.JFrame {
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButtonBuscar;
     private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JComboBox<String> jComboResulColonias;
+    private javax.swing.JComboBox<String> jComboResulColonias1;
     private javax.swing.JDialog jDialogBusca;
     private javax.swing.JDialog jDialogCiudadano;
     private javax.swing.JLabel jLabel1;
@@ -1126,7 +1386,11 @@ public class RegistroUD extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel20;
+    private javax.swing.JLabel jLabel21;
+    private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -1142,11 +1406,13 @@ public class RegistroUD extends javax.swing.JFrame {
     private javax.swing.JTable jTableCiudadano;
     private javax.swing.JTextField jTextApellidos;
     private javax.swing.JTextField jTextBusquedaDialog;
+    private javax.swing.JTextField jTextColonia;
+    private javax.swing.JTextField jTextColonia1;
     private javax.swing.JTextField jTextCorreo;
     private javax.swing.JTextField jTextINE;
     private javax.swing.JTextField jTextNombre;
+    private javax.swing.JTextField jTextSeccion;
     private javax.swing.JTextField jTextTelefono;
-    private javax.swing.JTextField jTextZonaGrupo;
     private javax.swing.JTextField nombreField;
     private javax.swing.JTextField seccionField;
     private javax.swing.JTextField telField;

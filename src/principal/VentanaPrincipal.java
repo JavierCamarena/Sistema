@@ -126,7 +126,11 @@ public class VentanaPrincipal extends javax.swing.JFrame {
        
         if (Registro == null)
         {
-            Registro  = new RegistroUD(Configuracion);
+            try {
+                Registro  = new RegistroUD(Configuracion);
+            } catch (SQLException ex) {
+                Logger.getLogger(VentanaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+            }
             Registro.setVisible(true);
         }
         else

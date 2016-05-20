@@ -38,6 +38,7 @@ public class ClsCiudadano {
     public String Seccion;
     public boolean Voto;
     public String FolioPadron;
+    public String Colonia;
 
     public ClsCiudadano(String[] conf ) {
         dbName = conf[0];
@@ -76,7 +77,7 @@ public class ClsCiudadano {
                     FolioPadron   = rs.getString("FolioPadron"); 
                     Seccion       = rs.getString("Seccion"); 
                     idResponsable = Integer.parseInt(rs.getString("idResponsable")); 
-                     
+                    Colonia       = rs.getString("Colonia");
                    
                 }
                 else
@@ -107,6 +108,7 @@ public class ClsCiudadano {
         Seccion = ""; 
         Voto = false ; 
         FolioPadron = "";
+        Colonia = "";
     }
     
     public int Nuevo() 
@@ -117,8 +119,8 @@ public class ClsCiudadano {
                 con = DriverManager.getConnection(dbPath,dbUsr, dbPw); // OJO esta linea depende de tu base de datos, el 1234 es la contrasenia
                 stat = con.createStatement();
                 
-                String SQL = "INSERT INTO ciudadanos (Nombres,Apellidos,ClaveIne,Email,Telefono,Voto,FolioPadron,Seccion,idResponsable)"
-                           + " VALUES (?,?,?,?,?,?,?,?,?)";
+                String SQL = "INSERT INTO ciudadanos (Nombres,Apellidos,ClaveIne,Email,Telefono,Voto,FolioPadron,Seccion,Colonia,idResponsable)"
+                           + " VALUES (?,?,?,?,?,?,?,?,?,?)";
                 
                 
                 PreparedStatement preparedStmt = con.prepareStatement(SQL,new String[]{"idCiudadano"});
@@ -130,7 +132,8 @@ public class ClsCiudadano {
                 preparedStmt.setBoolean(6, Voto);                
                 preparedStmt.setString (7, FolioPadron);
                 preparedStmt.setString (8, Seccion);                
-                preparedStmt.setInt(9, idResponsable);
+                preparedStmt.setString (9, Colonia);                
+                preparedStmt.setInt(10, idResponsable);
                  
 
                 preparedStmt.executeUpdate();
@@ -163,7 +166,7 @@ public class ClsCiudadano {
                 stat = con.createStatement();
                 
                 String SQL = "UPDATE ciudadanos SET Nombres = ?,Apellidos = ?,ClaveIne = ?,Email = ?, Telefono = ?,FolioPadron = ?"
-                           + ",Seccion = ? WHERE idciudadanos = ?";
+                           + ",Seccion = ?,Colonia = ? WHERE idciudadanos = ?";
                 
                 PreparedStatement preparedStmt = con.prepareStatement(SQL);
                 preparedStmt.setString (1, Nombres);
@@ -172,8 +175,9 @@ public class ClsCiudadano {
                 preparedStmt.setString (4, Mail);
                 preparedStmt.setString (5, Telefono);
                 preparedStmt.setString (6, FolioPadron);                
-                preparedStmt.setString (7, Seccion);
-                preparedStmt.setInt(8, idCiudadano);
+                preparedStmt.setString (7, Seccion);                
+                preparedStmt.setString (8, Colonia);
+                preparedStmt.setInt(9, idCiudadano);
                 
                 int retorno = preparedStmt.executeUpdate();
                 
