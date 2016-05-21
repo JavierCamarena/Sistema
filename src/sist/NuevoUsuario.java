@@ -74,9 +74,9 @@ public class NuevoUsuario extends javax.swing.JFrame {
         jTextSenias.setDocument(new LimiteDeCaracteres(100));
         jTextTelefono.setDocument(new LimiteDeCaracteres(45));
         jTextCorreo.setDocument(new LimiteDeCaracteres(45));
-        jTextPSocial.setDocument(new LimiteDeCaracteres(100));
-        jTextPInfra.setDocument(new LimiteDeCaracteres(100));
-        jTextObs.setDocument(new LimiteDeCaracteres(50));
+        jTextPSocial.setDocument(new LimiteDeCaracteres(500));
+        jTextPInfra.setDocument(new LimiteDeCaracteres(500));
+        jTextObs.setDocument(new LimiteDeCaracteres(500));
     }
     
     private void cargaColonias() throws SQLException 
@@ -304,7 +304,7 @@ public class NuevoUsuario extends javax.swing.JFrame {
         jComboResulColonias = new javax.swing.JComboBox<>();
         jLabel18 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("CEDULA DE REGISTRO");

@@ -62,29 +62,30 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         });
 
         jButton3.setText("Generar reportes");
+        jButton3.setEnabled(false);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(18, 18, 18)
-                .addComponent(jButton1)
-                .addGap(18, 18, 18)
-                .addComponent(jButton2)
-                .addGap(18, 18, 18)
-                .addComponent(jButton3)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(80, 80, 80)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton3)
+                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(80, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2)
-                    .addComponent(jButton3))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(50, 50, 50)
+                .addComponent(jButton1)
+                .addGap(65, 65, 65)
+                .addComponent(jButton2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 64, Short.MAX_VALUE)
+                .addComponent(jButton3)
+                .addGap(65, 65, 65))
         );
 
         pack();
@@ -95,7 +96,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         Configuracion[0]= "com.mysql.jdbc.Driver";
         Configuracion[1]= "jdbc:mysql://localhost:3306/sistemamonitoreo";
         Configuracion[2]= "root";
-        Configuracion[3]= "1234";
+        Configuracion[3]= "1234"; //pass
     }
     
     
@@ -125,7 +126,11 @@ public class VentanaPrincipal extends javax.swing.JFrame {
        
         if (Registro == null)
         {
-            Registro  = new RegistroUD(Configuracion);
+            try {
+                Registro  = new RegistroUD(Configuracion);
+            } catch (SQLException ex) {
+                Logger.getLogger(VentanaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+            }
             Registro.setVisible(true);
         }
         else
