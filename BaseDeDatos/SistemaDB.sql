@@ -1,4 +1,4 @@
-CREATE DATABASE  IF NOT EXISTS `sistemamonitoreo` /*!40100 DEFAULT CHARACTER SET utf8 */;
+﻿CREATE DATABASE  IF NOT EXISTS `sistemamonitoreo` /*!40100 DEFAULT CHARACTER SET utf8 */;
 USE `sistemamonitoreo`;
 -- MySQL dump 10.13  Distrib 5.7.12, for Win64 (x86_64)
 --
@@ -68,6 +68,7 @@ CREATE TABLE `ciudadanos` (
   `FolioPadron` varchar(45) DEFAULT NULL,
   `Seccion` varchar(45) DEFAULT NULL,
   `Colonia` varchar(45) DEFAULT NULL,
+  `Casilla` int(11) DEFAULT NULL,	
   `idResponsable` int(11) DEFAULT NULL,
   PRIMARY KEY (`idciudadanos`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
