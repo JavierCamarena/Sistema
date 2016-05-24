@@ -11,6 +11,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
 import javax.swing.event.ListSelectionEvent;
@@ -28,6 +30,7 @@ public class RegistroUD extends javax.swing.JFrame {
     private ClsResponsables Responsable;
     private ArrayList<Colonia> listaColonias;
     private ArrayList<Colonia> listaTemColonias;
+    private ArrayList<Colonia> listaMovilizadores;
     private String colonia;
     private String coloniaCiu;
     private String jTextnombre= "Ingresa el nombre:";
@@ -52,18 +55,29 @@ public class RegistroUD extends javax.swing.JFrame {
      */
     public RegistroUD(String[] conf) throws SQLException{
        Configuracion = conf;
-        initComponents();
+       listaColonias = new ArrayList<>();
+       listaMovilizadores = new ArrayList<>(); 
+       initComponents();
         AsignaTamanios();
         Responsable = new ClsResponsables(Configuracion);
         LimpiaCampos();
         LimpiaCamposCiudadano();
         setLocationRelativeTo(null);
-        listaColonias = new ArrayList<>();
+        
         cargaColonias(); 
+        cargaMovilizadores();
+        showCargo(true);
     }
 
     private RegistroUD() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    public void showCargo(boolean show){
+        
+            jLabelMoviliza.setVisible(show);
+            
+            jComboMovil.setVisible(show);
     }
     
      private void cargaColonias() throws SQLException 
@@ -86,6 +100,19 @@ public class RegistroUD extends javax.swing.JFrame {
         }
     }
     
+    private void cargaMovilizadores() throws SQLException{
+        Connection con = DriverManager.getConnection(Configuracion[1],Configuracion[2],Configuracion[3]); // OJO esta linea depende de tu base de datos, el 1234 es la contrasenia
+        Statement stat = con.createStatement();    
+        String SQL = "SELECT  * FROM responsables WHERE idSuperior=0";
+        ResultSet rs = stat.executeQuery(SQL);
+        listaMovilizadores = new ArrayList<>();
+        while(rs.next()){
+            listaMovilizadores.add(new Colonia(rs.getString("Nombre")+" "+rs.getString("Apellido"),"", rs.getString("idResponsables")));
+            //System.out.println("Añadiendo a "+rs.getString("Nombre"));
+        }
+        
+    } 
+     
     private void AsignaTamanios()
     {
         jTextNombre   .setDocument(new LimiteDeCaracteres(45));
@@ -115,13 +142,14 @@ public class RegistroUD extends javax.swing.JFrame {
         colonia = "";
         jTextColonia.setText("");
         jComboResulColonias.removeAllItems();
+        jComboMovil.removeAllItems();
         cargoMenu     .setSelectedIndex(0);
         ///////////////////////////////////////Quedan pendientes 3 campos que no se si el responsable tambien los llevara
         Responsable.Limpia();
         BtnEditar  .setEnabled(false);
         btnRemover .setEnabled(false);
         btnAniadir .setEnabled(false);
-        
+        showCargo(true);
     }
     
     public void PresentaDatos() 
@@ -136,6 +164,9 @@ public class RegistroUD extends javax.swing.JFrame {
         cargoMenu.setSelectedItem(Responsable.Cargo);
         colonia = Responsable.Colonia;
         jTextColonia.setText(colonia);
+        if(Responsable.Cargo.equalsIgnoreCase("MOVILIZADOR")){
+            btnAniadir.setEnabled(false);
+        }
     }
     
     public void CargaDatos()
@@ -153,6 +184,11 @@ public class RegistroUD extends javax.swing.JFrame {
         Responsable.Seccion       = jTextSeccion.getText();
         Responsable.Cargo           = cargoMenu.getSelectedItem().toString();
         Responsable.Colonia         = colonia;
+        if(Responsable.Cargo.equalsIgnoreCase("MOVILIZADOR")){
+            Responsable.idSuperior = 0;
+        }else{
+            Responsable.idSuperior = Integer.parseInt(listaMovilizadores.get(jComboMovil.getSelectedIndex()).getClave());
+        }
     }
 
     public boolean ValidaDatos() 
@@ -191,6 +227,13 @@ public class RegistroUD extends javax.swing.JFrame {
         }catch(NumberFormatException nfe){
             JOptionPane.showMessageDialog(null, "Sólo se admiten números en el campo Seccion","Cuidado",JOptionPane.INFORMATION_MESSAGE);
             return false;
+        }
+        if(cargoMenu.getSelectedIndex()!=MOVILIZADOR){
+            if(listaMovilizadores.isEmpty() || jComboMovil.getSelectedItem().toString().equalsIgnoreCase("")){
+                JOptionPane.showMessageDialog(null, "Necesitas un Movilizador","Cuidado",JOptionPane.INFORMATION_MESSAGE);
+                return false;
+            }
+            
         }
         
         return true; 
@@ -269,6 +312,8 @@ public class RegistroUD extends javax.swing.JFrame {
         jComboResulColonias = new javax.swing.JComboBox<>();
         jLabel19 = new javax.swing.JLabel();
         jLabel20 = new javax.swing.JLabel();
+        jComboMovil = new javax.swing.JComboBox<>();
+        jLabelMoviliza = new javax.swing.JLabel();
 
         jDialogBusca.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
@@ -627,7 +672,7 @@ public class RegistroUD extends javax.swing.JFrame {
             }
         });
 
-        btnLimpiar.setText("Limpiar Responsable");
+        btnLimpiar.setText("Nuevo Responsable");
         btnLimpiar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnLimpiarActionPerformed(evt);
@@ -649,6 +694,11 @@ public class RegistroUD extends javax.swing.JFrame {
         });
 
         cargoMenu.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "OTRO", "LIDER", "MOVILIZADOR", "ENLACE" }));
+        cargoMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cargoMenuActionPerformed(evt);
+            }
+        });
 
         jLabel17.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel17.setText("Registro de Responsables");
@@ -659,11 +709,11 @@ public class RegistroUD extends javax.swing.JFrame {
             }
         });
         jTextColonia.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                jTextColoniaKeyTyped(evt);
-            }
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 jTextColoniaKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextColoniaKeyTyped(evt);
             }
         });
 
@@ -677,6 +727,8 @@ public class RegistroUD extends javax.swing.JFrame {
 
         jLabel20.setText("Busca Colonia:");
 
+        jLabelMoviliza.setText("Movilizador:");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -689,46 +741,54 @@ public class RegistroUD extends javax.swing.JFrame {
                         .addComponent(jLabel17)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addComponent(jTextNombre))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel3)
                                     .addComponent(jLabel4))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jTextSeccion, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jTextINE, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGap(43, 43, 43)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(8, 8, 8)
+                                        .addComponent(jTextSeccion, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jTextColonia, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jTextINE, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(jLabel20, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jComboResulColonias, javax.swing.GroupLayout.PREFERRED_SIZE, 404, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel2)
-                                    .addComponent(jLabel6))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jTextApellidos, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
-                                    .addComponent(jTextCorreo))
-                                .addGap(18, 18, 18)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jTextCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jTextApellidos, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, 60, Short.MAX_VALUE)))
+                                .addGap(34, 34, 34)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel5)
-                                    .addComponent(jLabel7))
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jTextTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(cargoMenu, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addComponent(cargoMenu, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jTextTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jLabel19))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jTextColonia, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel20))
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel19)
-                                    .addComponent(jComboResulColonias, javax.swing.GroupLayout.PREFERRED_SIZE, 404, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGap(24, 24, 24))
+                                .addComponent(jLabelMoviliza)
+                                .addGap(0, 257, Short.MAX_VALUE))
+                            .addComponent(jComboMovil, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap())
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jScrollPane1)
                         .addGap(18, 18, 18)
@@ -753,9 +813,9 @@ public class RegistroUD extends javax.swing.JFrame {
                     .addComponent(jLabel1)
                     .addComponent(jTextNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2)
-                    .addComponent(jTextApellidos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5)
-                    .addComponent(jTextTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextApellidos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
@@ -765,28 +825,30 @@ public class RegistroUD extends javax.swing.JFrame {
                     .addComponent(cargoMenu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel7))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel19)
                     .addComponent(jLabel20)
-                    .addComponent(jLabel19))
+                    .addComponent(jLabelMoviliza))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jComboResulColonias, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jTextColonia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4)
-                    .addComponent(jTextSeccion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextSeccion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jComboMovil, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(BtnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(18, 18, 18)
                         .addComponent(btnLimpiar)
                         .addGap(18, 18, 18)
                         .addComponent(btnBuscar)
                         .addGap(18, 18, 18)
                         .addComponent(BtnEliminar)
-                        .addGap(45, 45, 45)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(BtnEditar)
                         .addGap(18, 18, 18)
                         .addComponent(btnAniadir)
@@ -823,7 +885,7 @@ public class RegistroUD extends javax.swing.JFrame {
                 {
                     JOptionPane.showMessageDialog(null, "Se ha agregado con exito.", "Cuidado.", JOptionPane.INFORMATION_MESSAGE);
                     Responsable.idResponsable = aux;
-                    btnAniadir.setEnabled(true);
+                    if(cargoMenu.getSelectedIndex()!=MOVILIZADOR)btnAniadir.setEnabled(true);
                 }
                 else
                 {
@@ -834,7 +896,8 @@ public class RegistroUD extends javax.swing.JFrame {
             {
                 if( Responsable.Actualiza()) 
                 {
-                     JOptionPane.showMessageDialog(null, "Se ha actualizado con exito.", "Cuidado.", JOptionPane.INFORMATION_MESSAGE);
+                    if(cargoMenu.getSelectedIndex()!=MOVILIZADOR)btnAniadir.setEnabled(true);
+                    JOptionPane.showMessageDialog(null, "Se ha actualizado con exito.", "Cuidado.", JOptionPane.INFORMATION_MESSAGE);
                     
                 }
                 else
@@ -967,6 +1030,7 @@ public class RegistroUD extends javax.swing.JFrame {
         System.out.println("Buscando y llenando tabla");
         try{    
             Class.forName(Configuracion[0]);
+            
             con = DriverManager.getConnection(Configuracion[1],Configuracion[2],Configuracion[3]); // OJO esta linea depende de tu base de datos, el 1234 es la contrasenia
             stat = con.createStatement();
             System.out.println("preparando statement :"+sqlcode);
@@ -1280,6 +1344,25 @@ public class RegistroUD extends javax.swing.JFrame {
             
         }
     }//GEN-LAST:event_jComboResulColonias1ActionPerformed
+
+    private void cargoMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cargoMenuActionPerformed
+       
+        if(cargoMenu.getSelectedIndex()!=MOVILIZADOR){
+            try {
+                // TODO add your handling code here:
+                cargaMovilizadores();
+                jComboMovil.removeAllItems();
+                for(Colonia mov : listaMovilizadores){
+                    jComboMovil.addItem(mov.getNombre());
+                }
+                showCargo(true);
+            } catch (SQLException ex) {
+                Logger.getLogger(RegistroUD.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }else{
+            showCargo(false);
+        }
+    }//GEN-LAST:event_cargoMenuActionPerformed
     
      public void buscaColonia(String text){
         Colonia c = new Colonia("", "", "");
@@ -1373,6 +1456,7 @@ public class RegistroUD extends javax.swing.JFrame {
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButtonBuscar;
     private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JComboBox<String> jComboMovil;
     private javax.swing.JComboBox<String> jComboResulColonias;
     private javax.swing.JComboBox<String> jComboResulColonias1;
     private javax.swing.JDialog jDialogBusca;
@@ -1399,6 +1483,7 @@ public class RegistroUD extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JLabel jLabelMoviliza;
     private javax.swing.JLabel jLabelParam;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;

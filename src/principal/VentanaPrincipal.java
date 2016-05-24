@@ -92,8 +92,9 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void cargaConfiguracion() 
-    {
+    {   
         Configuracion[0]= "com.mysql.jdbc.Driver";
+        //Configuracion[1]= "jdbc:mysql://192.168.1.76:3306/sistemamonitoreo";
         Configuracion[1]= "jdbc:mysql://localhost:3306/sistemamonitoreo";
         Configuracion[2]= "root";
         Configuracion[3]= "1234"; //pass

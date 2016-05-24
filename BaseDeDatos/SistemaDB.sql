@@ -106,6 +106,7 @@ CREATE TABLE `responsables` (
   `NumTelefono` varchar(45) DEFAULT NULL,
   `Seccion` varchar(45) DEFAULT NULL,
   `Colonia` varchar(45) DEFAULT NULL,
+  `idSuperior` int(11) DEFAULT NULL,
   `Cargo` varchar(45) DEFAULT NULL,
   `Email` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`idResponsables`)

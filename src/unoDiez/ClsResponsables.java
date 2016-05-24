@@ -37,6 +37,7 @@ public class ClsResponsables {
     public String Cargo; 
     public String Email;
     public String Colonia;
+    public int idSuperior;
     
     public ArrayList<ClsCiudadano>votantes;
     
@@ -60,6 +61,7 @@ public class ClsResponsables {
         Cargo = ""; 
         Email = "";  
         Colonia = "";
+        idSuperior=0;
     }
     
     public int Nuevo()
@@ -70,8 +72,8 @@ public class ClsResponsables {
                 con = DriverManager.getConnection(dbPath,dbUsr, dbPw); // OJO esta linea depende de tu base de datos, el 1234 es la contrasenia
                 stat = con.createStatement();
                 
-                String SQL = "INSERT INTO responsables (Nombre,Apellido,ClaveElectorIne,NumTelefono,Seccion,Cargo,Email,Colonia)"
-                           + " VALUES (?,?,?,?,?,?,?,?)";
+                String SQL = "INSERT INTO responsables (Nombre,Apellido,ClaveElectorIne,NumTelefono,Seccion,Cargo,Email,Colonia,idSuperior)"
+                           + " VALUES (?,?,?,?,?,?,?,?,?)";
                 
                 
                 PreparedStatement preparedStmt = con.prepareStatement(SQL,new String[]{"idResponsable"});
@@ -83,6 +85,8 @@ public class ClsResponsables {
                 preparedStmt.setString (6, Cargo);                
                 preparedStmt.setString (7, Email);                
                 preparedStmt.setString (8, Colonia);
+                preparedStmt.setInt(9, idSuperior);
+                
   
 
                 preparedStmt.executeUpdate();
@@ -115,7 +119,7 @@ public class ClsResponsables {
                 stat = con.createStatement();
                 
                 String SQL = "UPDATE responsables SET Nombre = ?,Apellido = ?,ClaveElectorIne = ?,NumTelefono = ?,Seccion = ?"
-                           + ",Cargo = ?,Email = ?, Colonia = ? WHERE idResponsables = ?";
+                           + ",Cargo = ?,Email = ?, Colonia = ?, idSuperior = ? WHERE idResponsables = ?";
                 
                 PreparedStatement preparedStmt = con.prepareStatement(SQL);
                 preparedStmt.setString (1, Nombre);
@@ -126,7 +130,10 @@ public class ClsResponsables {
                 preparedStmt.setString (6, Cargo);                
                 preparedStmt.setString (7, Email);
                 preparedStmt.setString (8, Colonia);
-                preparedStmt.setInt(9, idResponsable);
+                preparedStmt.setInt(9, idSuperior);
+                preparedStmt.setInt(10, idResponsable);
+                
+                
                 
                 int retorno = preparedStmt.executeUpdate();
                 
@@ -216,6 +223,7 @@ public class ClsResponsables {
                     Cargo = rs.getString("Cargo"); 
                     Email = rs.getString("Email");
                     Colonia = rs.getString("Colonia");
+                    idSuperior = rs.getInt("idSuperior");
                 }
                 else
                 {
