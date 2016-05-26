@@ -447,7 +447,7 @@ public class RegistroUD extends javax.swing.JFrame {
 
         jLabel14.setText("Teléfono:");
 
-        jButton2.setText("Limpiar");
+        jButton2.setText("Nuevo");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
@@ -1189,7 +1189,9 @@ public class RegistroUD extends javax.swing.JFrame {
         ciudadano.Seccion     =   seccionField.getText(); 
         ciudadano.FolioPadron =     folioField.getText();
         ciudadano.Colonia     =    coloniaCiu;
-        int casilla;
+        ciudadano.Casilla     = jComboCasilla.getSelectedIndex();
+        // si selectedIndex es 0 no hay seleccionado, 1 es Basica 2 es Contigua1 3 Contigua2
+        System.out.println("Casilla "+ciudadano.Casilla);
     }
     
     private void PresentaDatosCiudadano() 
@@ -1204,6 +1206,7 @@ public class RegistroUD extends javax.swing.JFrame {
         telField.     setText(ciudadano.Telefono);
         jTextColonia1.setText(ciudadano.Colonia);
         coloniaCiu = ciudadano.Colonia;
+        jComboCasilla.setSelectedIndex(ciudadano.Casilla);
     }
     
     private void LimpiaCamposCiudadano() 
@@ -1218,6 +1221,7 @@ public class RegistroUD extends javax.swing.JFrame {
         jTextColonia1.setText("");
         jComboResulColonias1.removeAllItems();
         coloniaCiu = "";
+        jComboCasilla.setSelectedIndex(0);
     }
     
     private boolean ValidaDatosCiudadano()
