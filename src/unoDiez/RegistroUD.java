@@ -284,6 +284,19 @@ public class RegistroUD extends javax.swing.JFrame {
         jLabel22 = new javax.swing.JLabel();
         jComboCasilla = new javax.swing.JComboBox<>();
         jLabel23 = new javax.swing.JLabel();
+        jDialogBuscaCiudadano = new javax.swing.JDialog();
+        BtnCancelarCiudadano = new javax.swing.JButton();
+        BtnAceptarCiudadano = new javax.swing.JButton();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jTableBuscaCiudadano = new javax.swing.JTable();
+        jButtonBuscarCiudadano = new javax.swing.JButton();
+        jLabel24 = new javax.swing.JLabel();
+        jLabel26 = new javax.swing.JLabel();
+        jTextSeccionCiudadano = new javax.swing.JTextField();
+        jLabel27 = new javax.swing.JLabel();
+        jTextNombreCiudadano = new javax.swing.JTextField();
+        jLabel28 = new javax.swing.JLabel();
+        jTextApellidoCiudadano = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -523,11 +536,8 @@ public class RegistroUD extends javax.swing.JFrame {
                                     .addComponent(jLabel11))
                                 .addGap(18, 18, 18)
                                 .addGroup(jDialogCiudadanoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jDialogCiudadanoLayout.createSequentialGroup()
-                                        .addGroup(jDialogCiudadanoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel12)
-                                            .addComponent(claveIneField, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGap(36, 36, 36))
+                                    .addComponent(jLabel12)
+                                    .addComponent(claveIneField, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(jDialogCiudadanoLayout.createSequentialGroup()
                                         .addGroup(jDialogCiudadanoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(jLabel15)
@@ -610,6 +620,110 @@ public class RegistroUD extends javax.swing.JFrame {
                     .addComponent(jButton2)
                     .addComponent(jButton4))
                 .addContainerGap())
+        );
+
+        BtnCancelarCiudadano.setText("Cancelar");
+        BtnCancelarCiudadano.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnCancelarCiudadanoActionPerformed(evt);
+            }
+        });
+
+        BtnAceptarCiudadano.setText("Editar");
+        BtnAceptarCiudadano.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnAceptarCiudadanoActionPerformed(evt);
+            }
+        });
+
+        jScrollPane3.setViewportView(jTableBuscaCiudadano);
+
+        jButtonBuscarCiudadano.setText("Buscar");
+        jButtonBuscarCiudadano.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonBuscarCiudadanoActionPerformed(evt);
+            }
+        });
+
+        jLabel24.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        jLabel24.setText("Buscar Ciudadano");
+
+        jLabel26.setText("Seccion ");
+
+        jTextSeccionCiudadano.setText("jTextField1");
+
+        jLabel27.setText("Nombre");
+
+        jTextNombreCiudadano.setText("jTextField1");
+
+        jLabel28.setText("Apellido");
+
+        jTextApellidoCiudadano.setText("jTextField1");
+
+        javax.swing.GroupLayout jDialogBuscaCiudadanoLayout = new javax.swing.GroupLayout(jDialogBuscaCiudadano.getContentPane());
+        jDialogBuscaCiudadano.getContentPane().setLayout(jDialogBuscaCiudadanoLayout);
+        jDialogBuscaCiudadanoLayout.setHorizontalGroup(
+            jDialogBuscaCiudadanoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jDialogBuscaCiudadanoLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jDialogBuscaCiudadanoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jDialogBuscaCiudadanoLayout.createSequentialGroup()
+                        .addComponent(jLabel26)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jDialogBuscaCiudadanoLayout.createSequentialGroup()
+                        .addComponent(jTextSeccionCiudadano, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jDialogBuscaCiudadanoLayout.createSequentialGroup()
+                        .addGroup(jDialogBuscaCiudadanoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jDialogBuscaCiudadanoLayout.createSequentialGroup()
+                                .addGroup(jDialogBuscaCiudadanoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jTextNombreCiudadano, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel27)
+                                    .addComponent(jLabel24))
+                                .addGap(18, 18, 18)
+                                .addGroup(jDialogBuscaCiudadanoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jDialogBuscaCiudadanoLayout.createSequentialGroup()
+                                        .addComponent(jTextApellidoCiudadano, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jButtonBuscarCiudadano))
+                                    .addComponent(jLabel28)))
+                            .addGroup(jDialogBuscaCiudadanoLayout.createSequentialGroup()
+                                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 696, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jDialogBuscaCiudadanoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(BtnCancelarCiudadano, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(BtnAceptarCiudadano, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addGap(20, 20, 20))))
+        );
+        jDialogBuscaCiudadanoLayout.setVerticalGroup(
+            jDialogBuscaCiudadanoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jDialogBuscaCiudadanoLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel24)
+                .addGroup(jDialogBuscaCiudadanoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jDialogBuscaCiudadanoLayout.createSequentialGroup()
+                        .addGap(197, 197, 197)
+                        .addComponent(BtnAceptarCiudadano)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(BtnCancelarCiudadano)
+                        .addContainerGap(253, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jDialogBuscaCiudadanoLayout.createSequentialGroup()
+                        .addGap(11, 11, 11)
+                        .addGroup(jDialogBuscaCiudadanoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel27)
+                            .addComponent(jLabel28))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jDialogBuscaCiudadanoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jTextNombreCiudadano, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTextApellidoCiudadano, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButtonBuscarCiudadano))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel26)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jTextSeccionCiudadano, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                        .addContainerGap())))
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -1039,7 +1153,7 @@ public class RegistroUD extends javax.swing.JFrame {
         busqueda();
     }//GEN-LAST:event_jButtonBuscarActionPerformed
 
-        public void asignaSql(){
+    public void asignaSql(){
         op = jComboBox1.getSelectedIndex();
         jTextBusquedaDialog.setEnabled(true);
         switch (op) {
@@ -1398,11 +1512,101 @@ public class RegistroUD extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_cargoMenuActionPerformed
 
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////Ciudadano
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
-        
+        jDialogBuscaCiudadano.setVisible(true);
+        jDialogBuscaCiudadano.pack();
+        jDialogBuscaCiudadano.setLocationRelativeTo(this);
+        jDialogBuscaCiudadano.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        LimpiaCiudadanoBusqueda();       
+        BtnAceptarCiudadano.setEnabled(false);
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void BtnCancelarCiudadanoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCancelarCiudadanoActionPerformed
+        // TODO add your handling code here:
+            jDialogBuscaCiudadano.dispose();
+    }//GEN-LAST:event_BtnCancelarCiudadanoActionPerformed
+
+    private void BtnAceptarCiudadanoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnAceptarCiudadanoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_BtnAceptarCiudadanoActionPerformed
+
+    private void jButtonBuscarCiudadanoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBuscarCiudadanoActionPerformed
+        // TODO add your handling code here:
+        BuscaCiudadano();
+    }//GEN-LAST:event_jButtonBuscarCiudadanoActionPerformed
     
+    public void AsignaSqlCiudadano() 
+    {        
+        sqlcode = " WHERE Nombres LIKE '%" + jTextNombreCiudadano.getText() + "%' AND Apellidos LIKE '%" + jTextApellidoCiudadano.getText() + "%' AND Seccion LIKE '%" + jTextSeccionCiudadano.getText() + "%'";
+    }
+    
+    public void BuscaCiudadano()
+    {
+        AsignaSqlCiudadano();
+        System.out.println("Buscando y llenando tabla");
+        try{    
+            Class.forName(Configuracion[0]);
+            
+            con = DriverManager.getConnection(Configuracion[1],Configuracion[2],Configuracion[3]); // OJO esta linea depende de tu base de datos, el 1234 es la contrasenia
+            stat = con.createStatement();
+            System.out.println("preparando statement :"+sqlcode);
+            ResultSet rs = stat.executeQuery("select * from ciudadanos "+sqlcode);
+            System.out.println("Datos obtenidos configurando tabla");
+          
+            String [] titulos = {"id","Nombre", "Apellido", "Clave Ine", "Email", "FolioPadron", "Seccion", "Colonia","Casilla"}; 
+            String [] registros = new String[9];
+            
+            modelo = new DefaultTableModel(null, titulos);
+            while(rs.next())
+                {
+                    registros[0]= rs.getString("idciudadanos");
+                    registros[1]= rs.getString("Nombres");
+                    registros[2]= rs.getString("Apellidos");
+                    registros[3]= rs.getString("ClaveIne");
+                    registros[4]= rs.getString("Email");
+                    registros[5]= rs.getString("FolioPadron");
+                    registros[6]= rs.getString("Seccion");
+                    registros[7]= rs.getString("Colonia");
+                    registros[8]= rs.getString("Casilla");
+                    modelo.addRow(registros);
+                }
+            jTableBuscaCiudadano.setModel(modelo);
+            rs.close();
+            
+            //asignaSql();
+                }catch ( ClassNotFoundException | SQLException e ){
+            System.out.println("Error: " + e.getMessage());
+           
+        } finally {
+            
+             jTableBuscaCiudadano.getSelectionModel().addListSelectionListener( new ListSelectionListener() {
+                @Override
+                public void valueChanged(ListSelectionEvent e) {
+                   if (!e.getValueIsAdjusting())
+                        {
+                                boolean rowsAreSelected = jTableBuscaCiudadano.getSelectedRowCount() > 0;
+                                 BtnAceptarCiudadano.setEnabled(rowsAreSelected);
+                        }
+                    
+                }
+            } );
+            jTableBuscaCiudadano.setDefaultEditor(Object.class, null);
+            
+        }
+    }
+    
+    public void LimpiaCiudadanoBusqueda()
+    {
+          jTextSeccionCiudadano.setText("");
+          jTextNombreCiudadano.setText("");
+          jTextApellidoCiudadano.setText("");
+    }
+    
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
      public void buscaColonia(String text){
         Colonia c = new Colonia("", "", "");
         jComboResulColonias.removeAllItems();
@@ -1476,7 +1680,9 @@ public class RegistroUD extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BtnAceptar;
+    private javax.swing.JButton BtnAceptarCiudadano;
     private javax.swing.JButton BtnCancelar;
+    private javax.swing.JButton BtnCancelarCiudadano;
     private javax.swing.JButton BtnEditar;
     private javax.swing.JButton BtnEliminar;
     private javax.swing.JButton BtnGuardar;
@@ -1495,12 +1701,14 @@ public class RegistroUD extends javax.swing.JFrame {
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButtonBuscar;
+    private javax.swing.JButton jButtonBuscarCiudadano;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JComboBox<String> jComboCasilla;
     private javax.swing.JComboBox<String> jComboMovil;
     private javax.swing.JComboBox<String> jComboResulColonias;
     private javax.swing.JComboBox<String> jComboResulColonias1;
     private javax.swing.JDialog jDialogBusca;
+    private javax.swing.JDialog jDialogBuscaCiudadano;
     private javax.swing.JDialog jDialogCiudadano;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -1518,6 +1726,10 @@ public class RegistroUD extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel23;
+    private javax.swing.JLabel jLabel24;
+    private javax.swing.JLabel jLabel26;
+    private javax.swing.JLabel jLabel27;
+    private javax.swing.JLabel jLabel28;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -1529,9 +1741,12 @@ public class RegistroUD extends javax.swing.JFrame {
     private javax.swing.JLabel jLabelParam;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTable jTable1;
+    private javax.swing.JTable jTableBuscaCiudadano;
     private javax.swing.JTable jTableCiudadano;
+    private javax.swing.JTextField jTextApellidoCiudadano;
     private javax.swing.JTextField jTextApellidos;
     private javax.swing.JTextField jTextBusquedaDialog;
     private javax.swing.JTextField jTextColonia;
@@ -1539,7 +1754,9 @@ public class RegistroUD extends javax.swing.JFrame {
     private javax.swing.JTextField jTextCorreo;
     private javax.swing.JTextField jTextINE;
     private javax.swing.JTextField jTextNombre;
+    private javax.swing.JTextField jTextNombreCiudadano;
     private javax.swing.JTextField jTextSeccion;
+    private javax.swing.JTextField jTextSeccionCiudadano;
     private javax.swing.JTextField jTextTelefono;
     private javax.swing.JTextField nombreField;
     private javax.swing.JTextField seccionField;
