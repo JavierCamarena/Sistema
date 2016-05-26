@@ -82,6 +82,7 @@ public class ClsCiudadano {
                     idResponsable = Integer.parseInt(rs.getString("idResponsable")); 
                     Colonia       = rs.getString("Colonia");
                     Casilla       = rs.getInt("Casilla");
+                    System.out.println("Casilla encontrada "+Casilla);
                 }
                 else
                 {
@@ -171,7 +172,7 @@ public class ClsCiudadano {
                 stat = con.createStatement();
                 
                 String SQL = "UPDATE ciudadanos SET Nombres = ?,Apellidos = ?,ClaveIne = ?,Email = ?, Telefono = ?,FolioPadron = ?"
-                           + ",Seccion = ?,Colonia = ? WHERE idciudadanos = ?";
+                           + ",Seccion = ?,Colonia = ?, Casilla = ? WHERE idciudadanos = ?";
                 
                 PreparedStatement preparedStmt = con.prepareStatement(SQL);
                 preparedStmt.setString (1, Nombres);
@@ -182,7 +183,8 @@ public class ClsCiudadano {
                 preparedStmt.setString (6, FolioPadron);                
                 preparedStmt.setString (7, Seccion);                
                 preparedStmt.setString (8, Colonia);
-                preparedStmt.setInt(9, idCiudadano);
+                preparedStmt.setInt(9, Casilla);
+                preparedStmt.setInt(10, idCiudadano);
                 
                 int retorno = preparedStmt.executeUpdate();
                 

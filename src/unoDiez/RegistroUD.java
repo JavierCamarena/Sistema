@@ -166,6 +166,8 @@ public class RegistroUD extends javax.swing.JFrame {
         jTextColonia.setText(colonia);
         if(Responsable.Cargo.equalsIgnoreCase("MOVILIZADOR")){
             btnAniadir.setEnabled(false);
+        }else{
+            btnAniadir.setEnabled(true);
         }
     }
     
@@ -460,7 +462,7 @@ public class RegistroUD extends javax.swing.JFrame {
 
         jLabel14.setText("Teléfono:");
 
-        jButton2.setText("Limpiar");
+        jButton2.setText("Nuevo");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
@@ -1242,7 +1244,7 @@ public class RegistroUD extends javax.swing.JFrame {
         PresentaDatos();
         rellenaTabla();
         BtnAceptar.setEnabled(false);
-        btnAniadir.setEnabled(true);
+        //btnAniadir.setEnabled(true);
     }//GEN-LAST:event_BtnAceptarActionPerformed
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
@@ -1308,7 +1310,9 @@ public class RegistroUD extends javax.swing.JFrame {
         ciudadano.Seccion     =   seccionField.getText(); 
         ciudadano.FolioPadron =     folioField.getText();
         ciudadano.Colonia     =    coloniaCiu;
-        int casilla;
+        ciudadano.Casilla     = jComboCasilla.getSelectedIndex();
+        // si selectedIndex es 0 no hay seleccionado, 1 es Basica 2 es Contigua1 3 Contigua2
+        System.out.println("Casilla "+ciudadano.Casilla);
     }
     
     private void PresentaDatosCiudadano() 
@@ -1323,6 +1327,7 @@ public class RegistroUD extends javax.swing.JFrame {
         telField.     setText(ciudadano.Telefono);
         jTextColonia1.setText(ciudadano.Colonia);
         coloniaCiu = ciudadano.Colonia;
+        jComboCasilla.setSelectedIndex(ciudadano.Casilla);
     }
     
     private void LimpiaCamposCiudadano() 
@@ -1337,6 +1342,7 @@ public class RegistroUD extends javax.swing.JFrame {
         jTextColonia1.setText("");
         jComboResulColonias1.removeAllItems();
         coloniaCiu = "";
+        jComboCasilla.setSelectedIndex(0);
     }
     
     private boolean ValidaDatosCiudadano()
@@ -1381,19 +1387,20 @@ public class RegistroUD extends javax.swing.JFrame {
             folioField.requestFocusInWindow(); 
             return false; 
         } 
-         
-        try {
-            if(Long.parseLong(folioField.getText())<0){
+         */
+        if(!folioField.getText().equals("")){ 
+            try {
+                if(Long.parseLong(folioField.getText())<1 || Long.parseLong(folioField.getText())>750 ){
+                    JOptionPane.showMessageDialog(null, "Folio debe estar entre [1-750]","Cuidado",JOptionPane.INFORMATION_MESSAGE);
+                        folioField.requestFocus();
+                        return false;
+                }
+
+            } catch (NumberFormatException nfe) {
                 JOptionPane.showMessageDialog(null, "Folio debe ser número","Cuidado",JOptionPane.INFORMATION_MESSAGE);
-                    folioField.requestFocus();
-                    return false;
+                return false;
             }
-            
-        } catch (NumberFormatException nfe) {
-            JOptionPane.showMessageDialog(null, "Folio debe ser número","Cuidado",JOptionPane.INFORMATION_MESSAGE);
-            return false;
-        }*/
-        
+        }
         return true; 
     }
     
