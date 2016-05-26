@@ -1264,6 +1264,7 @@ public class RegistroUD extends javax.swing.JFrame {
         ciudadano = new ClsCiudadano(Configuracion);
         ciudadano.idResponsable= Responsable.idResponsable;
         LimpiaCamposCiudadano();
+        jButton2.setEnabled(true);
     }//GEN-LAST:event_btnAniadirActionPerformed
 
     private void btnRemoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoverActionPerformed
@@ -1538,6 +1539,18 @@ public class RegistroUD extends javax.swing.JFrame {
 
     private void BtnAceptarCiudadanoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnAceptarCiudadanoActionPerformed
         // TODO add your handling code here:
+        int a = jTableBuscaCiudadano.getSelectedRow();
+        ciudadano = new ClsCiudadano(Configuracion);
+        ciudadano.idCiudadano = Integer.parseInt(jTableBuscaCiudadano.getValueAt(a , 0).toString() );
+        jDialogBusca.dispose();
+        jDialogCiudadano.setVisible(true);
+        jDialogCiudadano.pack();
+        jDialogCiudadano.setLocationRelativeTo(this);
+        jDialogCiudadano.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        ciudadano.Busca(ciudadano.idCiudadano);
+        PresentaDatosCiudadano();
+        jButton2.setEnabled(false);
+        
     }//GEN-LAST:event_BtnAceptarCiudadanoActionPerformed
 
     private void jButtonBuscarCiudadanoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBuscarCiudadanoActionPerformed
