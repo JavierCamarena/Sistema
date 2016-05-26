@@ -150,6 +150,9 @@ public class RegistroUD extends javax.swing.JFrame {
         btnRemover .setEnabled(false);
         btnAniadir .setEnabled(false);
         showCargo(true);
+        
+        modelo = new DefaultTableModel();
+        jTableCiudadano.setModel(modelo);
     }
     
     public void PresentaDatos() 
@@ -1530,6 +1533,9 @@ public class RegistroUD extends javax.swing.JFrame {
         jDialogBuscaCiudadano.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         LimpiaCiudadanoBusqueda();       
         BtnAceptarCiudadano.setEnabled(false);
+        
+        modelo = new DefaultTableModel();
+        jTableBuscaCiudadano.setModel(modelo);
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void BtnCancelarCiudadanoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCancelarCiudadanoActionPerformed
