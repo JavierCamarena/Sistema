@@ -746,6 +746,11 @@ public class RegistroUD extends javax.swing.JFrame {
         jLabelMoviliza.setText("Movilizador:");
 
         jButton3.setText("Buscar Ciudadano");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -1392,6 +1397,11 @@ public class RegistroUD extends javax.swing.JFrame {
             showCargo(false);
         }
     }//GEN-LAST:event_cargoMenuActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_jButton3ActionPerformed
     
      public void buscaColonia(String text){
         Colonia c = new Colonia("", "", "");
