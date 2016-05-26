@@ -39,6 +39,7 @@ public class ClsCiudadano {
     public boolean Voto;
     public String FolioPadron;
     public String Colonia;
+    public int Casilla;
 
     public ClsCiudadano(String[] conf ) {
         dbName = conf[0];
@@ -46,6 +47,8 @@ public class ClsCiudadano {
         dbUsr = conf[2];
         dbPw = conf[3]; 
         Voto = false;
+        Limpia();
+        
     }
     
     public boolean Busca(int id)
@@ -78,7 +81,7 @@ public class ClsCiudadano {
                     Seccion       = rs.getString("Seccion"); 
                     idResponsable = Integer.parseInt(rs.getString("idResponsable")); 
                     Colonia       = rs.getString("Colonia");
-                   
+                    Casilla       = rs.getInt("Casilla");
                 }
                 else
                 {
@@ -109,6 +112,7 @@ public class ClsCiudadano {
         Voto = false ; 
         FolioPadron = "";
         Colonia = "";
+        Casilla =0;
     }
     
     public int Nuevo() 
@@ -119,8 +123,8 @@ public class ClsCiudadano {
                 con = DriverManager.getConnection(dbPath,dbUsr, dbPw); // OJO esta linea depende de tu base de datos, el 1234 es la contrasenia
                 stat = con.createStatement();
                 
-                String SQL = "INSERT INTO ciudadanos (Nombres,Apellidos,ClaveIne,Email,Telefono,Voto,FolioPadron,Seccion,Colonia,idResponsable)"
-                           + " VALUES (?,?,?,?,?,?,?,?,?,?)";
+                String SQL = "INSERT INTO ciudadanos (Nombres,Apellidos,ClaveIne,Email,Telefono,Voto,FolioPadron,Seccion,Colonia,idResponsable,Casilla)"
+                           + " VALUES (?,?,?,?,?,?,?,?,?,?,?)";
                 
                 
                 PreparedStatement preparedStmt = con.prepareStatement(SQL,new String[]{"idCiudadano"});
@@ -134,6 +138,7 @@ public class ClsCiudadano {
                 preparedStmt.setString (8, Seccion);                
                 preparedStmt.setString (9, Colonia);                
                 preparedStmt.setInt(10, idResponsable);
+                preparedStmt.setInt(11, Casilla);
                  
 
                 preparedStmt.executeUpdate();
