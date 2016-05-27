@@ -138,6 +138,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         {
             try {
                 Registro  = new RegistroUD(Configuracion);
+                Registro.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
             } catch (SQLException ex) {
                 Logger.getLogger(VentanaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
             }

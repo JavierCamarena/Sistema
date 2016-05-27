@@ -155,7 +155,7 @@ public class RegistroUD extends javax.swing.JFrame {
         jTableCiudadano.setModel(modelo);
     }
     
-    public void PresentaDatos() 
+    public void PresentaDatos() throws SQLException 
     {
         jTextNombre.setText(Responsable.Nombre);
         jTextApellidos.setText(Responsable.Apellido);
@@ -171,6 +171,12 @@ public class RegistroUD extends javax.swing.JFrame {
             btnAniadir.setEnabled(false);
         }else{
             btnAniadir.setEnabled(true);
+            cargaMovilizadores();
+            for(Colonia mov : listaMovilizadores){
+                if(mov.getClave().equalsIgnoreCase(Responsable.idSuperior+""))
+                    jComboMovil.setSelectedItem(mov.getNombre());
+            }
+            
         }
     }
     
@@ -1244,7 +1250,11 @@ public class RegistroUD extends javax.swing.JFrame {
         Responsable.idResponsable = Integer.parseInt(jTable1.getValueAt(a , 0).toString() );
         jDialogBusca.dispose();
         CargaDatos();
-        PresentaDatos();
+        try {
+            PresentaDatos();
+        } catch (SQLException ex) {
+            Logger.getLogger(RegistroUD.class.getName()).log(Level.SEVERE, null, ex);
+        }
         rellenaTabla();
         BtnAceptar.setEnabled(false);
         //btnAniadir.setEnabled(true);
@@ -1579,7 +1589,7 @@ public class RegistroUD extends javax.swing.JFrame {
             con = DriverManager.getConnection(Configuracion[1],Configuracion[2],Configuracion[3]); // OJO esta linea depende de tu base de datos, el 1234 es la contrasenia
             stat = con.createStatement();
             System.out.println("preparando statement :"+sqlcode);
-            ResultSet rs = stat.executeQuery("select * from ciudadanos "+sqlcode);
+            ResultSet rs = stat.executeQuery("select * from ciudadanos "+sqlcode+" Order by Apellidos");
             System.out.println("Datos obtenidos configurando tabla");
           
             String [] titulos = {"id","Nombre", "Apellido", "Clave Ine", "Email", "FolioPadron", "Seccion", "Colonia","Casilla"}; 
