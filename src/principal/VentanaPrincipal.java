@@ -98,7 +98,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         Configuracion[1]= "jdbc:mysql://localhost:3306/sistemamonitoreo";
         //Configuracion[2]= "sis";
         Configuracion[2]= "root";
-        Configuracion[3]= "xaovs"; //pass 1234
+        Configuracion[3]= "1234"; //pass 1234
     }
     
     

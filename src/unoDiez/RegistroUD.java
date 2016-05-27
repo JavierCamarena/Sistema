@@ -1589,7 +1589,7 @@ public class RegistroUD extends javax.swing.JFrame {
             con = DriverManager.getConnection(Configuracion[1],Configuracion[2],Configuracion[3]); // OJO esta linea depende de tu base de datos, el 1234 es la contrasenia
             stat = con.createStatement();
             System.out.println("preparando statement :"+sqlcode);
-            ResultSet rs = stat.executeQuery("select * from ciudadanos "+sqlcode);
+            ResultSet rs = stat.executeQuery("select * from ciudadanos "+sqlcode+" Order by Apellidos");
             System.out.println("Datos obtenidos configurando tabla");
           
             String [] titulos = {"id","Nombre", "Apellido", "Clave Ine", "Email", "FolioPadron", "Seccion", "Colonia","Casilla"}; 
