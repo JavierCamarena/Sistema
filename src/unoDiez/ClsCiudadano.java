@@ -70,13 +70,13 @@ public class ClsCiudadano {
                 
                 if(rs.next())
                 {
-                    idCiudadano = rs.getInt("idciudadanos");
-                    Nombres = rs.getString("Nombres");
-                    Apellidos = rs.getString("Apellidos");
-                    ClaveIne = rs.getString("ClaveIne"); 
-                    Mail = rs.getString("Email"); 
-                    Telefono = rs.getString("Telefono"); 
-                    Voto = Boolean.parseBoolean(rs.getString("Voto")); 
+                    idCiudadano   = rs.getInt("idciudadanos");
+                    Nombres       = rs.getString("Nombres");
+                    Apellidos     = rs.getString("Apellidos");
+                    ClaveIne      = rs.getString("ClaveIne"); 
+                    Mail          = rs.getString("Email"); 
+                    Telefono      = rs.getString("Telefono"); 
+                    Voto          = rs.getBoolean("Voto");
                     FolioPadron   = rs.getString("FolioPadron"); 
                     Seccion       = rs.getString("Seccion"); 
                     idResponsable = Integer.parseInt(rs.getString("idResponsable")); 
@@ -211,6 +211,31 @@ public class ClsCiudadano {
                 preparedStmt.setInt (1, idCiudadano);
           
                 int retorno = preparedStmt.executeUpdate();
+            }catch ( ClassNotFoundException | SQLException e ){
+            System.out.println("Error: " + e.getMessage());
+            return false;
+        } finally {
+            
+        }
+        
+        return true;    
+    }
+    
+    public boolean Votacion(boolean A) 
+    {
+              try {
+                Class.forName(dbName);
+                con = DriverManager.getConnection(dbPath,dbUsr, dbPw);
+                stat = con.createStatement();
+                
+                String SQL = "UPDATE ciudadanos SET Voto = ? WHERE idciudadanos = ?";
+                
+                PreparedStatement preparedStmt = con.prepareStatement(SQL);
+                preparedStmt.setBoolean(1, A);
+                preparedStmt.setInt(2,idCiudadano);
+                System.out.println(A);
+                int retorno = preparedStmt.executeUpdate();
+                
             }catch ( ClassNotFoundException | SQLException e ){
             System.out.println("Error: " + e.getMessage());
             return false;

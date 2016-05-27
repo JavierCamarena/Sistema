@@ -6,6 +6,7 @@
 package principal;
 
 
+import Bingo.Bingo;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -23,6 +24,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     
     public NuevoUsuario ventanauno;
     public RegistroUD Registro = null;
+    public Bingo bingo = null;
+    
     /**
      * Creates new form VentanaPrincipal
      */
@@ -44,6 +47,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
+        jButtonBingo = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -64,16 +68,24 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jButton3.setText("Generar reportes");
         jButton3.setEnabled(false);
 
+        jButtonBingo.setText("Bingo");
+        jButtonBingo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonBingoActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(80, 80, 80)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton3)
-                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jButtonBingo, javax.swing.GroupLayout.DEFAULT_SIZE, 139, Short.MAX_VALUE)
+                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, 139, Short.MAX_VALUE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 139, Short.MAX_VALUE)
+                    .addComponent(jButton3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(80, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -81,11 +93,13 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(50, 50, 50)
                 .addComponent(jButton1)
-                .addGap(65, 65, 65)
+                .addGap(18, 18, 18)
                 .addComponent(jButton2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 64, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addComponent(jButtonBingo)
+                .addGap(18, 18, 18)
                 .addComponent(jButton3)
-                .addGap(65, 65, 65))
+                .addContainerGap(74, Short.MAX_VALUE))
         );
 
         pack();
@@ -105,19 +119,13 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
       
                 try {
-                    // TODO add your handling code here:
-                    
-                    System.out.println("-" + Configuracion[0]);
-                    System.out.println("-" + Configuracion[1]);   
-                    System.out.println("-" + Configuracion[2]);
-                    System.out.println("-" + Configuracion[3]);
                     
                     ventanauno = new NuevoUsuario(Configuracion);
                     ventanauno.setVisible(true);                  
                     
-                } catch (SQLException ex) {
-                    Logger.getLogger(VentanaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                   } catch (SQLException ex) {
+                       Logger.getLogger(VentanaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+                   }
             
             
         
@@ -142,6 +150,19 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         }
         
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButtonBingoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBingoActionPerformed
+        // TODO add your handling code here:
+        if(bingo == null )
+        {
+            bingo = new Bingo(Configuracion);
+            bingo.setVisible(true);
+        }
+        else 
+        {
+            bingo.setVisible(true);
+        }
+    }//GEN-LAST:event_jButtonBingoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -184,5 +205,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButtonBingo;
     // End of variables declaration//GEN-END:variables
 }
