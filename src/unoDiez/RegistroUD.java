@@ -155,7 +155,7 @@ public class RegistroUD extends javax.swing.JFrame {
         jTableCiudadano.setModel(modelo);
     }
     
-    public void PresentaDatos() 
+    public void PresentaDatos() throws SQLException 
     {
         jTextNombre.setText(Responsable.Nombre);
         jTextApellidos.setText(Responsable.Apellido);
@@ -171,6 +171,12 @@ public class RegistroUD extends javax.swing.JFrame {
             btnAniadir.setEnabled(false);
         }else{
             btnAniadir.setEnabled(true);
+            cargaMovilizadores();
+            for(Colonia mov : listaMovilizadores){
+                if(mov.getClave().equalsIgnoreCase(Responsable.idSuperior+""))
+                    jComboMovil.setSelectedItem(mov.getNombre());
+            }
+            
         }
     }
     
@@ -1244,7 +1250,11 @@ public class RegistroUD extends javax.swing.JFrame {
         Responsable.idResponsable = Integer.parseInt(jTable1.getValueAt(a , 0).toString() );
         jDialogBusca.dispose();
         CargaDatos();
-        PresentaDatos();
+        try {
+            PresentaDatos();
+        } catch (SQLException ex) {
+            Logger.getLogger(RegistroUD.class.getName()).log(Level.SEVERE, null, ex);
+        }
         rellenaTabla();
         BtnAceptar.setEnabled(false);
         //btnAniadir.setEnabled(true);
