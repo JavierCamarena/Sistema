@@ -7,6 +7,7 @@ package principal;
 
 
 import Bingo.Bingo;
+import PREP.PREP;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -25,6 +26,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     public NuevoUsuario ventanauno;
     public RegistroUD Registro = null;
     public Bingo bingo = null;
+    public PREP prep = null;
     
     /**
      * Creates new form VentanaPrincipal
@@ -48,6 +50,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jButtonBingo = new javax.swing.JButton();
+        jButtonBingo1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -67,11 +70,24 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
         jButton3.setText("Generar reportes");
         jButton3.setEnabled(false);
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         jButtonBingo.setText("Bingo");
         jButtonBingo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonBingoActionPerformed(evt);
+            }
+        });
+
+        jButtonBingo1.setText("PREP");
+        jButtonBingo1.setToolTipText("");
+        jButtonBingo1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonBingo1ActionPerformed(evt);
             }
         });
 
@@ -85,7 +101,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                     .addComponent(jButtonBingo, javax.swing.GroupLayout.DEFAULT_SIZE, 139, Short.MAX_VALUE)
                     .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, 139, Short.MAX_VALUE)
                     .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 139, Short.MAX_VALUE)
-                    .addComponent(jButton3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jButton3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButtonBingo1, javax.swing.GroupLayout.DEFAULT_SIZE, 139, Short.MAX_VALUE))
                 .addContainerGap(80, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -98,8 +115,10 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jButtonBingo)
                 .addGap(18, 18, 18)
+                .addComponent(jButtonBingo1)
+                .addGap(18, 18, 18)
                 .addComponent(jButton3)
-                .addContainerGap(74, Short.MAX_VALUE))
+                .addContainerGap(36, Short.MAX_VALUE))
         );
 
         pack();
@@ -165,6 +184,22 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButtonBingoActionPerformed
 
+    private void jButtonBingo1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBingo1ActionPerformed
+        if(prep == null )
+        {
+            prep = new PREP(Configuracion);
+            prep.setVisible(true);
+        }
+        else 
+        {
+            prep.setVisible(true);
+        } 
+    }//GEN-LAST:event_jButtonBingo1ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton3ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -207,5 +242,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButtonBingo;
+    private javax.swing.JButton jButtonBingo1;
     // End of variables declaration//GEN-END:variables
 }
