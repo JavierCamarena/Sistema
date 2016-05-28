@@ -28,7 +28,7 @@ public class Bingo extends javax.swing.JFrame {
     Statement stat = null;
     public DefaultTableModel modelo;
     private ClsCiudadano Ciudadano;
-     String [] titulos = {"id","Nombre", "Apellido", "Seccion"}; 
+     String [] titulos = {"id","Apellidos", "Nombre", "Seccion"}; 
      
     
     public Bingo() {
@@ -45,9 +45,10 @@ public class Bingo extends javax.swing.JFrame {
     
     private void LimpiaCampos() 
     {
-        jTextNombre  .setText("");
-        jTextApellido.setText("");
+       
         jTextSeccion .setText("");
+        jTextFolio   .setText("");
+        jComboCasilla.setSelectedIndex(0);
         
         jLNombre  .setText("---");
         jLApellido.setText("---");
@@ -64,7 +65,13 @@ public class Bingo extends javax.swing.JFrame {
     
     public void AsignaSqlCiudadano() 
     {        
-        sqlcode = " WHERE Nombres LIKE '%" + jTextNombre.getText() + "%' AND Apellidos LIKE '%" + jTextApellido.getText() + "%' AND Seccion LIKE '%" + jTextSeccion.getText() + "%'";
+        String comp = "";
+        int cas = jComboCasilla.getSelectedIndex();
+        if(cas > 0){
+            comp +=cas;
+        }
+        sqlcode = " WHERE Seccion LIKE '%" + jTextSeccion.getText() + "%' AND FolioPadron LIKE '%" 
+                + jTextFolio.getText() + "%' AND Casilla LIKE '%" + comp +"%'";
     }
     
     public void PresentaDatos()
@@ -80,11 +87,12 @@ public class Bingo extends javax.swing.JFrame {
         jLColonia.setText(Ciudadano.Colonia);
         if(Ciudadano.Voto == false)
         {
-            jLabelVotado.setText("Este ciudadano aun no ha votado.");
+            
+            jLabelVotado.setText("No ha votado.");
         }
         else
         {
-            jLabelVotado.setText("Este ciudadano ya voto.");
+            jLabelVotado.setText("Ya voto.");
         }
     }
     
@@ -98,7 +106,7 @@ public class Bingo extends javax.swing.JFrame {
             con = DriverManager.getConnection(Configuracion[1],Configuracion[2],Configuracion[3]); // OJO esta linea depende de tu base de datos, el 1234 es la contrasenia
             stat = con.createStatement();
             System.out.println("preparando statement :"+sqlcode);
-            ResultSet rs = stat.executeQuery("select * from ciudadanos "+sqlcode);
+            ResultSet rs = stat.executeQuery("select * from ciudadanos "+sqlcode+" Order by Apellidos");
             System.out.println("Datos obtenidos configurando tabla");
           
            
@@ -109,8 +117,8 @@ public class Bingo extends javax.swing.JFrame {
             while(rs.next())
                 {
                     registros[0]= rs.getString("idciudadanos");
-                    registros[1]= rs.getString("Nombres");
-                    registros[2]= rs.getString("Apellidos");
+                    registros[1]= rs.getString("Apellidos");
+                    registros[2]= rs.getString("Nombres");
                     registros[3]= rs.getString("Seccion");
 
                     modelo.addRow(registros);
@@ -155,10 +163,6 @@ public class Bingo extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jTextNombre = new javax.swing.JTextField();
-        jLabel3 = new javax.swing.JLabel();
-        jTextApellido = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         jTextSeccion = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -184,21 +188,16 @@ public class Bingo extends javax.swing.JFrame {
         jLabel22 = new javax.swing.JLabel();
         jLabelVotado = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
+        jComboCasilla = new javax.swing.JComboBox<>();
+        jLabel6 = new javax.swing.JLabel();
+        jTextFolio = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel1.setText("Busqueda De Ciudadanos");
 
-        jLabel2.setText("Nombre");
-
-        jTextNombre.setText("jTextField1");
-
-        jLabel3.setText("Apellido");
-
-        jTextApellido.setText("jTextField1");
-
-        jLabel4.setText("Seccion ");
+        jLabel4.setText("Seccion:");
 
         jTextSeccion.setText("jTextField1");
 
@@ -276,6 +275,12 @@ public class Bingo extends javax.swing.JFrame {
             }
         });
 
+        jComboCasilla.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "CASILLA", "BASICA", "CONTIGUA 1", "CONTIGUA 2", "CONTIGUA 3", "CONTIGUA 4", "CONTIGUA 5", "CONTIGUA 6", "CONTIGUA 7", "CONTIGUA 8", "CONTIGUA 9", "CONTIGUA 10", "CONTIGUA 11", "CONTIGUA 12", "CONTIGUA 13", "CONTIGUA 14", "CONTIGUA 15", "CONTIGUA 16", "CONTIGUA 17", "CONTIGUA 18", "CONTIGUA 19", "CONTIGUA 20", "CONTIGUA 21", "CONTIGUA 22", "CONTIGUA 23", "CONTIGUA 24", "CONTIGUA 25", "CONTIGUA 26", "CONTIGUA 27", "CONTIGUA 28", "CONTIGUA 29", "CONTIGUA 30" }));
+
+        jLabel6.setText("Folio:");
+
+        jTextFolio.setText("jTextField1");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -289,18 +294,17 @@ public class Bingo extends javax.swing.JFrame {
                                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
                                 .addContainerGap()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel2)
-                                    .addComponent(jLabel3)
-                                    .addComponent(jLabel4))
+                                .addComponent(jLabel4)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                                    .addComponent(jTextNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jTextApellido, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jTextSeccion, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(65, 65, 65)
-                                .addComponent(jButtonBuscar)))
-                        .addGap(114, 114, 114)
+                                .addComponent(jTextSeccion, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel6)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jTextFolio, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jComboCasilla, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(185, 185, 185)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel5)
                             .addComponent(jLNombre)
@@ -322,7 +326,9 @@ public class Bingo extends javax.swing.JFrame {
                             .addComponent(jLColonia)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(10, 10, 10)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 412, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jButtonBuscar)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 412, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(157, 157, 157)
@@ -338,19 +344,15 @@ public class Bingo extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(22, 22, 22)
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(jTextNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(jTextApellido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButtonBuscar))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(30, 30, 30)
+                .addComponent(jComboCasilla, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(jTextSeccion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextSeccion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButtonBuscar)
+                    .addComponent(jLabel6)
+                    .addComponent(jTextFolio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1)
                 .addContainerGap())
@@ -458,6 +460,7 @@ public class Bingo extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButtonBuscar;
+    private javax.swing.JComboBox<String> jComboCasilla;
     private javax.swing.JLabel jLApellido;
     private javax.swing.JLabel jLCasilla;
     private javax.swing.JLabel jLClave;
@@ -473,18 +476,16 @@ public class Bingo extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel18;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel22;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabelVotado;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTableCiudadano;
-    private javax.swing.JTextField jTextApellido;
-    private javax.swing.JTextField jTextNombre;
+    private javax.swing.JTextField jTextFolio;
     private javax.swing.JTextField jTextSeccion;
     // End of variables declaration//GEN-END:variables
 }

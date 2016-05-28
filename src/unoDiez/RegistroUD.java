@@ -1118,15 +1118,15 @@ public class RegistroUD extends javax.swing.JFrame {
             ResultSet rs = stat.executeQuery("select * from ciudadanos where idResponsable="+Responsable.idResponsable);
             System.out.println("Datos obtenidos configurando tabla");
             //conversorTable.rellena(rs, modelo);
-            String [] titulos = {"id","Nombre", "Apellidos", "Clave INE", "Correo", "Telefono", "Folio Padron","Seccion","Colonia"}; 
+            String [] titulos = {"id","Apellidos", "Nombres", "Clave INE", "Correo", "Telefono", "Folio Padron","Seccion","Colonia"}; 
             String [] registros = new String[9];
             
             modelo = new DefaultTableModel(null, titulos);
             while(rs.next())
                 {
                     registros[0]= rs.getString("idciudadanos");
-                    registros[1]= rs.getString("Nombres");
-                    registros[2]= rs.getString("Apellidos");
+                    registros[1]= rs.getString("Apellidos");
+                    registros[2]= rs.getString("Nombres");
                     registros[3]= rs.getString("ClaveIne");
                     registros[4]= rs.getString("Email");
                     registros[5]= rs.getString("Telefono");
@@ -1192,18 +1192,18 @@ public class RegistroUD extends javax.swing.JFrame {
             con = DriverManager.getConnection(Configuracion[1],Configuracion[2],Configuracion[3]); // OJO esta linea depende de tu base de datos, el 1234 es la contrasenia
             stat = con.createStatement();
             System.out.println("preparando statement :"+sqlcode);
-            ResultSet rs = stat.executeQuery("select * from responsables "+sqlcode);
+            ResultSet rs = stat.executeQuery("select * from responsables "+sqlcode+" Order by Apellido");
             System.out.println("Datos obtenidos configurando tabla");
           
-            String [] titulos = {"id","Nombre", "Apellido", "Clave Ine", "Numero", "Seccion", "Cargo", "Email","Colonia"}; 
+            String [] titulos = {"id","Apellido", "Nombre", "Clave Ine", "Numero", "Seccion", "Cargo", "Email","Colonia"}; 
             String [] registros = new String[9];
             
             modelo = new DefaultTableModel(null, titulos);
             while(rs.next())
                 {
                     registros[0]= rs.getString("idResponsables");
-                    registros[1]= rs.getString("Nombre");
-                    registros[2]= rs.getString("Apellido");
+                    registros[1]= rs.getString("Apellido");
+                    registros[2]= rs.getString("Nombre");
                     registros[3]= rs.getString("ClaveElectorIne");
                     registros[4]= rs.getString("NumTelefono");
                     registros[5]= rs.getString("Seccion");
@@ -1592,15 +1592,15 @@ public class RegistroUD extends javax.swing.JFrame {
             ResultSet rs = stat.executeQuery("select * from ciudadanos "+sqlcode+" Order by Apellidos");
             System.out.println("Datos obtenidos configurando tabla");
           
-            String [] titulos = {"id","Nombre", "Apellido", "Clave Ine", "Email", "FolioPadron", "Seccion", "Colonia","Casilla"}; 
+            String [] titulos = {"id","Apellido", "Nombre", "Clave Ine", "Email", "FolioPadron", "Seccion", "Colonia","Casilla"}; 
             String [] registros = new String[9];
             
             modelo = new DefaultTableModel(null, titulos);
             while(rs.next())
                 {
                     registros[0]= rs.getString("idciudadanos");
-                    registros[1]= rs.getString("Nombres");
-                    registros[2]= rs.getString("Apellidos");
+                    registros[1]= rs.getString("Apellidos");
+                    registros[2]= rs.getString("Nombres");
                     registros[3]= rs.getString("ClaveIne");
                     registros[4]= rs.getString("Email");
                     registros[5]= rs.getString("FolioPadron");
