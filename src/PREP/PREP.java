@@ -5,6 +5,8 @@
  */
 package PREP;
 
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author keko
@@ -12,6 +14,9 @@ package PREP;
 public class PREP extends javax.swing.JFrame {
 
     private String configuracion[];
+    private clsPrep prep;
+    public DefaultTableModel modelo;
+    private String [] titulos = {"Seccion", "Casilla", "Votos", "PAN", "PRI", "PRD", "Nulos"}; 
     
     /**
      * Creates new form PREP
@@ -21,6 +26,8 @@ public class PREP extends javax.swing.JFrame {
         configuracion = conf;
         setLocationRelativeTo(null);
         LimpiaCampos();
+        prep = new clsPrep(conf);
+        
     }
     
     public PREP() {
@@ -29,7 +36,13 @@ public class PREP extends javax.swing.JFrame {
     
     private void LimpiaCampos()
     {
+        ConfiguraTabla();
+    }
     
+    private void ConfiguraTabla() 
+    {
+        modelo = new DefaultTableModel(null,titulos);
+        jTableResultados.setModel(modelo);
     }
 
     /**
@@ -43,15 +56,16 @@ public class PREP extends javax.swing.JFrame {
 
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTableCiudadano = new javax.swing.JTable();
+        jTableResultados = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel1.setText("Capturador de resultado oportunos");
 
-        jTableCiudadano.setModel(new javax.swing.table.DefaultTableModel(
+        jTableResultados.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {},
                 {},
@@ -62,12 +76,19 @@ public class PREP extends javax.swing.JFrame {
 
             }
         ));
-        jScrollPane1.setViewportView(jTableCiudadano);
+        jScrollPane1.setViewportView(jTableResultados);
 
         jButton1.setText("Guardar");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
+            }
+        });
+
+        jButton2.setText(" Agregar Casilla");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
             }
         });
 
@@ -84,7 +105,9 @@ public class PREP extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jScrollPane1)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton1)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -100,7 +123,9 @@ public class PREP extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(33, 33, 33)
                         .addComponent(jButton1)
-                        .addContainerGap(371, Short.MAX_VALUE))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 211, Short.MAX_VALUE)
+                        .addComponent(jButton2)
+                        .addGap(137, 137, 137))))
         );
 
         pack();
@@ -109,6 +134,12 @@ public class PREP extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        String [] Casilla = {"", "", "", "", "", "", ""}; 
+        modelo.addRow(Casilla);
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -147,8 +178,9 @@ public class PREP extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTableCiudadano;
+    private javax.swing.JTable jTableResultados;
     // End of variables declaration//GEN-END:variables
 }
