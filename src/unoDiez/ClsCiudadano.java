@@ -51,6 +51,47 @@ public class ClsCiudadano {
         
     }
     
+    public boolean BuscaIne(String ine)
+    {
+                if(ine == null)return false;
+                if(ine.equals(""))return false;
+                if(ine.contains("XXX")) return false;
+                try {
+                Class.forName(dbName);
+                con = DriverManager.getConnection(dbPath,dbUsr, dbPw);
+                stat = con.createStatement();
+                
+                String SQL = "SELECT * FROM ciudadanos WHERE ClaveIne = ?";
+                
+                PreparedStatement preparedStmt = con.prepareStatement(SQL);
+                preparedStmt.setString(1,ine);
+                
+                ResultSet rs = preparedStmt.executeQuery();
+                
+                System.out.println("Buscando clave = "+ ine);
+                
+                if(rs.next())
+                {
+                    System.out.println("Repetido con responsable: "+rs.getString("idResponsable"));
+                    System.out.println(" "+rs.getInt("idciudadanos")+" "+rs.getString("Nombres"));
+                    
+                }
+                else
+                {
+                    System.out.println("No encontro nada :c");
+                    return false ;
+                }
+                
+            }catch ( ClassNotFoundException | SQLException e ){
+            System.out.println("Error: " + e.getMessage());
+            return false;
+        } finally {
+            
+        }
+        
+        return true;    
+    }
+    
     public boolean Busca(int id)
     {
      
@@ -116,7 +157,7 @@ public class ClsCiudadano {
         Casilla =0;
     }
     
-    public int Nuevo() 
+    public int Nuevo() throws SQLException 
     {
         int Afected;
         try {
@@ -143,6 +184,7 @@ public class ClsCiudadano {
                  
 
                 preparedStmt.executeUpdate();
+                
                 ResultSet rs = preparedStmt.getGeneratedKeys();
                 
                 if (rs.next()) {
@@ -150,17 +192,20 @@ public class ClsCiudadano {
                  } 
                 else 
                 {
+                    
                     return -1;
                 }
        
                 
             }catch ( ClassNotFoundException | SQLException e ){
             System.out.println("Error: " + e.getMessage());
+            
             return -1;
         } finally {
             
         }
         idCiudadano = Afected;
+        
         return Afected;    
     }
     

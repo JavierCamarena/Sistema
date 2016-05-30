@@ -10,8 +10,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import unoDiez.ClsCiudadano;
 
 /**
  *
@@ -24,13 +27,18 @@ public class NuevoUsuario extends javax.swing.JFrame {
     private String colonia;
     private String claveCp;
     private String Configuracion[];
+    private ArrayList<clsAspirantesResponsables> listaAspirantes;
+    private ClsCiudadano ciudadano;
+    private clsAspirantesResponsables aspCiuda;
     /**
      * Creates new form NuevoUsuario
      * @param conf
      */
     public NuevoUsuario(String conf[]) throws SQLException {
         Configuracion = conf;
-        
+        listaAspirantes = new ArrayList<>();
+        aspCiuda = new clsAspirantesResponsables(conf);
+        ciudadano = new ClsCiudadano(conf);
         System.out.println("+" + Configuracion[0]);
         System.out.println("+" + Configuracion[1]);   
         System.out.println("+" + Configuracion[2]);
@@ -49,6 +57,9 @@ public class NuevoUsuario extends javax.swing.JFrame {
     {
         
         Configuracion = conf;
+        listaAspirantes = new ArrayList<>();
+        aspCiuda = new clsAspirantesResponsables(conf);
+        ciudadano = new ClsCiudadano(conf);
         Aspirante = new clsAspirantesResponsables(Configuracion);
         System.out.println("Resultado de una busqueda " + id);
         initComponents();
@@ -79,6 +90,40 @@ public class NuevoUsuario extends javax.swing.JFrame {
         jTextObs.setDocument(new LimiteDeCaracteres(500));
     }
     
+    private void cargaAspirantes() throws SQLException, InterruptedException 
+    {
+        int cont=0;
+        Connection con = DriverManager.getConnection(Configuracion[1],Configuracion[2],Configuracion[3]); // OJO esta linea depende de tu base de datos, el 1234 es la contrasenia
+        Statement stat = con.createStatement();    
+        String SQL = "SELECT  * FROM aspiranteresponsable";
+        ResultSet rs = stat.executeQuery(SQL);
+        String insrt="";
+        while(rs.next())
+        {
+            ciudadano = new ClsCiudadano(Configuracion);//cambiar configuracion para enviar al server
+               
+                ciudadano.idCiudadano= rs.getInt("idaspirante");
+                ciudadano.idCiudadano+=3120;
+                ciudadano.Nombres   = rs.getString("Nombre");
+                ciudadano.Apellidos = rs.getString("Apellido");
+                ciudadano.ClaveIne  = rs.getString("Clave");
+                ciudadano.Mail      = rs.getString("Email");
+                ciudadano.Telefono  = rs.getString("Telefono");
+                ciudadano.Voto = false;
+                ciudadano.FolioPadron="";
+                ciudadano.Seccion   = rs.getString("Seccion");
+                ciudadano.Colonia   = rs.getString("Colonia");
+                ciudadano.Casilla=0;
+                ciudadano.idResponsable = 113;
+                insrt+="('"+ciudadano.idCiudadano+"','"+ciudadano.Nombres+"','"+ciudadano.Apellidos+"','"+
+                        ciudadano.ClaveIne+"','"+ciudadano.Mail+"','"+ciudadano.Telefono+"','0','"+ciudadano.FolioPadron+"','"+
+                        ciudadano.Seccion+"','"+ciudadano.Colonia+"','0','113'),";
+                
+            cont++;
+            
+        }
+        System.out.println(insrt);
+    }
     private void cargaColonias() throws SQLException 
     {
         Connection con = DriverManager.getConnection(Configuracion[1],Configuracion[2],Configuracion[3]); // OJO esta linea depende de tu base de datos, el 1234 es la contrasenia
@@ -104,27 +149,9 @@ public class NuevoUsuario extends javax.swing.JFrame {
     public boolean validaDatos() // Aqui se validan (?
     {
         
-        if("".equals(jTextTelefono.getText())){
-            JOptionPane.showMessageDialog(null, "Teléfono es un campo obligatorio.", "Cuidado.", JOptionPane.INFORMATION_MESSAGE);
-            jTextTelefono.requestFocusInWindow(); 
-            return false;
-        }
+
         
-        try {
-                if(Long.parseLong(jTextTelefono.getText()) < 0 ){
-                    JOptionPane.showMessageDialog(null, "Sólo se admiten números positivos","Cuidado",JOptionPane.INFORMATION_MESSAGE);
-                    jTextTelefono.requestFocus();
-                    return false;
-                }else if(jTextTelefono.getText().length()>10 || jTextTelefono.getText().length()<10){
-                    JOptionPane.showMessageDialog(null, "Télefono debe ser de 10 dígitos","Cuidado",JOptionPane.INFORMATION_MESSAGE);
-                    jTextTelefono.requestFocus();
-                    return false;
-                }
-            } catch (NumberFormatException nfe) {
-                JOptionPane.showMessageDialog(null, "Sólo se admiten números en el campo Telefono","Cuidado",JOptionPane.INFORMATION_MESSAGE);
-                jTextTelefono.requestFocus();
-                return false;
-        }
+        
         
         if("".equals(jTextSeccion.getText())){
             JOptionPane.showMessageDialog(null, "Seccion es un campo obligatorio.", "Cuidado.", JOptionPane.INFORMATION_MESSAGE);
@@ -148,7 +175,12 @@ public class NuevoUsuario extends javax.swing.JFrame {
             jTextColonia.requestFocusInWindow(); 
             return false;
         }
-        
+         if ("".equals(jTextApellido.getText()))
+        {
+            JOptionPane.showMessageDialog(null, "El campo Apellido es un campo obligatorio.", "Cuidado.", JOptionPane.INFORMATION_MESSAGE);
+            jTextApellido.requestFocusInWindow(); 
+            return false;
+        }
         if ("".equals(jTextNombre.getText()))
         {
             JOptionPane.showMessageDialog(null, "El campo Nombre es un campo obligatorio.", "Cuidado.", JOptionPane.INFORMATION_MESSAGE);
@@ -476,30 +508,33 @@ public class NuevoUsuario extends javax.swing.JFrame {
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addComponent(jTextSeccion, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))))
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(30, 30, 30))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel13)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jLabel12)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel14))
-                                .addGap(40, 40, 40)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel16)
-                                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 310, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jButtonGuardar)
-                                .addGap(18, 18, 18)
-                                .addComponent(jButtonLimpiar)
-                                .addGap(18, 18, 18)
-                                .addComponent(jButtonBuscar)
-                                .addGap(18, 18, 18)
-                                .addComponent(BtnElimina)))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(30, 30, 30))
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(jLabel13)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(jLabel12)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jLabel14))
+                                        .addGap(40, 40, 40)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel16)
+                                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 310, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jButtonGuardar)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jButtonLimpiar)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jButtonBuscar)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(BtnElimina)))
+                                .addGap(0, 0, Short.MAX_VALUE)))
                         .addGap(42, 42, 42))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -667,6 +702,25 @@ public class NuevoUsuario extends javax.swing.JFrame {
                     {
                         JOptionPane.showMessageDialog(null, "Se ha agregado con exito.", "Exito.", JOptionPane.INFORMATION_MESSAGE);
                         Aspirante.idaspirante = aux;
+                        ciudadano = new ClsCiudadano(Configuracion);//cambiar configuracion para enviar al server
+               
+                        
+                        ciudadano.Nombres   = Aspirante.Nombre;
+                        ciudadano.Apellidos = Aspirante.Apellido;
+                        ciudadano.ClaveIne  = Aspirante.Clave;
+                        ciudadano.Mail      = Aspirante.Email;
+                        ciudadano.Telefono  = Aspirante.Telefono;
+                        ciudadano.Voto = false;
+                        ciudadano.FolioPadron="";
+                        ciudadano.Seccion   = Aspirante.Seccion;
+                        ciudadano.Colonia   = Aspirante.Colonia;
+                        ciudadano.Casilla=0;
+                        ciudadano.idResponsable = 113;
+                        try {
+                            ciudadano.Nuevo();
+                        } catch (SQLException ex) {
+                            Logger.getLogger(NuevoUsuario.class.getName()).log(Level.SEVERE, null, ex);
+                        }
                         //System.out.println( Aspirante.idaspirante);
                         limpiar();
                     }                

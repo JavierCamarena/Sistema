@@ -1115,7 +1115,7 @@ public class RegistroUD extends javax.swing.JFrame {
             Class.forName(Configuracion[0]);
             con = DriverManager.getConnection(Configuracion[1],Configuracion[2],Configuracion[3]); // OJO esta linea depende de tu base de datos, el 1234 es la contrasenia
             stat = con.createStatement();
-            ResultSet rs = stat.executeQuery("select * from ciudadanos where idResponsable="+Responsable.idResponsable);
+            ResultSet rs = stat.executeQuery("select * from ciudadanos where idResponsable="+Responsable.idResponsable+" Order by Apellidos");
             System.out.println("Datos obtenidos configurando tabla");
             //conversorTable.rellena(rs, modelo);
             String [] titulos = {"id","Apellidos", "Nombres", "Clave INE", "Correo", "Telefono", "Folio Padron","Seccion","Colonia"}; 
@@ -1425,19 +1425,23 @@ public class RegistroUD extends javax.swing.JFrame {
             int aux;
             if(ciudadano.idCiudadano == 0 )
             {
-                aux =ciudadano.Nuevo() ;
-                if (aux!= -1)
-                {
-                    JOptionPane.showMessageDialog(null, "Se ha agregado con exito.", "Cuidado.", JOptionPane.INFORMATION_MESSAGE);
-                    ciudadano.idCiudadano = aux;
-                    LimpiaCamposCiudadano();
-                    ciudadano.Limpia();
-                    rellenaTabla();
-
-                }
-                else
-                {
-                    JOptionPane.showMessageDialog(null, "Ha ocurrido un error.", "Cuidado.", JOptionPane.INFORMATION_MESSAGE);
+                try {
+                    aux =ciudadano.Nuevo() ;
+                    if (aux!= -1)
+                    {
+                        JOptionPane.showMessageDialog(null, "Se ha agregado con exito.", "Cuidado.", JOptionPane.INFORMATION_MESSAGE);
+                        ciudadano.idCiudadano = aux;
+                        LimpiaCamposCiudadano();
+                        ciudadano.Limpia();
+                        rellenaTabla();
+                        
+                    }
+                    else
+                    {
+                        JOptionPane.showMessageDialog(null, "Ha ocurrido un error.", "Cuidado.", JOptionPane.INFORMATION_MESSAGE);
+                    }
+                } catch (SQLException ex) {
+                    Logger.getLogger(RegistroUD.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
             else
