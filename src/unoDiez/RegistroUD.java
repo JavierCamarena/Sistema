@@ -1605,7 +1605,7 @@ public class RegistroUD extends javax.swing.JFrame {
           
             String [] titulos = {"id","Apellido", "Nombre", "Clave Ine", "Email", "FolioPadron", "Seccion", "Colonia","Casilla"}; 
             String [] registros = new String[9];
-            
+            int cont = 0;
             modelo = new DefaultTableModel(null, titulos);
             while(rs.next())
                 {
@@ -1619,9 +1619,10 @@ public class RegistroUD extends javax.swing.JFrame {
                     registros[7]= rs.getString("Colonia");
                     registros[8]= rs.getString("Casilla");
                     modelo.addRow(registros);
+                    cont ++;
                 }
             jTableBuscaCiudadano.setModel(modelo);
-            rs.close();
+            System.out.println("TOTAL:"+cont);
             
             //asignaSql();
                 }catch ( ClassNotFoundException | SQLException e ){
