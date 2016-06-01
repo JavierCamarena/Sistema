@@ -21,6 +21,7 @@ public class ClsResponsables {
     
     Connection con = null;
     Statement stat = null;
+    ResultSet rs   = null;
     //---------------DataBase Conf------------------
     
     String dbName;   
@@ -90,7 +91,7 @@ public class ClsResponsables {
   
 
                 preparedStmt.executeUpdate();
-                ResultSet rs = preparedStmt.getGeneratedKeys();
+                rs = preparedStmt.getGeneratedKeys();
                 
                 if (rs.next()) {
                     Afected = rs.getInt(1);
@@ -105,7 +106,9 @@ public class ClsResponsables {
             System.out.println("Error: " + e.getMessage());
             return -1;
         } finally {
-            
+            try { if (rs != null) rs.close(); } catch (Exception e) {System.out.println("Error:" + e.getMessage());}
+            try { if (stat != null) stat.close(); } catch (Exception e) {System.out.println("Error:" + e.getMessage());}
+            try { if (con != null) con.close(); } catch (Exception e) {System.out.println("Error:" + e.getMessage());}
         }
         
         return Afected;    
@@ -141,7 +144,9 @@ public class ClsResponsables {
             System.out.println("Error: " + e.getMessage());
             return false;
         } finally {
-            
+            try { if (rs != null) rs.close(); } catch (Exception e) {System.out.println("Error:" + e.getMessage());}
+            try { if (stat != null) stat.close(); } catch (Exception e) {System.out.println("Error:" + e.getMessage());}
+            try { if (con != null) con.close(); } catch (Exception e) {System.out.println("Error:" + e.getMessage());}
         }
         
         return true;    
@@ -166,7 +171,9 @@ public class ClsResponsables {
             System.out.println("Error: " + e.getMessage());
             return false;
         } finally {
-            
+            try { if (rs != null) rs.close(); } catch (Exception e) {System.out.println("Error:" + e.getMessage());}
+            try { if (stat != null) stat.close(); } catch (Exception e) {System.out.println("Error:" + e.getMessage());}
+            try { if (con != null) con.close(); } catch (Exception e) {System.out.println("Error:" + e.getMessage());}
         }
         
         return true;    
@@ -189,7 +196,9 @@ public class ClsResponsables {
             System.out.println("Error: " + e.getMessage());
             return false;
         } finally {
-            
+            try { if (rs != null) rs.close(); } catch (Exception e) {System.out.println("Error:" + e.getMessage());}
+            try { if (stat != null) stat.close(); } catch (Exception e) {System.out.println("Error:" + e.getMessage());}
+            try { if (con != null) con.close(); } catch (Exception e) {System.out.println("Error:" + e.getMessage());}
         }
         
         return true;
@@ -208,7 +217,7 @@ public class ClsResponsables {
                 PreparedStatement preparedStmt = con.prepareStatement(SQL);
                 preparedStmt.setInt(1,idResponsable);
                 
-                ResultSet rs = preparedStmt.executeQuery();
+                rs = preparedStmt.executeQuery();
                 
                 System.out.println("Buscando id = "+ idResponsable);
                 
@@ -235,7 +244,9 @@ public class ClsResponsables {
             System.out.println("Error: " + e.getMessage());
             return false;
         } finally {
-            
+            try { if (rs != null) rs.close(); } catch (Exception e) {System.out.println("Error:" + e.getMessage());}
+            try { if (stat != null) stat.close(); } catch (Exception e) {System.out.println("Error:" + e.getMessage());}
+            try { if (con != null) con.close(); } catch (Exception e) {System.out.println("Error:" + e.getMessage());}
         }
         
         return true;    

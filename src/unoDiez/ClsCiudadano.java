@@ -20,6 +20,7 @@ public class ClsCiudadano {
     
     Connection con = null;
     Statement stat = null;
+    ResultSet rs   = null;
     //---------------DataBase Conf------------------
     
     String dbName;   
@@ -66,7 +67,7 @@ public class ClsCiudadano {
                 PreparedStatement preparedStmt = con.prepareStatement(SQL);
                 preparedStmt.setString(1,ine);
                 
-                ResultSet rs = preparedStmt.executeQuery();
+                rs = preparedStmt.executeQuery();
                 
                 System.out.println("Buscando clave = "+ ine);
                 
@@ -86,7 +87,9 @@ public class ClsCiudadano {
             System.out.println("Error: " + e.getMessage());
             return false;
         } finally {
-            
+            try { if (rs != null) rs.close(); } catch (Exception e) {System.out.println("Error:" + e.getMessage());}
+            try { if (stat != null) stat.close(); } catch (Exception e) {System.out.println("Error:" + e.getMessage());}
+            try { if (con != null) con.close(); } catch (Exception e) {System.out.println("Error:" + e.getMessage());}
         }
         
         return true;    
@@ -105,7 +108,7 @@ public class ClsCiudadano {
                 PreparedStatement preparedStmt = con.prepareStatement(SQL);
                 preparedStmt.setInt(1,id);
                 
-                ResultSet rs = preparedStmt.executeQuery();
+                rs = preparedStmt.executeQuery();
                 
                 System.out.println("Buscando id = "+ id);
                 
@@ -135,7 +138,9 @@ public class ClsCiudadano {
             System.out.println("Error: " + e.getMessage());
             return false;
         } finally {
-            
+            try { if (rs != null) rs.close(); } catch (Exception e) {System.out.println("Error:" + e.getMessage());}
+            try { if (stat != null) stat.close(); } catch (Exception e) {System.out.println("Error:" + e.getMessage());}
+            try { if (con != null) con.close(); } catch (Exception e) {System.out.println("Error:" + e.getMessage());}
         }
         
         return true;    
@@ -185,7 +190,7 @@ public class ClsCiudadano {
 
                 preparedStmt.executeUpdate();
                 
-                ResultSet rs = preparedStmt.getGeneratedKeys();
+                rs = preparedStmt.getGeneratedKeys();
                 
                 if (rs.next()) {
                     Afected = rs.getInt(1);
@@ -202,7 +207,9 @@ public class ClsCiudadano {
             
             return -1;
         } finally {
-            
+            try { if (rs != null) rs.close(); } catch (Exception e) {System.out.println("Error:" + e.getMessage());}
+            try { if (stat != null) stat.close(); } catch (Exception e) {System.out.println("Error:" + e.getMessage());}
+            try { if (con != null) con.close(); } catch (Exception e) {System.out.println("Error:" + e.getMessage());}
         }
         idCiudadano = Afected;
         
@@ -237,7 +244,9 @@ public class ClsCiudadano {
             System.out.println("Error: " + e.getMessage());
             return false;
         } finally {
-            
+            try { if (rs != null) rs.close(); } catch (Exception e) {System.out.println("Error:" + e.getMessage());}
+            try { if (stat != null) stat.close(); } catch (Exception e) {System.out.println("Error:" + e.getMessage());}
+            try { if (con != null) con.close(); } catch (Exception e) {System.out.println("Error:" + e.getMessage());}
         }
         
         return true;    
@@ -260,7 +269,9 @@ public class ClsCiudadano {
             System.out.println("Error: " + e.getMessage());
             return false;
         } finally {
-            
+            try { if (rs != null) rs.close(); } catch (Exception e) {System.out.println("Error:" + e.getMessage());}
+            try { if (stat != null) stat.close(); } catch (Exception e) {System.out.println("Error:" + e.getMessage());}
+            try { if (con != null) con.close(); } catch (Exception e) {System.out.println("Error:" + e.getMessage());}
         }
         
         return true;    
@@ -285,7 +296,9 @@ public class ClsCiudadano {
             System.out.println("Error: " + e.getMessage());
             return false;
         } finally {
-            
+            try { if (rs != null) rs.close(); } catch (Exception e) {System.out.println("Error:" + e.getMessage());}
+            try { if (stat != null) stat.close(); } catch (Exception e) {System.out.println("Error:" + e.getMessage());}
+            try { if (con != null) con.close(); } catch (Exception e) {System.out.println("Error:" + e.getMessage());}
         }
         
         return true;    

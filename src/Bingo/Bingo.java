@@ -26,6 +26,7 @@ public class Bingo extends javax.swing.JFrame {
     String sqlcode = "";
     Connection con = null;
     Statement stat = null;
+    ResultSet   rs = null;
     public DefaultTableModel modelo;
     private ClsCiudadano Ciudadano;
      String [] titulos = {"id","Apellidos", "Nombre", "Seccion"}; 
@@ -106,7 +107,7 @@ public class Bingo extends javax.swing.JFrame {
             con = DriverManager.getConnection(Configuracion[1],Configuracion[2],Configuracion[3]); // OJO esta linea depende de tu base de datos, el 1234 es la contrasenia
             stat = con.createStatement();
             System.out.println("preparando statement :"+sqlcode);
-            ResultSet rs = stat.executeQuery("select * from ciudadanos "+sqlcode+" Order by Apellidos");
+            rs = stat.executeQuery("select * from ciudadanos "+sqlcode+" Order by Apellidos");
             System.out.println("Datos obtenidos configurando tabla");
           
            
@@ -131,6 +132,10 @@ public class Bingo extends javax.swing.JFrame {
             System.out.println("Error: " + e.getMessage());
            
         } finally {
+            
+            try { if (rs != null) rs.close(); } catch (Exception e) {System.out.println("Error:" + e.getMessage());}
+            try { if (stat != null) stat.close(); } catch (Exception e) {System.out.println("Error:" + e.getMessage());}
+            try { if (con != null) con.close(); } catch (Exception e) {System.out.println("Error:" + e.getMessage());}
             
              jTableCiudadano.getSelectionModel().addListSelectionListener( new ListSelectionListener() {
                 @Override

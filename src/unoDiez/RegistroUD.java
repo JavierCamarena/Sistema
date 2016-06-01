@@ -43,6 +43,7 @@ public class RegistroUD extends javax.swing.JFrame {
     String Configuracion[];
     Connection con = null;
     Statement stat = null;
+    ResultSet rs   = null;
     public DefaultTableModel modelo;
     public final int OTRO  = 0;
     public final int LIDER = 1;
@@ -1115,7 +1116,7 @@ public class RegistroUD extends javax.swing.JFrame {
             Class.forName(Configuracion[0]);
             con = DriverManager.getConnection(Configuracion[1],Configuracion[2],Configuracion[3]); // OJO esta linea depende de tu base de datos, el 1234 es la contrasenia
             stat = con.createStatement();
-            ResultSet rs = stat.executeQuery("select * from ciudadanos where idResponsable="+Responsable.idResponsable+" Order by Apellidos");
+            rs = stat.executeQuery("select * from ciudadanos where idResponsable="+Responsable.idResponsable+" Order by Apellidos");
             System.out.println("Datos obtenidos configurando tabla");
             //conversorTable.rellena(rs, modelo);
             String [] titulos = {"id","Apellidos", "Nombres", "Clave INE", "Correo", "Telefono", "Folio Padron","Seccion","Colonia"}; 
@@ -1141,6 +1142,9 @@ public class RegistroUD extends javax.swing.JFrame {
             System.out.println("Error: " + e.getMessage());
            
         } finally {
+            try { if (rs != null) rs.close(); } catch (Exception e) {System.out.println("Error:" + e.getMessage());}
+            try { if (stat != null) stat.close(); } catch (Exception e) {System.out.println("Error:" + e.getMessage());}
+            try { if (con != null) con.close(); } catch (Exception e) {System.out.println("Error:" + e.getMessage());}
             
             jTableCiudadano.getSelectionModel().addListSelectionListener( new ListSelectionListener() {
                 @Override
@@ -1192,7 +1196,7 @@ public class RegistroUD extends javax.swing.JFrame {
             con = DriverManager.getConnection(Configuracion[1],Configuracion[2],Configuracion[3]); // OJO esta linea depende de tu base de datos, el 1234 es la contrasenia
             stat = con.createStatement();
             System.out.println("preparando statement :"+sqlcode);
-            ResultSet rs = stat.executeQuery("select * from responsables "+sqlcode+" Order by Apellido");
+            rs = stat.executeQuery("select * from responsables "+sqlcode+" Order by Apellido");
             System.out.println("Datos obtenidos configurando tabla");
           
             String [] titulos = {"id","Apellido", "Nombre", "Clave Ine", "Numero", "Seccion", "Cargo", "Email","Colonia"}; 
@@ -1220,6 +1224,9 @@ public class RegistroUD extends javax.swing.JFrame {
             System.out.println("Error: " + e.getMessage());
            
         } finally {
+            try { if (rs != null) rs.close(); } catch (Exception e) {System.out.println("Error:" + e.getMessage());}
+            try { if (stat != null) stat.close(); } catch (Exception e) {System.out.println("Error:" + e.getMessage());}
+            try { if (con != null) con.close(); } catch (Exception e) {System.out.println("Error:" + e.getMessage());}
             
             jTable1.getSelectionModel().addListSelectionListener( new ListSelectionListener() {
                 @Override
@@ -1593,7 +1600,7 @@ public class RegistroUD extends javax.swing.JFrame {
             con = DriverManager.getConnection(Configuracion[1],Configuracion[2],Configuracion[3]); // OJO esta linea depende de tu base de datos, el 1234 es la contrasenia
             stat = con.createStatement();
             System.out.println("preparando statement :"+sqlcode);
-            ResultSet rs = stat.executeQuery("select * from ciudadanos "+sqlcode+" Order by Apellidos");
+            rs = stat.executeQuery("select * from ciudadanos "+sqlcode+" Order by Apellidos");
             System.out.println("Datos obtenidos configurando tabla");
           
             String [] titulos = {"id","Apellido", "Nombre", "Clave Ine", "Email", "FolioPadron", "Seccion", "Colonia","Casilla"}; 
@@ -1621,6 +1628,9 @@ public class RegistroUD extends javax.swing.JFrame {
             System.out.println("Error: " + e.getMessage());
            
         } finally {
+            try { if (rs != null) rs.close(); } catch (Exception e) {System.out.println("Error:" + e.getMessage());}
+            try { if (stat != null) stat.close(); } catch (Exception e) {System.out.println("Error:" + e.getMessage());}
+            try { if (con != null) con.close(); } catch (Exception e) {System.out.println("Error:" + e.getMessage());}
             
              jTableBuscaCiudadano.getSelectionModel().addListSelectionListener( new ListSelectionListener() {
                 @Override

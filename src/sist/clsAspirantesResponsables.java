@@ -20,6 +20,7 @@ public class clsAspirantesResponsables {
     
     Connection con = null;
     Statement stat = null;
+    ResultSet rs   = null;
     //---------------DataBase Conf------------------
     
     String dbName;   
@@ -130,7 +131,7 @@ public class clsAspirantesResponsables {
                 preparedStmt.setString(20, Clave);
 
                 preparedStmt.executeUpdate();
-                ResultSet rs = preparedStmt.getGeneratedKeys();
+                rs = preparedStmt.getGeneratedKeys();
                 
                 if (rs.next()) {
                     Afected = rs.getInt(1);
@@ -145,7 +146,9 @@ public class clsAspirantesResponsables {
             System.out.println("Error: " + e.getMessage());
             return -1;
         } finally {
-            
+            try { if (rs != null) rs.close(); } catch (Exception e) {System.out.println("Error:" + e.getMessage());};
+            try { if (stat != null) stat.close(); } catch (Exception e) {System.out.println("Error:" + e.getMessage());};
+            try { if (con != null) con.close(); } catch (Exception e) {System.out.println("Error:" + e.getMessage());};
         }
         
         return Afected;    
@@ -190,7 +193,9 @@ public class clsAspirantesResponsables {
             System.out.println("Error: " + e.getMessage());
             return false;
         } finally {
-            
+            try { if (rs != null) rs.close(); } catch (Exception e) {System.out.println("Error:" + e.getMessage());};
+            try { if (stat != null) stat.close(); } catch (Exception e) {System.out.println("Error:" + e.getMessage());};
+            try { if (con != null) con.close(); } catch (Exception e) {System.out.println("Error:" + e.getMessage());};
         }
         
         return true;    
@@ -213,7 +218,9 @@ public class clsAspirantesResponsables {
             System.out.println("Error: " + e.getMessage());
             return false;
         } finally {
-            
+            try { if (rs != null) rs.close(); } catch (Exception e) {System.out.println("Error:" + e.getMessage());}
+            try { if (stat != null) stat.close(); } catch (Exception e) {System.out.println("Error:" + e.getMessage());}
+            try { if (con != null) con.close(); } catch (Exception e) {System.out.println("Error:" + e.getMessage());}
         }
         
         return true;    
@@ -232,7 +239,7 @@ public class clsAspirantesResponsables {
                 PreparedStatement preparedStmt = con.prepareStatement(SQL);
                 preparedStmt.setInt(1,id);
                 
-                ResultSet rs = preparedStmt.executeQuery();
+                rs = preparedStmt.executeQuery();
                 
                 System.out.println("Buscando id = "+ id);
                 
@@ -270,7 +277,9 @@ public class clsAspirantesResponsables {
             System.out.println("Error: " + e.getMessage());
             return false;
         } finally {
-            
+            try { if (rs != null) rs.close(); } catch (Exception e) {System.out.println("Error:" + e.getMessage());}
+            try { if (stat != null) stat.close(); } catch (Exception e) {System.out.println("Error:" + e.getMessage());}
+            try { if (con != null) con.close(); } catch (Exception e) {System.out.println("Error:" + e.getMessage());}
         }
         
         return true;    
