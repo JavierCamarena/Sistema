@@ -48,7 +48,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
         jButtonBingo = new javax.swing.JButton();
         jButtonBingo1 = new javax.swing.JButton();
 
@@ -65,14 +64,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
-            }
-        });
-
-        jButton3.setText("Generar reportes");
-        jButton3.setEnabled(false);
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
             }
         });
 
@@ -98,11 +89,10 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(80, 80, 80)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jButtonBingo, javax.swing.GroupLayout.DEFAULT_SIZE, 139, Short.MAX_VALUE)
+                    .addComponent(jButtonBingo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, 139, Short.MAX_VALUE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 139, Short.MAX_VALUE)
-                    .addComponent(jButton3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButtonBingo1, javax.swing.GroupLayout.DEFAULT_SIZE, 139, Short.MAX_VALUE))
+                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButtonBingo1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(80, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -110,15 +100,13 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(50, 50, 50)
                 .addComponent(jButton1)
-                .addGap(18, 18, 18)
+                .addGap(31, 31, 31)
                 .addComponent(jButton2)
-                .addGap(18, 18, 18)
+                .addGap(28, 28, 28)
                 .addComponent(jButtonBingo)
-                .addGap(18, 18, 18)
+                .addGap(28, 28, 28)
                 .addComponent(jButtonBingo1)
-                .addGap(18, 18, 18)
-                .addComponent(jButton3)
-                .addContainerGap(36, Short.MAX_VALUE))
+                .addContainerGap(51, Short.MAX_VALUE))
         );
 
         pack();
@@ -127,11 +115,11 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private void cargaConfiguracion() 
     {   
         Configuracion[0]= "com.mysql.jdbc.Driver";
-        Configuracion[1]= "jdbc:mysql://192.168.1.76:3306/sistemamonitoreo";
-        //Configuracion[1]= "jdbc:mysql://localhost:3306/sistemamonitoreo";
+        //Configuracion[1]= "jdbc:mysql://192.168.1.76:3306/sistemamonitoreo";
+        Configuracion[1]= "jdbc:mysql://localhost:3306/sistemamonitoreo";
         //Configuracion[2]= "sis";
-        Configuracion[2]= "sis";
-        Configuracion[3]= "1234"; //pass 12345
+        Configuracion[2]= "root";
+        Configuracion[3]= "xaovs"; //pass 12345
     }
     
     
@@ -196,10 +184,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         } 
     }//GEN-LAST:event_jButtonBingo1ActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton3ActionPerformed
-
     /**
      * @param args the command line arguments
      */
@@ -240,7 +224,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JButton jButtonBingo;
     private javax.swing.JButton jButtonBingo1;
     // End of variables declaration//GEN-END:variables
