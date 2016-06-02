@@ -1137,6 +1137,7 @@ public class RegistroUD extends javax.swing.JFrame {
                     modelo.addRow(registros);
                 }
             jTableCiudadano.setModel(modelo);
+            jTableCiudadano.setAutoCreateRowSorter(true);
             rs.close();
                 }catch ( ClassNotFoundException | SQLException e ){
             System.out.println("Error: " + e.getMessage());
@@ -1217,6 +1218,7 @@ public class RegistroUD extends javax.swing.JFrame {
                     modelo.addRow(registros);
                 }
             jTable1.setModel(modelo);
+            jTable1.setAutoCreateRowSorter(true);
             rs.close();
             
             //asignaSql();
@@ -1622,6 +1624,7 @@ public class RegistroUD extends javax.swing.JFrame {
                     cont ++;
                 }
             jTableBuscaCiudadano.setModel(modelo);
+            jTableBuscaCiudadano.setAutoCreateRowSorter(true);
             System.out.println("TOTAL:"+cont);
             
             //asignaSql();

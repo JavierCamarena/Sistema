@@ -124,6 +124,7 @@ public class Bingo extends javax.swing.JFrame {
 
                     modelo.addRow(registros);
                 }
+            jTableCiudadano.setAutoCreateRowSorter(true);
             jTableCiudadano.setModel(modelo);
             rs.close();
             
