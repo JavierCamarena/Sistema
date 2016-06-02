@@ -707,7 +707,7 @@ public class NuevoUsuario extends javax.swing.JFrame {
                         
                         ciudadano.Nombres   = Aspirante.Nombre;
                         ciudadano.Apellidos = Aspirante.Apellido;
-                        ciudadano.ClaveIne  = Aspirante.Clave;
+                        ciudadano.ClaveIne  = "";
                         ciudadano.Mail      = Aspirante.Email;
                         ciudadano.Telefono  = Aspirante.Telefono;
                         ciudadano.Voto = false;
