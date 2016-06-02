@@ -10,6 +10,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -30,7 +31,8 @@ public class Bingo extends javax.swing.JFrame {
     public DefaultTableModel modelo;
     private ClsCiudadano Ciudadano;
      String [] titulos = {"id","Apellidos", "Nombre", "Seccion"}; 
-     
+    private ImageIcon iconVoto   = new ImageIcon("Imgs/voto.png");
+    private ImageIcon iconNoVoto = new ImageIcon("Imgs/noVoto.png");
     
     public Bingo() {
         initComponents();
@@ -90,10 +92,12 @@ public class Bingo extends javax.swing.JFrame {
         {
             
             jLabelVotado.setText("No ha votado.");
+            jLabelVotado.setIcon(iconNoVoto);
         }
         else
         {
             jLabelVotado.setText("Ya voto.");
+            jLabelVotado.setIcon(iconVoto);
         }
     }
     
@@ -123,9 +127,11 @@ public class Bingo extends javax.swing.JFrame {
                     registros[3]= rs.getString("Seccion");
 
                     modelo.addRow(registros);
+                    
                 }
             jTableCiudadano.setAutoCreateRowSorter(true);
             jTableCiudadano.setModel(modelo);
+            
             rs.close();
             
             //asignaSql();
@@ -273,6 +279,9 @@ public class Bingo extends javax.swing.JFrame {
         jLabel22.setText("Colonia");
 
         jLabelVotado.setText("jLabel6");
+        jLabelVotado.setMaximumSize(new java.awt.Dimension(50, 20));
+        jLabelVotado.setMinimumSize(new java.awt.Dimension(50, 20));
+        jLabelVotado.setPreferredSize(new java.awt.Dimension(50, 20));
 
         jButton1.setText("Voto!");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -331,13 +340,16 @@ public class Bingo extends javax.swing.JFrame {
                             .addComponent(jLabel22)
                             .addComponent(jLColonia)))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(10, 10, 10)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jButtonBuscar)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 412, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(157, 157, 157)
+                                .addGap(360, 360, 360)
+                                .addComponent(jButtonBuscar))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(10, 10, 10)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 480, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(89, 89, 89)
                                 .addComponent(jLabelVotado, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -399,8 +411,8 @@ public class Bingo extends javax.swing.JFrame {
                 .addComponent(jLabel22)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLColonia)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
-                .addComponent(jLabelVotado)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
+                .addComponent(jLabelVotado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(31, 31, 31)
                 .addComponent(jButton1)
                 .addGap(30, 30, 30))
@@ -418,12 +430,12 @@ public class Bingo extends javax.swing.JFrame {
         // TODO add your handling code here:
         if (Ciudadano.Votacion(!Ciudadano.Voto)) 
         {
-            JOptionPane.showMessageDialog(null, "Se ha actualizado.", "Cuidado.", JOptionPane.INFORMATION_MESSAGE);
+            //JOptionPane.showMessageDialog(null, "Se ha actualizado.", "Cuidado.", JOptionPane.INFORMATION_MESSAGE);
             Ciudadano.Voto = !Ciudadano.Voto;
         }
         else
         {
-            JOptionPane.showMessageDialog(null, "Ha ocurrido un error.", "Cuidado.", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Error al actualizar voto.", "Cuidado.", JOptionPane.INFORMATION_MESSAGE);
         }
         PresentaDatos();
     }//GEN-LAST:event_jButton1ActionPerformed

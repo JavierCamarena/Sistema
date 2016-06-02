@@ -14,10 +14,12 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.WindowConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumnModel;
 import sist.Colonia;
 import sist.LimiteDeCaracteres;
 
@@ -1625,6 +1627,8 @@ public class RegistroUD extends javax.swing.JFrame {
                 }
             jTableBuscaCiudadano.setModel(modelo);
             jTableBuscaCiudadano.setAutoCreateRowSorter(true);
+            
+            //setColumnWidths(jTableBuscaCiudadano, new int[]{15,200,200} );  ajustar tamaño de columna
             System.out.println("TOTAL:"+cont);
             
             //asignaSql();
@@ -1657,6 +1661,16 @@ public class RegistroUD extends javax.swing.JFrame {
           jTextSeccionCiudadano.setText("");
           jTextNombreCiudadano.setText("");
           jTextApellidoCiudadano.setText("");
+    }
+    
+    public static void setColumnWidths(JTable table, int [] widths) {
+        TableColumnModel columnModel = table.getColumnModel();
+        for (int i = 0; i < widths.length; i++) {
+            if (i < columnModel.getColumnCount()) {
+                columnModel.getColumn(i).setMinWidth(widths[i]);
+            }
+            else break;
+        }
     }
     
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
