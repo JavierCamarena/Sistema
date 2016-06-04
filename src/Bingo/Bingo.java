@@ -30,7 +30,7 @@ public class Bingo extends javax.swing.JFrame {
     ResultSet   rs = null;
     public DefaultTableModel modelo;
     private ClsCiudadano Ciudadano;
-     String [] titulos = {"id","Apellidos", "Nombre", "Seccion"}; 
+     String [] titulos = {"id","Apellidos", "Nombre", "Seccion", "Folio"}; 
     private ImageIcon iconVoto   = new ImageIcon("Imgs/voto.png");
     private ImageIcon iconNoVoto = new ImageIcon("Imgs/noVoto.png");
     
@@ -73,8 +73,12 @@ public class Bingo extends javax.swing.JFrame {
         if(cas > 0){
             comp +=cas;
         }
-        sqlcode = " WHERE Seccion LIKE '%" + jTextSeccion.getText() + "%' AND FolioPadron LIKE '%" 
-                + jTextFolio.getText() + "%' AND Casilla LIKE '%" + comp +"%'";
+        if(jTextFolio.getText().equalsIgnoreCase("")){
+            sqlcode = " WHERE Seccion LIKE '%" + jTextSeccion.getText() +"%' AND Casilla LIKE '%" + comp +"%'";        
+        }else {
+        sqlcode = " WHERE Seccion LIKE '%" + jTextSeccion.getText() + "%' AND FolioPadron =" 
+                + jTextFolio.getText() + " AND Casilla LIKE '%" + comp +"%'";    
+        }
     }
     
     public void PresentaDatos()
@@ -111,11 +115,11 @@ public class Bingo extends javax.swing.JFrame {
             con = DriverManager.getConnection(Configuracion[1],Configuracion[2],Configuracion[3]); // OJO esta linea depende de tu base de datos, el 1234 es la contrasenia
             stat = con.createStatement();
             System.out.println("preparando statement :"+sqlcode);
-            rs = stat.executeQuery("select * from ciudadanos "+sqlcode+" Order by Apellidos");
+            rs = stat.executeQuery("select * from ciudadanos "+sqlcode+" Order by FolioPadron");
             System.out.println("Datos obtenidos configurando tabla");
           
            
-            String [] registros = new String[4];
+            String [] registros = new String[5];
             
             
             modelo = new DefaultTableModel(null, titulos);
@@ -125,7 +129,7 @@ public class Bingo extends javax.swing.JFrame {
                     registros[1]= rs.getString("Apellidos");
                     registros[2]= rs.getString("Nombres");
                     registros[3]= rs.getString("Seccion");
-
+                    registros[4]= rs.getString("FolioPadron");
                     modelo.addRow(registros);
                     
                 }

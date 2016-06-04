@@ -252,6 +252,37 @@ public class ClsCiudadano {
         return true;    
     }
     
+    public boolean actualizaCasilla(int $idciudadanos,String $seccion,String $claveIne,String $folioPadron,int $casilla)
+    {//idciudadanos,Seccion,ClaveIne,FolioPadron,Casilla
+          try {
+                Class.forName(dbName);
+                con = DriverManager.getConnection(dbPath,dbUsr, dbPw);
+                stat = con.createStatement();
+                
+                String SQL = "UPDATE ciudadanos SET Seccion = ?,ClaveIne = ?,FolioPadron = ?"
+                           + ",Casilla = ? WHERE idciudadanos = ?";
+                
+                PreparedStatement preparedStmt = con.prepareStatement(SQL);
+                preparedStmt.setString (1, $seccion);
+                preparedStmt.setString (2, $claveIne);
+                preparedStmt.setString (3, $folioPadron);
+                preparedStmt.setInt(4, $casilla);
+                preparedStmt.setInt(5, $idciudadanos);
+                
+                int retorno = preparedStmt.executeUpdate();
+                
+            }catch ( ClassNotFoundException | SQLException e ){
+            System.out.println("Error: " + e.getMessage());
+            return false;
+        } finally {
+            try { if (rs != null) rs.close(); } catch (Exception e) {System.out.println("Error:" + e.getMessage());}
+            try { if (stat != null) stat.close(); } catch (Exception e) {System.out.println("Error:" + e.getMessage());}
+            try { if (con != null) con.close(); } catch (Exception e) {System.out.println("Error:" + e.getMessage());}
+        }
+        
+        return true;    
+    }
+    
     public boolean Elimina() 
     {
          try {
