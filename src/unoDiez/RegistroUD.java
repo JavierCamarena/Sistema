@@ -311,6 +311,7 @@ public class RegistroUD extends javax.swing.JFrame {
         jTextNombreCiudadano = new javax.swing.JTextField();
         jLabel28 = new javax.swing.JLabel();
         jTextApellidoCiudadano = new javax.swing.JTextField();
+        CheckNoFolio = new javax.swing.JCheckBox();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -674,6 +675,8 @@ public class RegistroUD extends javax.swing.JFrame {
 
         jTextApellidoCiudadano.setText("jTextField1");
 
+        CheckNoFolio.setText("Sin Folio");
+
         javax.swing.GroupLayout jDialogBuscaCiudadanoLayout = new javax.swing.GroupLayout(jDialogBuscaCiudadano.getContentPane());
         jDialogBuscaCiudadano.getContentPane().setLayout(jDialogBuscaCiudadanoLayout);
         jDialogBuscaCiudadanoLayout.setHorizontalGroup(
@@ -686,6 +689,8 @@ public class RegistroUD extends javax.swing.JFrame {
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jDialogBuscaCiudadanoLayout.createSequentialGroup()
                         .addComponent(jTextSeccionCiudadano, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(CheckNoFolio)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jDialogBuscaCiudadanoLayout.createSequentialGroup()
                         .addGroup(jDialogBuscaCiudadanoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -734,7 +739,9 @@ public class RegistroUD extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel26)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextSeccionCiudadano, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jDialogBuscaCiudadanoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jTextSeccionCiudadano, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(CheckNoFolio))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                         .addContainerGap())))
@@ -1592,6 +1599,10 @@ public class RegistroUD extends javax.swing.JFrame {
     public void AsignaSqlCiudadano() 
     {        
         sqlcode = " WHERE Nombres LIKE '%" + jTextNombreCiudadano.getText() + "%' AND Apellidos LIKE '%" + jTextApellidoCiudadano.getText() + "%' AND Seccion LIKE '%" + jTextSeccionCiudadano.getText() + "%'";
+        if(CheckNoFolio.isSelected())
+        {
+            sqlcode = sqlcode + " AND FolioPadron = ''";
+        }
     }
     
     public void BuscaCiudadano()
@@ -1755,6 +1766,7 @@ public class RegistroUD extends javax.swing.JFrame {
     private javax.swing.JButton BtnEliminar;
     private javax.swing.JButton BtnGuardar;
     private javax.swing.JButton BtnSalir;
+    private javax.swing.JCheckBox CheckNoFolio;
     private javax.swing.JTextField apellidoField;
     private javax.swing.JButton btnAniadir;
     private javax.swing.JButton btnBuscar;
