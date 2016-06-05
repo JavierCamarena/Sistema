@@ -28,22 +28,17 @@ public class clsPrep {
     String dbPw;
     
     public int idPrep;
+    public String RepresentanteGeneral;
+    public String Ruta;
     public String Seccion;
-    public int Casillas;
-    public int Votos;
+    public int Casilla; 
     public int PAN;
-    public int PRI;
+    public int PRI; 
     public int PRD;
-    public int PVEM;
-    public int PT;
-    public int PMC;
-    public int PUP;
-    public int PNA;
-    public int PSD;
-    public int PAN_PRD;
-    public int PRI_PVEM;
-    public int CNR;
-    public int Nulos;
+    public int MORENA; 
+    public int VERDE; 
+    public int PANAL; 
+    
     
     public clsPrep(String[] conf)
     {
@@ -57,22 +52,16 @@ public class clsPrep {
     public void Limpia() 
     {
         idPrep = 0; 
+        RepresentanteGeneral= ""; 
+        Ruta =""; 
         Seccion = "";
-        Casillas = 0; 
-        Votos = 0;
-        PAN = 0; 
+        Casilla =0; 
+        PAN =0; 
         PRI = 0; 
         PRD = 0; 
-        PVEM = 0; 
-        PT = 0;
-        PMC = 0; 
-        PUP = 0; 
-        PNA = 0; 
-        PSD = 0; 
-        PAN_PRD = 0; 
-        PRI_PVEM = 0; 
-        CNR = 0; 
-        Nulos = 0;        
+        MORENA = 0; 
+        VERDE = 0; 
+        PANAL = 0;
     }
     
         public int Nuevo() 
@@ -83,27 +72,21 @@ public class clsPrep {
                 con = DriverManager.getConnection(dbPath,dbUsr, dbPw); // OJO esta linea depende de tu base de datos, el 1234 es la contrasenia
                 stat = con.createStatement();
                 
-                String SQL = "INSERT INTO prep (Seccion,Casillas,Votos,PAN,PRI,PRD,PVEM,PT,PMC,PUP,PNA,PSD,PAN_PRD,PRI_PVEM,CNR,Nulos)"
-                           + " VALUES (?,?,?,?,?,?,?,?,?,?,?)";
+                String SQL = "INSERT INTO prep (RepresentanteGeneral,Ruta,Seccion,Casilla,PAN,PRI,PRD,MORENA,VERDE,PANAL)"
+                           + " VALUES (?,?,?,?,?,?,?,?,?,?)";
                 
                 
-                PreparedStatement preparedStmt = con.prepareStatement(SQL,new String[]{"idCiudadano"});
-                preparedStmt.setString(1, Seccion);
-                preparedStmt.setInt(2, Casillas);
-                preparedStmt.setInt(3, Votos);
-                preparedStmt.setInt(4, PAN);
-                preparedStmt.setInt(5, PRI);
-                preparedStmt.setInt(6, PRD);                
-                preparedStmt.setInt(7, PVEM);
-                preparedStmt.setInt(8, PT);                
-                preparedStmt.setInt(9, PMC);                
-                preparedStmt.setInt(10, PUP);
-                preparedStmt.setInt(11, PNA);
-                preparedStmt.setInt(11, PSD);
-                preparedStmt.setInt(11, PAN_PRD);
-                preparedStmt.setInt(11, PRI_PVEM);
-                preparedStmt.setInt(11, CNR);
-                preparedStmt.setInt(11, Nulos);
+                PreparedStatement preparedStmt = con.prepareStatement(SQL,new String[]{"idPrep"});
+                preparedStmt.setString(1, RepresentanteGeneral);
+                preparedStmt.setString(2, Ruta);
+                preparedStmt.setString(3, Seccion);
+                preparedStmt.setInt(4, Casilla);
+                preparedStmt.setInt(5, PAN);
+                preparedStmt.setInt(6, PRI);                
+                preparedStmt.setInt(7, PRD);
+                preparedStmt.setInt(8, MORENA);                
+                preparedStmt.setInt(9, VERDE);                
+                preparedStmt.setInt(10, PANAL);
                  
 
                 preparedStmt.executeUpdate();
@@ -127,4 +110,33 @@ public class clsPrep {
         idPrep = Afected;
         return Afected;    
     }
+        
+    public boolean Elimina() 
+    {
+         try {
+                Class.forName(dbName);
+                con = DriverManager.getConnection(dbPath,dbUsr, dbPw);
+                stat = con.createStatement();
+                
+                String SQL = "DELETE FROM prep WHERE idPrep = ?";
+                
+                PreparedStatement preparedStmt = con.prepareStatement(SQL);
+                preparedStmt.setInt (1, idPrep);
+          
+                int retorno = preparedStmt.executeUpdate();
+            }catch ( ClassNotFoundException | SQLException e ){
+            System.out.println("Error: " + e.getMessage());
+            return false;
+        } finally {
+            
+            try { if (stat != null) stat.close(); } catch (Exception e) {System.out.println("Error:" + e.getMessage());}
+            try { if (con != null) con.close(); } catch (Exception e) {System.out.println("Error:" + e.getMessage());}
+        }
+        
+        return true;    
+    }    
+    
+    
+    
+    
 }

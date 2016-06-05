@@ -5,6 +5,16 @@
  */
 package PREP;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -13,22 +23,25 @@ import javax.swing.table.DefaultTableModel;
  */
 public class PREP extends javax.swing.JFrame {
 
-    private String configuracion[];
+    private String Configuracion[];
     private clsPrep prep;
     public DefaultTableModel modelo;
-    private String [] titulos = {"Seccion", "Casilla", "Votos", "PAN", "PRI", "PRD", "Nulos"}; 
-    
+    private String [] titulos = {"ID","RG", "Ruta", "Seccion", "Casilla", "PAN", "PRI", "PRD", "MORENA", "VERDE", "PANAL","PAN-PRD","PRI-VERDE-PANAL"}; 
+    Connection con = null;
+    Statement stat = null;
+    ResultSet rs   = null;
     /**
      * Creates new form PREP
      */
     public PREP(String[] conf) {
         initComponents();
-        configuracion = conf;
+        Configuracion = conf;
         setLocationRelativeTo(null);
         LimpiaCampos();
         prep = new clsPrep(conf);
         
     }
+   
     
     public PREP() {
         initComponents();
@@ -37,6 +50,7 @@ public class PREP extends javax.swing.JFrame {
     private void LimpiaCampos()
     {
         ConfiguraTabla();
+        PresentaDatos();
     }
     
     private void ConfiguraTabla() 
@@ -59,6 +73,7 @@ public class PREP extends javax.swing.JFrame {
         jTableResultados = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -76,6 +91,18 @@ public class PREP extends javax.swing.JFrame {
 
             }
         ));
+        jTableResultados.addInputMethodListener(new java.awt.event.InputMethodListener() {
+            public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
+            }
+            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
+                jTableResultadosCaretPositionChanged(evt);
+            }
+        });
+        jTableResultados.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTableResultadosKeyReleased(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTableResultados);
 
         jButton1.setText("Guardar");
@@ -92,6 +119,13 @@ public class PREP extends javax.swing.JFrame {
             }
         });
 
+        jButton3.setText("Elimina");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -101,13 +135,14 @@ public class PREP extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 553, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 141, Short.MAX_VALUE))
+                        .addGap(0, 312, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jScrollPane1)
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -123,7 +158,9 @@ public class PREP extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(33, 33, 33)
                         .addComponent(jButton1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 211, Short.MAX_VALUE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 170, Short.MAX_VALUE)
                         .addComponent(jButton2)
                         .addGap(137, 137, 137))))
         );
@@ -132,14 +169,209 @@ public class PREP extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+        if(jTableResultados.getSelectedRow()!= -1)
+        {
+          if (ValidaDatos())
+          {
+              AsignaDatos();
+              int s = prep.Nuevo();
+              System.out.println(s);
+              JOptionPane.showMessageDialog(null, "Casilla Guardada.", "Correcto.", JOptionPane.INFORMATION_MESSAGE);
+              PresentaDatos();
+          }
+        }
+        
     }//GEN-LAST:event_jButton1ActionPerformed
-
+    
+    private void PresentaDatos()
+    {
+        Busqueda();
+    }
+    
+    private void Busqueda()
+    {
+        String sqlcode ; 
+        
+        
+        System.out.println("Buscando y llenando tabla");
+        try{    
+            Class.forName(Configuracion[0]);
+            
+            con = DriverManager.getConnection(Configuracion[1],Configuracion[2],Configuracion[3]); // OJO esta linea depende de tu base de datos, el 1234 es la contrasenia
+            stat = con.createStatement();
+            rs = stat.executeQuery("select * from prep");
+          
+            String [] registros = new String[13];
+            int cont = 0;
+            modelo = new DefaultTableModel(null, titulos);
+            while(rs.next())
+                {
+                    int aux = 0;
+                    registros[0]= rs.getString("idPrep");
+                    registros[1]= rs.getString("RepresentanteGeneral");
+                    registros[2]= rs.getString("Ruta");
+                    registros[3]= rs.getString("Seccion");
+                    registros[4]= rs.getString("Casilla");
+                    registros[5]= rs.getString("PAN");
+                    registros[6]= rs.getString("PRI");
+                    registros[7]= rs.getString("PRD");
+                    registros[8]= rs.getString("MORENA");
+                    registros[9]= rs.getString("VERDE");
+                    registros[10]= rs.getString("PANAL");
+                    aux = Integer.parseInt(registros[5])+Integer.parseInt(registros[7]);
+                    registros[11] = Integer.toString(aux);
+                    aux = Integer.parseInt(registros[6])+Integer.parseInt(registros[9])+Integer.parseInt(registros[10]);
+                    registros[12] = Integer.toString(aux);
+                    modelo.addRow(registros);
+                    cont ++;
+                }
+            jTableResultados.setModel(modelo);
+            jTableResultados.setAutoCreateRowSorter(true);
+            
+            
+     
+                }catch ( ClassNotFoundException | SQLException e ){
+            System.out.println("Error: " + e.getMessage());
+           
+        } finally {
+            try { if (rs != null) rs.close(); } catch (Exception e) {System.out.println("Error:" + e.getMessage());}
+            try { if (stat != null) stat.close(); } catch (Exception e) {System.out.println("Error:" + e.getMessage());}
+            try { if (con != null) con.close(); } catch (Exception e) {System.out.println("Error:" + e.getMessage());}
+            
+           
+            
+        }
+    }
+    
+    private void AsignaDatos()
+    {
+        prep = new clsPrep(Configuracion);
+        int sel = jTableResultados.getSelectedRow();
+        prep.idPrep = Integer.parseInt(jTableResultados.getValueAt(sel,0).toString()); 
+        prep.RepresentanteGeneral = jTableResultados.getValueAt(sel,2).toString();
+        prep.Ruta = jTableResultados.getValueAt(sel,2).toString();
+        prep.Seccion = jTableResultados.getValueAt(sel,3).toString();
+        prep.Casilla = Integer.parseInt(jTableResultados.getValueAt(sel,4).toString());
+        prep.PAN = Integer.parseInt(jTableResultados.getValueAt(sel,5).toString());
+        prep.PRI = Integer.parseInt(jTableResultados.getValueAt(sel,6).toString());
+        prep.PRD = Integer.parseInt(jTableResultados.getValueAt(sel,7).toString());
+        prep.MORENA = Integer.parseInt(jTableResultados.getValueAt(sel,8).toString()); 
+        prep.VERDE = Integer.parseInt(jTableResultados.getValueAt(sel,9).toString());
+        prep.PANAL = Integer.parseInt(jTableResultados.getValueAt(sel,10).toString());
+    }
+    
+    private boolean ValidaDatos()
+    {
+        int sel = jTableResultados.getSelectedRow();
+        if (jTableResultados.getValueAt(sel,3).toString().equals(""))
+        {
+            JOptionPane.showMessageDialog(null, "Seccion es un campo obligatorio.", "Cuidado.", JOptionPane.INFORMATION_MESSAGE);
+            return false;
+        }
+        if (jTableResultados.getValueAt(sel,4).toString().equals(""))
+        {
+            JOptionPane.showMessageDialog(null, "Casilla es un campo obligatorio.", "Cuidado.", JOptionPane.INFORMATION_MESSAGE);
+            return false;
+        }
+        if(jTableResultados.getValueAt(sel,5).toString().equals("") || !isNumeric(jTableResultados.getValueAt(sel,5).toString()))
+        {
+            JOptionPane.showMessageDialog(null, "PAN debe ser un valor numerico.", "Cuidado.", JOptionPane.INFORMATION_MESSAGE);
+            return false;
+        }
+        if(jTableResultados.getValueAt(sel,6).toString().equals("") || !isNumeric(jTableResultados.getValueAt(sel,6).toString()))
+        {
+            JOptionPane.showMessageDialog(null, "PRI debe ser un valor numerico.", "Cuidado.", JOptionPane.INFORMATION_MESSAGE);
+            return false;
+        }
+        if(jTableResultados.getValueAt(sel,7).toString().equals("") || !isNumeric(jTableResultados.getValueAt(sel,7).toString()))
+        {
+            JOptionPane.showMessageDialog(null, "PRD debe ser un valor numerico.", "Cuidado.", JOptionPane.INFORMATION_MESSAGE);
+            return false;
+        }
+        if(jTableResultados.getValueAt(sel,8).toString().equals("") || !isNumeric(jTableResultados.getValueAt(sel,8).toString()))
+        {
+            JOptionPane.showMessageDialog(null, "MORENA debe ser un valor numerico.", "Cuidado.", JOptionPane.INFORMATION_MESSAGE);
+            return false;
+        }
+        if(jTableResultados.getValueAt(sel,9).toString().equals("") || !isNumeric(jTableResultados.getValueAt(sel,9).toString()))
+        {
+            JOptionPane.showMessageDialog(null, "VERDE debe ser un valor numerico.", "Cuidado.", JOptionPane.INFORMATION_MESSAGE);
+            return false;
+        }
+        if(jTableResultados.getValueAt(sel,10).toString().equals("") || !isNumeric(jTableResultados.getValueAt(sel,10).toString()))
+        {
+            JOptionPane.showMessageDialog(null, "PANAL debe ser un valor numerico.", "Cuidado.", JOptionPane.INFORMATION_MESSAGE);
+            return false;
+        }
+        
+            return true;
+    }
+    
+    private static boolean isNumeric(String cadena){
+	try {
+		Integer.parseInt(cadena);
+		return true;
+	} catch (NumberFormatException nfe){
+		return false;
+	}
+}
+    
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        String [] Casilla = {"", "", "", "", "", "", ""}; 
+        String [] Casilla = {"0","", "", "", "0", "0", "0", "0", "0", "0", "0", "0", "0"}; 
         modelo.addRow(Casilla);
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jTableResultadosKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTableResultadosKeyReleased
+        int sel = jTableResultados.getSelectedRow();
+        if(isNumeric(jTableResultados.getValueAt(sel,5).toString()) && isNumeric(jTableResultados.getValueAt(sel,7).toString()))
+        {
+            int a =Integer.parseInt(jTableResultados.getValueAt(sel,5).toString());
+            a = Integer.parseInt(jTableResultados.getValueAt(sel,7).toString()) + a;
+            jTableResultados.setValueAt(a, sel,11);
+            System.out.println(a);
+        }
+        if(isNumeric(jTableResultados.getValueAt(sel,6).toString()) && isNumeric(jTableResultados.getValueAt(sel,9).toString())&& isNumeric(jTableResultados.getValueAt(sel,10).toString()))
+        {
+            int a =Integer.parseInt(jTableResultados.getValueAt(sel,6).toString());
+            a = Integer.parseInt(jTableResultados.getValueAt(sel,9).toString()) + a;
+            a = Integer.parseInt(jTableResultados.getValueAt(sel,10).toString()) + a;
+            jTableResultados.setValueAt(a, sel,12);
+            
+        }
+    }//GEN-LAST:event_jTableResultadosKeyReleased
+
+    private void jTableResultadosCaretPositionChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_jTableResultadosCaretPositionChanged
+        int sel = jTableResultados.getSelectedRow();
+        if(isNumeric(jTableResultados.getValueAt(sel,5).toString()) && isNumeric(jTableResultados.getValueAt(sel,7).toString()))
+        {
+            int a =Integer.parseInt(jTableResultados.getValueAt(sel,5).toString());
+            a = Integer.parseInt(jTableResultados.getValueAt(sel,7).toString()) + a;
+            jTableResultados.setValueAt(a, sel,11);
+            System.out.println(a);
+        }
+        if(isNumeric(jTableResultados.getValueAt(sel,6).toString()) && isNumeric(jTableResultados.getValueAt(sel,9).toString())&& isNumeric(jTableResultados.getValueAt(sel,10).toString()))
+        {
+            int a =Integer.parseInt(jTableResultados.getValueAt(sel,6).toString());
+            a = Integer.parseInt(jTableResultados.getValueAt(sel,9).toString()) + a;
+            a = Integer.parseInt(jTableResultados.getValueAt(sel,10).toString()) + a;
+            jTableResultados.setValueAt(a, sel,12);
+            
+        }
+    }//GEN-LAST:event_jTableResultadosCaretPositionChanged
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        AsignaDatos();
+        if (prep.Elimina())  
+        {
+            JOptionPane.showMessageDialog(null, "Se ha eliminado con exito.", "Cuidado.", JOptionPane.INFORMATION_MESSAGE);
+        }        
+        else
+        {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un error.", "Cuidado.", JOptionPane.INFORMATION_MESSAGE);
+        }
+        PresentaDatos();
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -179,6 +411,7 @@ public class PREP extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTableResultados;
