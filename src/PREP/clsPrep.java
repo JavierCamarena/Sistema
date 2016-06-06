@@ -38,6 +38,8 @@ public class clsPrep {
     public int MORENA; 
     public int VERDE; 
     public int PANAL; 
+    public int PAN_PRD;
+    public int PRI_VERDE_PANAL;
     
     
     public clsPrep(String[] conf)
@@ -62,6 +64,8 @@ public class clsPrep {
         MORENA = 0; 
         VERDE = 0; 
         PANAL = 0;
+        PAN_PRD = 0;
+        PRI_VERDE_PANAL = 0;
     }
     
         public int Nuevo() 
@@ -72,8 +76,8 @@ public class clsPrep {
                 con = DriverManager.getConnection(dbPath,dbUsr, dbPw); // OJO esta linea depende de tu base de datos, el 1234 es la contrasenia
                 stat = con.createStatement();
                 
-                String SQL = "INSERT INTO prep (RepresentanteGeneral,Ruta,Seccion,Casilla,PAN,PRI,PRD,MORENA,VERDE,PANAL)"
-                           + " VALUES (?,?,?,?,?,?,?,?,?,?)";
+                String SQL = "INSERT INTO prep (RepresentanteGeneral,Ruta,Seccion,Casilla,PAN,PRI,PRD,MORENA,VERDE,PANAL,PAN_PRD,PRI_VERDE_PANAL)"
+                           + " VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
                 
                 
                 PreparedStatement preparedStmt = con.prepareStatement(SQL,new String[]{"idPrep"});
@@ -86,8 +90,11 @@ public class clsPrep {
                 preparedStmt.setInt(7, PRD);
                 preparedStmt.setInt(8, MORENA);                
                 preparedStmt.setInt(9, VERDE);                
-                preparedStmt.setInt(10, PANAL);
+                preparedStmt.setInt(10, PANAL);                
+                preparedStmt.setInt(11, PAN_PRD);                
+                preparedStmt.setInt(12, PRI_VERDE_PANAL);
                  
+                System.out.println("-"+PRI_VERDE_PANAL);
 
                 preparedStmt.executeUpdate();
                 ResultSet rs = preparedStmt.getGeneratedKeys();

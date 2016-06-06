@@ -27,6 +27,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     public RegistroUD Registro = null;
     public Bingo bingo = null;
     public PREP prep = null;
+    public PREP Casillas = null;
     
     /**
      * Creates new form VentanaPrincipal
@@ -50,6 +51,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         jButtonBingo = new javax.swing.JButton();
         jButtonBingo1 = new javax.swing.JButton();
+        jButtonBingo2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -82,6 +84,14 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             }
         });
 
+        jButtonBingo2.setText("Actas");
+        jButtonBingo2.setToolTipText("");
+        jButtonBingo2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonBingo2ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -92,7 +102,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                     .addComponent(jButtonBingo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, 139, Short.MAX_VALUE)
                     .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButtonBingo1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jButtonBingo1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButtonBingo2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(80, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -106,7 +117,9 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 .addComponent(jButtonBingo)
                 .addGap(28, 28, 28)
                 .addComponent(jButtonBingo1)
-                .addContainerGap(51, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(jButtonBingo2)
+                .addContainerGap(25, Short.MAX_VALUE))
         );
 
         pack();
@@ -116,9 +129,9 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     {   
         Configuracion[0]= "com.mysql.jdbc.Driver";
         Configuracion[1]= "jdbc:mysql://192.168.1.76:3306/sistemamonitoreo";
-        //Configuracion[1]= "jdbc:mysql://localhost:3306/sistemamonitoreo";
-        //Configuracion[2]= "sis";
+        //Configuracion[1]= "jdbc:mysql://localhost:3307/sistemamonitoreo";
         Configuracion[2]= "sis";
+        //Configuracion[2]= "root";
         Configuracion[3]= "1234"; //pass 12345
     }
     
@@ -184,6 +197,18 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         } 
     }//GEN-LAST:event_jButtonBingo1ActionPerformed
 
+    private void jButtonBingo2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBingo2ActionPerformed
+        if(Casillas == null )
+        {
+            Casillas = new PREP(Configuracion,1);
+            Casillas.setVisible(true);
+        }
+        else 
+        {
+            Casillas.setVisible(true);
+        } 
+    }//GEN-LAST:event_jButtonBingo2ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -226,5 +251,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButtonBingo;
     private javax.swing.JButton jButtonBingo1;
+    private javax.swing.JButton jButtonBingo2;
     // End of variables declaration//GEN-END:variables
 }

@@ -25,11 +25,13 @@ public class PREP extends javax.swing.JFrame {
 
     private String Configuracion[];
     private clsPrep prep;
+    private clsActas acta;
     public DefaultTableModel modelo;
     private String [] titulos = {"ID","RG", "Ruta", "Seccion", "Casilla", "PAN", "PRI", "PRD", "MORENA", "VERDE", "PANAL","PAN-PRD","PRI-VERDE-PANAL"}; 
     Connection con = null;
     Statement stat = null;
     ResultSet rs   = null;
+    private int modo = 0;
     /**
      * Creates new form PREP
      */
@@ -39,6 +41,17 @@ public class PREP extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         LimpiaCampos();
         prep = new clsPrep(conf);
+        modo = 0;
+    }
+    
+    public PREP(String[] conf,int a) {
+        modo = 1;
+        initComponents();
+        Configuracion = conf;
+        setLocationRelativeTo(null);
+        LimpiaCampos();
+        jLabel1.setText("Capturador de Casillas");
+        acta = new clsActas(conf);
         
     }
    
@@ -49,6 +62,20 @@ public class PREP extends javax.swing.JFrame {
     
     private void LimpiaCampos()
     {
+        txtRepresentante.setText("");
+        txtRuta.setText("");
+        txtSeccion.setText("");
+        txtCasilla.setText("");
+        txtPan.setText("");
+        txtPri.setText("");
+        txtPrd.setText("");
+        txtMorena.setText("");
+        txtVerde.setText("");
+        txtPanal.setText("");
+        txtPan_prd.setText("");
+        txtPri_verde_panal.setText("");
+        
+        btnAgrega.setEnabled(false);
         ConfiguraTabla();
         PresentaDatos();
     }
@@ -72,8 +99,33 @@ public class PREP extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTableResultados = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        btnAgrega = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        txtRepresentante = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        txtRuta = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        txtSeccion = new javax.swing.JTextField();
+        jLabel5 = new javax.swing.JLabel();
+        txtCasilla = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
+        txtPan = new javax.swing.JTextField();
+        jLabel7 = new javax.swing.JLabel();
+        txtPri = new javax.swing.JTextField();
+        jLabel8 = new javax.swing.JLabel();
+        txtPrd = new javax.swing.JTextField();
+        jLabel9 = new javax.swing.JLabel();
+        txtMorena = new javax.swing.JTextField();
+        jLabel10 = new javax.swing.JLabel();
+        txtVerde = new javax.swing.JTextField();
+        jLabel11 = new javax.swing.JLabel();
+        txtPanal = new javax.swing.JTextField();
+        jLabel12 = new javax.swing.JLabel();
+        txtPan_prd = new javax.swing.JTextField();
+        jLabel13 = new javax.swing.JLabel();
+        txtPri_verde_panal = new javax.swing.JTextField();
+        btnLimpia = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -92,10 +144,10 @@ public class PREP extends javax.swing.JFrame {
             }
         ));
         jTableResultados.addInputMethodListener(new java.awt.event.InputMethodListener() {
-            public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
-            }
             public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
                 jTableResultadosCaretPositionChanged(evt);
+            }
+            public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
             }
         });
         jTableResultados.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -112,10 +164,10 @@ public class PREP extends javax.swing.JFrame {
             }
         });
 
-        jButton2.setText(" Agregar Casilla");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        btnAgrega.setText(" Agregar Casilla");
+        btnAgrega.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                btnAgregaActionPerformed(evt);
             }
         });
 
@@ -123,6 +175,61 @@ public class PREP extends javax.swing.JFrame {
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
+            }
+        });
+
+        jLabel2.setText("Representante General");
+
+        txtRepresentante.setText("jTextField1");
+
+        jLabel3.setText("Ruta");
+
+        txtRuta.setText("jTextField1");
+
+        jLabel4.setText("Seccion");
+
+        txtSeccion.setText("jTextField1");
+
+        jLabel5.setText("Casilla");
+
+        txtCasilla.setText("jTextField1");
+
+        jLabel6.setText("PAN");
+
+        txtPan.setText("jTextField1");
+
+        jLabel7.setText("PRI");
+
+        txtPri.setText("jTextField1");
+
+        jLabel8.setText("PRD");
+
+        txtPrd.setText("jTextField1");
+
+        jLabel9.setText("MORENA");
+
+        txtMorena.setText("jTextField1");
+
+        jLabel10.setText("VERDE");
+
+        txtVerde.setText("jTextField1");
+
+        jLabel11.setText("PANAL");
+
+        txtPanal.setText("jTextField1");
+
+        jLabel12.setText("PAN_PRD");
+
+        txtPan_prd.setText("jTextField1");
+
+        jLabel13.setText("PRI_VERDE_PANAL");
+
+        txtPri_verde_panal.setText("jTextField1");
+
+        btnLimpia.setText("Limpia Casilla");
+        btnLimpia.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLimpiaActionPerformed(evt);
             }
         });
 
@@ -134,15 +241,71 @@ public class PREP extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 553, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 312, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 752, Short.MAX_VALUE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel6)
+                                            .addComponent(txtPan, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGap(18, 18, 18)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel7)
+                                            .addComponent(txtPri, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGap(18, 18, 18)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel8)
+                                            .addComponent(txtPrd, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel3)
+                                        .addComponent(txtRuta, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel9)
+                                            .addComponent(txtMorena, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGap(18, 18, 18)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(jLabel10)
+                                                .addGap(45, 45, 45))
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(txtVerde, javax.swing.GroupLayout.DEFAULT_SIZE, 75, Short.MAX_VALUE)
+                                                .addGap(18, 18, 18)))
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel11)
+                                            .addComponent(txtPanal, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGap(18, 18, 18)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel12)
+                                            .addComponent(txtPan_prd, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGap(18, 18, 18)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel13)
+                                            .addComponent(txtPri_verde_panal, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(txtSeccion, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jLabel4))
+                                        .addGap(18, 18, 18)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel5)
+                                            .addComponent(txtCasilla, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addGap(0, 0, Short.MAX_VALUE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnAgrega, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnLimpia, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 553, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel2)
+                            .addComponent(txtRepresentante, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -152,34 +315,93 @@ public class PREP extends javax.swing.JFrame {
                 .addComponent(jLabel1)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                        .addContainerGap())
-                    .addGroup(layout.createSequentialGroup()
                         .addGap(33, 33, 33)
                         .addComponent(jButton1)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 170, Short.MAX_VALUE)
-                        .addComponent(jButton2)
-                        .addGap(137, 137, 137))))
+                        .addComponent(jButton3))
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel5))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtRepresentante, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtRuta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtSeccion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtCasilla, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel6)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtPan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel7)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtPri, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel8)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtPrd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel9)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtMorena, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel10)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtVerde, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel11)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtPanal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel12)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtPan_prd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel13)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtPri_verde_panal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnLimpia)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnAgrega)
+                        .addGap(137, 137, 137))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 309, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(43, Short.MAX_VALUE))))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        if(jTableResultados.getSelectedRow()!= -1)
-        {
+
           if (ValidaDatos())
           {
               AsignaDatos();
-              int s = prep.Nuevo();
+              int s;
+              if(modo == 0)
+              {
+                s = prep.Nuevo();
+              }
+              else
+              {
+               s = acta.Nuevo();
+              }
+                  
               System.out.println(s);
               JOptionPane.showMessageDialog(null, "Casilla Guardada.", "Correcto.", JOptionPane.INFORMATION_MESSAGE);
               PresentaDatos();
+              LimpiaCampos();
           }
-        }
+        
         
     }//GEN-LAST:event_jButton1ActionPerformed
     
@@ -199,32 +421,90 @@ public class PREP extends javax.swing.JFrame {
             
             con = DriverManager.getConnection(Configuracion[1],Configuracion[2],Configuracion[3]); // OJO esta linea depende de tu base de datos, el 1234 es la contrasenia
             stat = con.createStatement();
-            rs = stat.executeQuery("select * from prep");
+            if(modo == 0)
+            {
+                rs = stat.executeQuery("select * from prep");
+            }
+            else
+            {
+                rs = stat.executeQuery("select * from actas");
+            }
+            
           
             String [] registros = new String[13];
             int cont = 0;
+            int totales[];
+            totales = new int[13];
+            totales[0] = 0;
+            totales[1] = 0;
+            totales[2] = 0;
+            totales[3] = 0;
+            totales[4] = 0;
+            totales[5] = 0;
+            totales[6] = 0;
+            totales[7] = 0;
+            totales[8] = 0;
+            totales[9] = 0;
+            totales[10] = 0;
+            totales[11] = 0;
+            totales[12] = 0;
+            
+            
+            
+            
             modelo = new DefaultTableModel(null, titulos);
             while(rs.next())
                 {
                     int aux = 0;
-                    registros[0]= rs.getString("idPrep");
+                    if(modo == 0)
+                    {
+                        registros[0]= rs.getString("idPrep");
+                    }
+                    else
+                    {
+                        registros[0]= rs.getString("idActas");
+                    }
+                    
                     registros[1]= rs.getString("RepresentanteGeneral");
                     registros[2]= rs.getString("Ruta");
                     registros[3]= rs.getString("Seccion");
                     registros[4]= rs.getString("Casilla");
                     registros[5]= rs.getString("PAN");
+                    totales[5] += Integer.parseInt(registros[5]);
                     registros[6]= rs.getString("PRI");
+                    totales[6] += Integer.parseInt(registros[6]);
                     registros[7]= rs.getString("PRD");
+                    totales[7] += Integer.parseInt(registros[7]);
                     registros[8]= rs.getString("MORENA");
+                    totales[8] += Integer.parseInt(registros[8]);
                     registros[9]= rs.getString("VERDE");
+                    totales[9] += Integer.parseInt(registros[9]);
                     registros[10]= rs.getString("PANAL");
-                    aux = Integer.parseInt(registros[5])+Integer.parseInt(registros[7]);
-                    registros[11] = Integer.toString(aux);
-                    aux = Integer.parseInt(registros[6])+Integer.parseInt(registros[9])+Integer.parseInt(registros[10]);
-                    registros[12] = Integer.toString(aux);
+                    totales[10] += Integer.parseInt(registros[10]);
+                    registros[11] = rs.getString("PAN_PRD");
+                    totales[11] += Integer.parseInt(registros[11]);
+                    registros[12] = rs.getString("PRI_VERDE_PANAL");
+                    totales[12] += Integer.parseInt(registros[12]);
                     modelo.addRow(registros);
                     cont ++;
                 }
+            
+            registros[0]= "Totales";
+            registros[1] = "";
+            registros[2] = "";
+            registros[3] = "";
+            registros[4] = "";
+            registros[5] = Integer.toString(totales[5]);
+            registros[6] = Integer.toString(totales[6]);;
+            registros[7] = Integer.toString(totales[7]);;
+            registros[8] = Integer.toString(totales[8]);;
+            registros[9] = Integer.toString(totales[9]);;
+            registros[10] = Integer.toString(totales[10]);;
+            registros[11] = Integer.toString(totales[11]);;
+            registros[12] = Integer.toString(totales[12]);;
+            
+            modelo.addRow(registros);
+            
             jTableResultados.setModel(modelo);
             jTableResultados.setAutoCreateRowSorter(true);
             
@@ -243,67 +523,51 @@ public class PREP extends javax.swing.JFrame {
         }
     }
     
+   
+    
     private void AsignaDatos()
     {
-        prep = new clsPrep(Configuracion);
-        int sel = jTableResultados.getSelectedRow();
-        prep.idPrep = Integer.parseInt(jTableResultados.getValueAt(sel,0).toString()); 
-        prep.RepresentanteGeneral = jTableResultados.getValueAt(sel,2).toString();
-        prep.Ruta = jTableResultados.getValueAt(sel,2).toString();
-        prep.Seccion = jTableResultados.getValueAt(sel,3).toString();
-        prep.Casilla = Integer.parseInt(jTableResultados.getValueAt(sel,4).toString());
-        prep.PAN = Integer.parseInt(jTableResultados.getValueAt(sel,5).toString());
-        prep.PRI = Integer.parseInt(jTableResultados.getValueAt(sel,6).toString());
-        prep.PRD = Integer.parseInt(jTableResultados.getValueAt(sel,7).toString());
-        prep.MORENA = Integer.parseInt(jTableResultados.getValueAt(sel,8).toString()); 
-        prep.VERDE = Integer.parseInt(jTableResultados.getValueAt(sel,9).toString());
-        prep.PANAL = Integer.parseInt(jTableResultados.getValueAt(sel,10).toString());
+        if (modo==0)
+        {
+            prep = new clsPrep(Configuracion);
+           
+            
+            prep.RepresentanteGeneral = txtRepresentante.getText();
+            prep.Ruta = txtRuta.getText();
+            prep.Seccion = txtSeccion.getText();
+            prep.Casilla = Integer.parseInt(txtCasilla.getText());
+            prep.PAN = Integer.parseInt(txtPan.getText());
+            prep.PRI = Integer.parseInt(txtPri.getText());
+            prep.PRD = Integer.parseInt(txtPrd.getText());
+            prep.MORENA = Integer.parseInt(txtMorena.getText()); 
+            prep.VERDE = Integer.parseInt(txtVerde.getText()); 
+            prep.PANAL = Integer.parseInt(txtPanal.getText()); 
+            prep.PAN_PRD =Integer.parseInt(txtPan_prd.getText()); 
+            prep.PRI_VERDE_PANAL = Integer.parseInt(txtPri_verde_panal.getText()); 
+        }
+        else
+        {
+            acta = new clsActas(Configuracion);
+           
+            
+            acta.RepresentanteGeneral = txtRepresentante.getText();
+            acta.Ruta = txtRuta.getText();
+            acta.Seccion = txtSeccion.getText();
+            acta.Casilla = Integer.parseInt(txtCasilla.getText());
+            acta.PAN = Integer.parseInt(txtPan.getText());
+            acta.PRI = Integer.parseInt(txtPri.getText());
+            acta.PRD = Integer.parseInt(txtPrd.getText());
+            acta.MORENA = Integer.parseInt(txtMorena.getText()); 
+            acta.VERDE = Integer.parseInt(txtVerde.getText()); 
+            acta.PANAL = Integer.parseInt(txtPanal.getText()); 
+            acta.PAN_PRD =Integer.parseInt(txtPan_prd.getText()); 
+            acta.PRI_VERDE_PANAL = Integer.parseInt(txtPri_verde_panal.getText()); 
+        }
+        
     }
     
     private boolean ValidaDatos()
     {
-        int sel = jTableResultados.getSelectedRow();
-        if (jTableResultados.getValueAt(sel,3).toString().equals(""))
-        {
-            JOptionPane.showMessageDialog(null, "Seccion es un campo obligatorio.", "Cuidado.", JOptionPane.INFORMATION_MESSAGE);
-            return false;
-        }
-        if (jTableResultados.getValueAt(sel,4).toString().equals(""))
-        {
-            JOptionPane.showMessageDialog(null, "Casilla es un campo obligatorio.", "Cuidado.", JOptionPane.INFORMATION_MESSAGE);
-            return false;
-        }
-        if(jTableResultados.getValueAt(sel,5).toString().equals("") || !isNumeric(jTableResultados.getValueAt(sel,5).toString()))
-        {
-            JOptionPane.showMessageDialog(null, "PAN debe ser un valor numerico.", "Cuidado.", JOptionPane.INFORMATION_MESSAGE);
-            return false;
-        }
-        if(jTableResultados.getValueAt(sel,6).toString().equals("") || !isNumeric(jTableResultados.getValueAt(sel,6).toString()))
-        {
-            JOptionPane.showMessageDialog(null, "PRI debe ser un valor numerico.", "Cuidado.", JOptionPane.INFORMATION_MESSAGE);
-            return false;
-        }
-        if(jTableResultados.getValueAt(sel,7).toString().equals("") || !isNumeric(jTableResultados.getValueAt(sel,7).toString()))
-        {
-            JOptionPane.showMessageDialog(null, "PRD debe ser un valor numerico.", "Cuidado.", JOptionPane.INFORMATION_MESSAGE);
-            return false;
-        }
-        if(jTableResultados.getValueAt(sel,8).toString().equals("") || !isNumeric(jTableResultados.getValueAt(sel,8).toString()))
-        {
-            JOptionPane.showMessageDialog(null, "MORENA debe ser un valor numerico.", "Cuidado.", JOptionPane.INFORMATION_MESSAGE);
-            return false;
-        }
-        if(jTableResultados.getValueAt(sel,9).toString().equals("") || !isNumeric(jTableResultados.getValueAt(sel,9).toString()))
-        {
-            JOptionPane.showMessageDialog(null, "VERDE debe ser un valor numerico.", "Cuidado.", JOptionPane.INFORMATION_MESSAGE);
-            return false;
-        }
-        if(jTableResultados.getValueAt(sel,10).toString().equals("") || !isNumeric(jTableResultados.getValueAt(sel,10).toString()))
-        {
-            JOptionPane.showMessageDialog(null, "PANAL debe ser un valor numerico.", "Cuidado.", JOptionPane.INFORMATION_MESSAGE);
-            return false;
-        }
-        
             return true;
     }
     
@@ -316,62 +580,59 @@ public class PREP extends javax.swing.JFrame {
 	}
 }
     
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void btnAgregaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregaActionPerformed
         // TODO add your handling code here:
         String [] Casilla = {"0","", "", "", "0", "0", "0", "0", "0", "0", "0", "0", "0"}; 
         modelo.addRow(Casilla);
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_btnAgregaActionPerformed
 
     private void jTableResultadosKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTableResultadosKeyReleased
-        int sel = jTableResultados.getSelectedRow();
-        if(isNumeric(jTableResultados.getValueAt(sel,5).toString()) && isNumeric(jTableResultados.getValueAt(sel,7).toString()))
-        {
-            int a =Integer.parseInt(jTableResultados.getValueAt(sel,5).toString());
-            a = Integer.parseInt(jTableResultados.getValueAt(sel,7).toString()) + a;
-            jTableResultados.setValueAt(a, sel,11);
-            System.out.println(a);
-        }
-        if(isNumeric(jTableResultados.getValueAt(sel,6).toString()) && isNumeric(jTableResultados.getValueAt(sel,9).toString())&& isNumeric(jTableResultados.getValueAt(sel,10).toString()))
-        {
-            int a =Integer.parseInt(jTableResultados.getValueAt(sel,6).toString());
-            a = Integer.parseInt(jTableResultados.getValueAt(sel,9).toString()) + a;
-            a = Integer.parseInt(jTableResultados.getValueAt(sel,10).toString()) + a;
-            jTableResultados.setValueAt(a, sel,12);
-            
-        }
+      
     }//GEN-LAST:event_jTableResultadosKeyReleased
 
     private void jTableResultadosCaretPositionChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_jTableResultadosCaretPositionChanged
-        int sel = jTableResultados.getSelectedRow();
-        if(isNumeric(jTableResultados.getValueAt(sel,5).toString()) && isNumeric(jTableResultados.getValueAt(sel,7).toString()))
-        {
-            int a =Integer.parseInt(jTableResultados.getValueAt(sel,5).toString());
-            a = Integer.parseInt(jTableResultados.getValueAt(sel,7).toString()) + a;
-            jTableResultados.setValueAt(a, sel,11);
-            System.out.println(a);
-        }
-        if(isNumeric(jTableResultados.getValueAt(sel,6).toString()) && isNumeric(jTableResultados.getValueAt(sel,9).toString())&& isNumeric(jTableResultados.getValueAt(sel,10).toString()))
-        {
-            int a =Integer.parseInt(jTableResultados.getValueAt(sel,6).toString());
-            a = Integer.parseInt(jTableResultados.getValueAt(sel,9).toString()) + a;
-            a = Integer.parseInt(jTableResultados.getValueAt(sel,10).toString()) + a;
-            jTableResultados.setValueAt(a, sel,12);
-            
-        }
+      
     }//GEN-LAST:event_jTableResultadosCaretPositionChanged
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        AsignaDatos();
-        if (prep.Elimina())  
+        int sel = jTableResultados.getSelectedRow();
+        
+        if (sel != -1)
         {
-            JOptionPane.showMessageDialog(null, "Se ha eliminado con exito.", "Cuidado.", JOptionPane.INFORMATION_MESSAGE);
-        }        
-        else
-        {
-            JOptionPane.showMessageDialog(null, "Ha ocurrido un error.", "Cuidado.", JOptionPane.INFORMATION_MESSAGE);
+            
+            if(modo == 0)
+                {
+                prep.idPrep = Integer.parseInt(jTableResultados.getValueAt(sel,0).toString());
+                if (prep.Elimina())  
+                {
+                    JOptionPane.showMessageDialog(null, "Se ha eliminado con exito.", "Cuidado.", JOptionPane.INFORMATION_MESSAGE);
+                }        
+                else
+                {
+                    JOptionPane.showMessageDialog(null, "Ha ocurrido un error.", "Cuidado.", JOptionPane.INFORMATION_MESSAGE);
+                }
+            }
+            else
+            {
+                acta.idActas = Integer.parseInt(jTableResultados.getValueAt(sel,0).toString());
+                if (acta.Elimina())  
+                {
+                    JOptionPane.showMessageDialog(null, "Se ha eliminado con exito.", "Cuidado.", JOptionPane.INFORMATION_MESSAGE);
+                }        
+                else
+                {
+                    JOptionPane.showMessageDialog(null, "Ha ocurrido un error.", "Cuidado.", JOptionPane.INFORMATION_MESSAGE);
+                }
+            }
         }
+    
         PresentaDatos();
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void btnLimpiaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiaActionPerformed
+        LimpiaCampos();
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnLimpiaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -409,11 +670,36 @@ public class PREP extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAgrega;
+    private javax.swing.JButton btnLimpia;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTableResultados;
+    private javax.swing.JTextField txtCasilla;
+    private javax.swing.JTextField txtMorena;
+    private javax.swing.JTextField txtPan;
+    private javax.swing.JTextField txtPan_prd;
+    private javax.swing.JTextField txtPanal;
+    private javax.swing.JTextField txtPrd;
+    private javax.swing.JTextField txtPri;
+    private javax.swing.JTextField txtPri_verde_panal;
+    private javax.swing.JTextField txtRepresentante;
+    private javax.swing.JTextField txtRuta;
+    private javax.swing.JTextField txtSeccion;
+    private javax.swing.JTextField txtVerde;
     // End of variables declaration//GEN-END:variables
 }
